@@ -1,1 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moses & Mollie – Character and Context Sketch Notes</title>
+<style>
+  body {
+    font-family: 'Comic Sans MS', 'Segoe UI', sans-serif;
+    background: #fff8e7;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+  header {
+    text-align: center;
+    background: #fdd835;
+    padding: 2em 1em;
+    font-size: 1.8em;
+    position: relative;
+  }
+  header h1 {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 2em;
+  }
+  section {
+    padding: 2em;
+    max-width: 900px;
+    margin: auto;
+    position: relative;
+  }
+  .note-box {
+    background: #fff;
+    border: 3px dashed #444;
+    border-radius: 15px;
+    padding: 1.5em;
+    margin: 2em 0;
+    box-shadow: 4px 4px 0 #333;
+  }
+  .title {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 1.5em;
+    color: #d32f2f;
+  }
+  .arrow {
+    text-align: center;
+    font-size: 2em;
+    margin: 1em 0;
+  }
+  .clickable {
+    background: #ffe082;
+    padding: 0.5em 1em;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    display: inline-block;
+    margin-top: 1em;
+  }
+  .hidden {
+    display: none;
+    margin-top: 1em;
+    font-size: 1em;
+    line-height: 1.5;
+  }
+  footer {
+    background: #fbc02d;
+    text-align: center;
+    padding: 1em;
+    font-size: 0.9em;
+    font-style: italic;
+  }
+  @media (max-width: 600px) {
+    .note-box {
+      font-size: 0.95em;
+    }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>🐦 Moses & 🐴 Mollie</h1>
+  <p>Character & Context Synthesis — Sketchnote Edition</p>
+</header>
+
+<section>
+  <div class="note-box">
+    <div class="title">Moses (The Raven)</div>
+    <p><b>Key Traits:</b> Storyteller of Sugar Candy Mountain, cynical observer, non-worker, tolerated by the pigs.</p>
+    <p><b>Symbol:</b> 🕊️ Religion & False Hope</p>
+    <div class="arrow">⬇️</div>
+    <div class="clickable" onclick="toggleInfo('moses1')">📜 Literary Role</div>
+    <div id="moses1" class="hidden">
+      <p>Moses offers comfort through tales of <b>Sugar Candy Mountain</b>, distracting animals from oppression. The pigs allow his stories because it helps control the others.</p>
+    </div>
+    <div class="arrow">⬇️</div>
+    <div class="clickable" onclick="toggleInfo('moses2')">⚙️ Historical Connection</div>
+    <div id="moses2" class="hidden">
+      <p>Moses represents the <b>Russian Orthodox Church</b>. Like Stalin, Napoleon realizes that religion can maintain order and obedience through <b>propaganda</b>.</p>
+    </div>
+  </div>
+
+  <div class="note-box">
+    <div class="title">Mollie (The Mare)</div>
+    <p><b>Key Traits:</b> Vain, materialistic, self-interested, resists change.</p>
+    <p><b>Symbol:</b> 🎀 The Bourgeoisie / Upper-Class Defectors</p>
+    <div class="arrow">⬇️</div>
+    <div class="clickable" onclick="toggleInfo('mollie1')">📜 Literary Role</div>
+    <div id="mollie1" class="hidden">
+      <p>Mollie loves luxury and refuses the hardships of equality. Her sugar and ribbons show her loyalty to comfort over revolution.</p>
+    </div>
+    <div class="arrow">⬇️</div>
+    <div class="clickable" onclick="toggleInfo('mollie2')">⚙️ Historical Connection</div>
+    <div id="mollie2" class="hidden">
+      <p>She mirrors the <b>Bourgeoisie</b> who fled Russia after 1917, unwilling to give up privilege. Her defection represents those who chose comfort over ideology.</p>
+    </div>
+  </div>
+
+  <div class="note-box" style="background:#fff9c4;">
+    <div class="title">🎯 Allegorical Takeaway</div>
+    <p>Both characters expose how <b>faith</b> and <b>privilege</b> can weaken revolutionary unity.</p>
+    <p>👉 Moses distracts with heaven.  
+    👉 Mollie abandons for luxury.  
+    Together, they show how control and comfort can defeat idealism.</p>
+  </div>
+</section>
+
+<footer>
+  Sketchnote Webpage by Manuela P & Enrico L — Designed with ❤️ using HTML & CSS.
+</footer>
+
+<script>
+  function toggleInfo(id) {
+    const el = document.getElementById(id);
+    el.classList.toggle('hidden');
+  }
+</script>
+</body>
+</html>
 
