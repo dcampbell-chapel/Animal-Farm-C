@@ -1,1 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Character & Context Sketch: Benjamin the Donkey</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Shadows+Into+Light&display=swap');
+
+  body {
+    margin: 0;
+    background: #faf8f5;
+    font-family: 'Gloria Hallelujah', cursive;
+    color: #2b2b2b;
+    overflow-x: hidden;
+  }
+
+  header {
+    text-align: center;
+    padding: 2rem 1rem;
+    background: #fdf6ec;
+    border-bottom: 3px dashed #b89f7b;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+    margin: 0.5rem 0;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    margin-top: 1.2rem;
+    color: #4a3c2a;
+  }
+
+  .sketch-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 1rem;
+    position: relative;
+  }
+
+  .note {
+    background: #fffdf9;
+    border: 2px solid #d6c4a3;
+    box-shadow: 3px 3px 0px #c3b08a;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1rem 0;
+    position: relative;
+    transition: transform 0.2s ease;
+  }
+
+  .note:hover {
+    transform: scale(1.02);
+  }
+
+  .arrow {
+    width: 100px;
+    height: 50px;
+    margin: 1rem auto;
+    display: block;
+  }
+
+  .arrow path {
+    stroke: #b08a52;
+    stroke-width: 3;
+    fill: none;
+    stroke-dasharray: 6;
+    animation: dash 2s infinite linear;
+  }
+
+  @keyframes dash {
+    to {
+      stroke-dashoffset: -12;
+    }
+  }
+
+  .toggle {
+    cursor: pointer;
+    background: #fff4c2;
+    display: inline-block;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    border: 1px dashed #b89f7b;
+    font-size: 1rem;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  footer {
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.9rem;
+    color: #666;
+  }
+
+  /* Simple responsive tweak */
+  @media (max-width: 600px) {
+    h1 { font-size: 1.8rem; }
+    h2 { font-size: 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🐴 Benjamin the Donkey</h1>
+  <p><em>"Life would go on as it had always gone on — that is, badly."</em></p>
+</header>
+
+<div class="sketch-container">
+
+  <div class="note">
+    <h2>I. Literary Traits</h2>
+    <p><strong>Traits:</strong> Cynical, Old, Intelligent, Apathetic</p>
+    <p><strong>Key Quote:</strong> "Fools, Fools!... They are taking Boxer to the knacker's!"</p>
+    <p><strong>Commentary:</strong> Benjamin refuses to take sides or believe in progress.</p>
+  </div>
+
+  <svg class="arrow" viewBox="0 0 100 50">
+    <path d="M10 25 Q50 0, 90 25 Q50 50, 10 25 Z" />
+  </svg>
+
+  <div class="note">
+    <h2>II. Historical Context</h2>
+    <p><strong>Parallel:</strong> The Intellectuals / Skeptical Intelligentsia</p>
+    <p><strong>Concept:</strong> Intellectual Passivity and the Bystander Effect under Totalitarianism</p>
+  </div>
+
+  <svg class="arrow" viewBox="0 0 100 50">
+    <path d="M10 25 Q50 0, 90 25 Q50 50, 10 25 Z" />
+  </svg>
+
+  <div class="note">
+    <h2>III. Character Significance</h2>
+    <p>Benjamin represents the danger of <strong>seeing truth but refusing to act.</strong></p>
+    <p>He symbolizes those who understand oppression yet remain passive until it’s too late.</p>
+    <span class="toggle" onclick="toggleSection('analysis1')">🔍 Learn More</span>
+    <div id="analysis1" class="hidden">
+      <p>Benjamin’s intelligence isolates him; his cynicism prevents hope. When he finally speaks out—about Boxer—it’s a moment of moral awakening that comes too late. His passivity makes him both wise and tragic.</p>
+    </div>
+  </div>
+
+  <svg class="arrow" viewBox="0 0 100 50">
+    <path d="M10 25 Q50 0, 90 25 Q50 50, 10 25 Z" />
+  </svg>
+
+  <div class="note">
+    <h2>IV. Allegorical Mapping</h2>
+    <p><strong>Literary Event:</strong> Refuses to read the Commandments or choose a side.</p>
+    <p><strong>Historical Event:</strong> Mirrors educated individuals who knew Stalin’s truths but stayed silent.</p>
+    <span class="toggle" onclick="toggleSection('analysis2')">💡 Reveal Insight</span>
+    <div id="analysis2" class="hidden">
+      <p>Benjamin’s final cry about Boxer parallels the breaking point of silent intellectuals under totalitarianism—when horror becomes undeniable but action is futile.</p>
+    </div>
+  </div>
+
+  <svg class="arrow" viewBox="0 0 100 50">
+    <path d="M10 25 Q50 0, 90 25 Q50 50, 10 25 Z" />
+  </svg>
+
+  <div class="note" style="background:#e8f9e3;">
+    <h2>🌀 Takeaway Thought</h2>
+    <p><strong>Awareness without action</strong> is complicity. Benjamin warns us that intelligence must be joined with courage, or truth will die unheard.</p>
+  </div>
+
+</div>
+
+<footer>
+  ✏️ Designed as a sketch-note inspired web summary | Responsive & Interactive © 2025
+</footer>
+
+<script>
+function toggleSection(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('hidden');
+}
+</script>
+
+</body>
+</html>
 
