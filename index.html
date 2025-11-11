@@ -3,1427 +3,881 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animal Farm Character Development</title>
-    <!-- Load Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
+    <title>Animal Farm Character Analysis Hub</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Custom styles to set Inter as the primary font and define theme colors (Monochromatic Red Motif) */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-        
-        :root {
-            --color-primary: #B30000; /* Deep Red (Headers, Buttons, Strong Text) */
-            --color-secondary: #CC0000; /* Slightly deeper Red (Accents, Borders) */
-            --color-background: #FFCCCC; /* Light Red/Pink page background */
-            --color-text: #1e1e1e; /* Dark text for readability on light background */
-        }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--color-background);
-            color: var(--color-text); /* Ensure body text is dark on light background */
-        }
+        /* Custom scrollbar styling for better aesthetics */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #FFCCCC; } /* Light Red Track */
+        ::-webkit-scrollbar-thumb { background: #CC0000; border-radius: 4px; } /* Accent Red Thumb */
+        ::-webkit-scrollbar-thumb:hover { background: #B30000; } /* Primary Red Hover */
 
-        /* Hide the character pages by default */
-        .character-page {
-            display: none;
-        }
-
-        /* Styling for the list items */
-        .character-link {
-            transition: all 0.2s;
-        }
-        /* Hover state provides a subtle background change for visual feedback on white card */
-        .character-link:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
-            background-color: #FFF5F5; /* Very light pink tint on hover for white cards */
-        }
-
-        /* Iframe styling for embedded student pages */
-        .student-iframe {
-            width: 100%;
-            border: none;
-            /* Initial height (will be resized dynamically by script) */
-            min-height: 800px; 
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            background-color: #fff;
-        }
+        /* Ensure smooth transitions for responsiveness */
+        * { transition: all 0.2s ease-in-out; }
     </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // Custom Red Monochromatic Theme based on the original class C file
+                        'page-bg': '#FFCCCC',   // Light Red/Pink page background
+                        'primary-red': '#B30000', // Deep Red (Main Brand Color)
+                        'accent-red': '#CC0000',  // Slightly deeper Red (Accents, Borders)
+                        'sidebar-bg': '#800000', // Very dark maroon for high contrast sidebar
+                        'paper': '#fefefe',      // Off-white paper background for cards
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body class="min-h-screen p-4 md:p-8">
+<!-- Apply the new light red background -->
+<body class="bg-page-bg font-sans min-h-screen flex flex-col md:flex-row">
 
-    <div id="app-container" class="max-w-4xl mx-auto">
-        <!-- Main Header (White Card) --><header class="text-center mb-10 p-6 bg-white rounded-xl shadow-lg border-b-4 border-[var(--color-secondary)]">
-            <h1 class="text-3xl md:text-5xl font-extrabold text-[var(--color-primary)] tracking-tight">
-                Animal Farm Character Development
-            </h1>
-            <p class="mt-2 text-lg text-gray-600">A Student Project Portfolio: Exploring Character Development</p>
+    <!-- Mobile Menu Button (Hamburger) -->
+    <!-- Button now uses the Primary Red color -->
+    <button id="menu-btn" class="md:hidden fixed top-4 left-4 z-40 p-2 bg-primary-red text-white rounded-full shadow-lg">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+    </button>
+
+    <!-- Sidebar / Navigation Menu -->
+    <!-- Sidebar now uses a dark maroon background for high contrast -->
+    <nav id="sidebar" class="fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 ease-in-out w-64 bg-sidebar-bg text-white z-30 shadow-2xl flex flex-col pt-16 md:pt-0">
+        
+        <!-- Sidebar Header uses a slightly lighter dark red -->
+        <header class="p-6 border-b border-[#a00000] bg-[#a00000]">
+            <!-- Title is white for high visibility -->
+            <h1 class="text-2xl font-bold text-white">Animal Farm</h1>
+            <p class="text-xs text-red-200 mt-1">Character & Context Synthesis</p>
         </header>
 
-        <!-- 1. Home Page View (White Card) --><section id="home-page" class="p-6 bg-white rounded-xl shadow-lg">
-            <h2 class="text-2xl font-bold mb-6 text-[var(--color-primary)] border-b pb-2 border-gray-200">Character Group Pages — F/G Period</h2>
-            
-            <ul id="character-list" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <!-- Links will be populated by JavaScript --></ul>
-        </section>
+        <ul class="flex-1 p-4 space-y-2 overflow-y-auto">
+            <!-- Navigation links and hover states updated to use the red palette -->
+            <li class="nav-item">
+                <a href="#home" data-page="home" class="block py-3 px-4 rounded-lg text-lg font-medium text-red-100 hover:bg-primary-red hover:text-white transition duration-150 ease-in-out">🏠 Overview</a>
+            </li>
+            <li class="nav-item">
+                <a href="#napoleon" data-page="napoleon" class="block py-3 px-4 rounded-lg text-lg font-medium text-red-100 hover:bg-primary-red hover:text-white transition duration-150 ease-in-out">🐽 Napoleon</a>
+            </li>
+            <li class="nav-item">
+                <a href="#snowball" data-page="snowball" class="block py-3 px-4 rounded-lg text-lg font-medium text-red-100 hover:bg-primary-red hover:text-white transition duration-150 ease-in-out">⚪ Snowball</a>
+            </li>
+            <li class="nav-item">
+                <a href="#squealer" data-page="squealer" class="block py-3 px-4 rounded-lg text-lg font-medium text-red-100 hover:bg-primary-red hover:text-white transition duration-150 ease-in-out">🐷 Squealer</a>
+            </li>
+            <li class="nav-item">
+                <a href="#boxer" data-page="boxer" class="block py-3 px-4 rounded-lg text-lg font-medium text-red-100 hover:bg-primary-red hover:text-white transition duration-150 ease-in-out">🐴 Boxer (Example)</a>
+            </li>
+            <!-- Updated Benjamin to Benjamin & Clover -->
+            <li class="nav-item">
+                <a href="#benjamin-clover" data-page="benjamin-clover" class="block py-3 px-4 rounded-lg text-lg font-medium text-red-100 hover:bg-primary-red hover:text-white transition duration-150 ease-in-out">🐐 Benjamin & Clover</a>
+            </li>
+            <li class="nav-item">
+                <a href="#humans" data-page="humans" class="block py-3 px-4 rounded-lg text-lg font-medium text-red-100 hover:bg-primary-red hover:text-white transition duration-150 ease-in-out">👤 The Humans</a>
+            </li>
+            <li class="nav-item">
+                <a href="#mollie-moses" data-page="mollie-moses" class="block py-3 px-4 rounded-lg text-lg font-medium text-red-100 hover:bg-primary-red hover:text-white transition duration-150 ease-in-out">🎀 Mollie & Moses</a>
+            </li>
+        </ul>
 
-        <!-- 2. Character Pages (Placeholders/Embedded) (White Cards) -->
-        
-        <!-- Boxer Page (Embedded Content) --><section id="boxer-page" class="character-page p-0 bg-white rounded-xl shadow-lg overflow-hidden">
-            <!-- Back button placed above the embedded content for visibility --><div class="p-6 bg-white border-b border-gray-100">
-                <button onclick="navigate('home')" class="px-6 py-2 bg-[var(--color-primary)] text-white font-semibold rounded-full hover:bg-red-700 transition duration-150 shadow-md">
-                    ← Back to Character List
-                </button>
-                <p class="mt-4 text-sm text-gray-600">Group: Sofia G, Isabela S, Ryan</p>
-            </div>
+        <footer class="p-4 text-xs text-red-400 border-t border-[#a00000]">
+            Project Structure v2.1
+        </footer>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 p-4 md:p-8 overflow-y-auto min-h-screen">
+        <div id="content-view" class="max-w-4xl mx-auto">
+            <!-- Content will be injected here by JavaScript -->
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const contentView = document.getElementById('content-view');
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.getElementById('menu-btn');
             
-            <iframe id="boxer-iframe" 
-                    srcdoc='
-                    <!DOCTYPE html>
-                    <html lang="en">
-                    <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Character and Context Synthesis – Boxer</title>
-                    <style>
-                      body {
-                        font-family: "Comic Neue", "Segoe UI", sans-serif;
-                        background: #faf9f5;
-                        margin: 0;
-                        padding: 0;
-                        color: #222;
-                      }
-                      header {
-                        background: #ffe066;
-                        text-align: center;
-                        padding: 2rem 1rem;
-                        border-bottom: 4px solid #ffba08;
-                      }
-                      header h1 {
-                        font-size: 2rem;
-                        margin: 0;
-                      }
-                      .container {
-                        max-width: 900px;
-                        margin: 2rem auto;
-                        padding: 1rem;
-                        line-height: 1.6;
-                      }
-                      .sketchnote {
-                        position: relative;
-                        padding: 1.5rem;
-                        margin: 2rem 0;
-                        background: #fff;
-                        border: 3px dashed #ffba08;
-                        border-radius: 20px;
-                        box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
-                      }
-                      .arrow {
-                        position: absolute;
-                        width: 80px;
-                        height: 80px;
-                        /* Placeholder for arrow image - keeping original style structure */
-                        /* The URL below points to a sample SVG. It may not render in all sandboxed environments. */
-                        /* background: url("https://upload.wikimedia.org/wikipedia/commons/4/4c/Arrow_curve.svg") center/contain no-repeat; */
-                      }
-                      .traits .arrow {
-                        top: -70px;
-                        left: 50%;
-                        transform: translateX(-50%) rotate(10deg);
-                      }
-                      .historical .arrow {
-                        bottom: -70px;
-                        right: 20%;
-                        transform: rotate(45deg);
-                      }
-                      h2 {
-                        font-size: 1.4rem;
-                        color: #ff7b00;
-                      }
-                      details {
-                        margin-top: 1rem;
-                        cursor: pointer;
-                      }
-                      summary {
-                        font-weight: bold;
-                        font-size: 1.1rem;
-                      }
-                      .note {
-                        font-style: italic;
-                        color: #666;
-                      }
-                      .quote {
-                        font-family: "Georgia", serif;
-                        background: #fff9e6;
-                        border-left: 5px solid #ffba08;
-                        padding: 0.5rem 1rem;
-                        margin: 1rem 0;
-                      }
-                      footer {
-                        text-align: center;
-                        padding: 2rem;
-                        background: #ffec99;
-                        border-top: 4px solid #ffba08;
-                        font-size: 0.9rem;
-                      }
-                      @media (max-width: 600px) {
-                        .arrow { display: none; }
-                      }
-                    </style>
-                    </head>
-                    <body>
-                    
-                    <header>
-                      <h1>🐴 Character & Context SketchNotes: Boxer</h1>
-                      <p class="note">Click on sections to explore how Boxer connects to history and meaning in <em>Animal Farm</em>.</p>
-                    </header>
-                    
-                    <div class="container">
-                    
-                      <section class="sketchnote traits">
-                        <h2>📘 Literary Traits</h2>
-                        <p><strong>Boxer</strong> is defined by his <em>immense strength</em>, <em>loyalty</em>, and <em>simple faith</em> in leadership.</p>
-                        <details>
-                          <summary>See key traits & quotes</summary>
-                          <ul>
-                            <li>Incredible physical strength and diligence.</li>
-                            <li>Blind loyalty and unquestioning faith in the leaders.</li>
-                            <li>Simple-minded, struggles with complex ideas.</li>
-                            <li>Self-sacrificing—dedicated to Animal Farm’s success.</li>
-                          </ul>
-                          <div class="quote">“I will work harder” &nbsp;|&nbsp; “Napoleon is always right.”</div>
-                          <div class="note">→ These mottoes symbolize internalized obedience and exploited hope.</div>
-                        </details>
-                        <div class="arrow"></div>
-                      </section>
-                    
-                      <section class="sketchnote role">
-                        <h2>⚙️ Role in the Story</h2>
-                        <p>Boxer represents <strong>the heart of the revolution</strong>—a symbol of tireless labor sustaining the farm.</p>
-                        <details>
-                          <summary>Expand synthesis</summary>
-                          <p>His devotion fuels the farm’s progress, but his eventual betrayal reveals Orwell’s critique: labor is valued only while it’s useful to those in power. Boxer&#39;s tragic death exposes how the ideals of equality collapse under exploitation.</p>
-                        </details>
-                      </section>
-                    
-                      <section class="sketchnote historical">
-                        <h2>🪓 Historical Parallel</h2>
-                        <p>Boxer allegorically represents the <strong>Proletariat and Peasantry</strong> of Soviet Russia.</p>
-                        <details>
-                          <summary>Explore the allegory</summary>
-                          <p>His relentless work on the windmill mirrors the Soviet people’s sacrifices under Stalin’s Five-Year Plans. The slogan “work harder” echoes state propaganda glorifying labor while concealing brutal exploitation.</p>
-                          <div class="note">↳ When Boxer collapses and is sold, Orwell mirrors Stalin’s betrayal of his most loyal workers.</div>
-                        </details>
-                        <div class="arrow"></div>
-                      </section>
-                    
-                      <section class="sketchnote reflection">
-                        <h2>💭 Big Picture</h2>
-                        <p>Boxer’s story blends <strong>hope, tragedy, and warning</strong>—a reminder that revolutions can devour their own heroes.</p>
-                        <details>
-                          <summary>Click for reflection</summary>
-                          <p>Orwell’s message is timeless: blind loyalty without understanding leads to manipulation. Boxer’s strength built the farm; his faith allowed its corruption.</p>
-                        </details>
-                      </section>
-                    
+            // --- 1. Define Page Content ---
+            const PAGES = {
+                'home': `
+                    <!-- Home page content -->
+                    <div class="bg-paper p-8 rounded-xl shadow-xl border-t-4 border-accent-red">
+                        <h2 class="text-3xl font-extrabold text-primary-red mb-4">F/G Period Character Portfolio</h2>
+                        <p class="text-gray-700">Click around to see your classmates' work and to review the context and significance of each character in the novel.</p>
+                        <p class="mt-6 text-sm text-gray-500 italic">Select a character from the menu on the left to load their analysis report.</p>
                     </div>
-                    
-                    <footer>
-                      ✏️ Designed as a sketch-note web summary of <em>Character and Context Synthesis Report: Boxer</em><br>
-                      Created by a Graphic Designer & Web Developer © 2025
-                    </footer>
-                    
-                    </body>
-                    </html>
-                    '
-                    class="student-iframe"></iframe>
-        </section>
+                `,
+                'napoleon': `
+                    <!-- NEW: Napoleon Page Placeholder -->
+                    <div class="bg-paper p-8 rounded-xl shadow-xl border-t-4 border-accent-red">
+                        <h2 class="text-3xl font-extrabold text-primary-red mb-4">🐽 Napoleon: The Tyrant</h2>
+                        <p class="text-gray-700">Paste the HTML content for your <strong>Napoleon</strong> report here. This analysis focuses on his ruthless rise to power and consolidation of control. Remember to remove the <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code>, and <code>&lt;body&gt;</code> tags from your original file before pasting it into this string.</p>
+                    </div>
+                `,
+                'snowball': `
+                    <!-- NEW: Snowball Page Placeholder -->
+                    <div class="bg-paper p-8 rounded-xl shadow-xl border-t-4 border-accent-red">
+                        <h2 class="text-3xl font-extrabold text-primary-red mb-4">⚪ Snowball: Idealism and Exile</h2>
+                        <p class="text-gray-700">Paste the HTML content for your <strong>Snowball</strong> report here. This section covers his role as a brilliant but ultimately defeated revolutionary. Remove external tags.</p>
+                    </div>
+                `,
+                'squealer': `
+                    <div class="bg-paper p-8 rounded-xl shadow-xl border-t-4 border-accent-red">
+                        <h2 class="text-3xl font-extrabold text-primary-red mb-4">🐷 Squealer: Master of Propaganda</h2>
+                        <p class="text-gray-700">Paste the HTML content for your <strong>Squealer</strong> report here. Remember to remove the <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code>, and <code>&lt;body&gt;</code> tags from your original Squealer file before pasting it into this string.</p>
+                    </div>
+                `,
+                'boxer': `
+                    <!-- Boxer Sketchnotes Content (boxer_sketchnotes.html) adapted to use Tailwind styling -->
+                    <div class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-accent-red max-w-4xl mx-auto">
+                        <header class="text-center p-6 bg-yellow-100 rounded-t-lg border-b-4 border-yellow-500 mb-6">
+                            <h1 class="text-3xl font-extrabold text-primary-red mb-1">🐴 Boxer: The Tragic Proletariat</h1>
+                            <p class="text-lg text-gray-600">Character and Context Synthesis Report</p>
+                        </header>
+                        
+                        <div class="grid md:grid-cols-2 gap-8">
+                            
+                            <section class="p-4 bg-red-50 border-l-4 border-primary-red rounded-lg shadow-md">
+                                <h2 class="text-xl font-bold text-accent-red mb-2">⭐ Core Identity</h2>
+                                <p class="text-gray-700"><strong>Two Maxims:</strong> "I will work harder" and "Napoleon is always right."</p>
+                                <p class="text-gray-700 mt-2">The strongest animal on the farm, known for his incredible work ethic, simple-minded loyalty, and unquestioning trust in leadership.</p>
+                                <details class="mt-4 p-2 bg-red-100 rounded-md">
+                                    <summary class="font-semibold cursor-pointer text-primary-red">🔎 Character Analysis</summary>
+                                    <p class="text-sm pt-2">His strength is his downfall; it makes him valuable to the Pigs until he is no longer useful. Boxer's loyalty reveals how a dictator's power can be sustained by the genuine devotion of the exploited.</p>
+                                </details>
+                            </section>
 
-        <!-- Moses & Mollie Page (Embedded Content) --><section id="moses-mollie-page" class="character-page p-0 bg-white rounded-xl shadow-lg overflow-hidden">
-            <!-- Back button placed above the embedded content for visibility --><div class="p-6 bg-white border-b border-gray-100">
-                <button onclick="navigate('home')" class="px-6 py-2 bg-[var(--color-primary)] text-white font-semibold rounded-full hover:bg-red-700 transition duration-150 shadow-md">
-                    ← Back to Character List
-                </button>
-                <p class="mt-4 text-sm text-gray-600">Group: Manuela P, Julia X, Enrico</p>
-            </div>
-            
-            <iframe id="moses-mollie-iframe" 
-                    srcdoc='
-                    <!DOCTYPE html>
-                    <html lang="en">
-                    <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Moses & Mollie – Character and Context Sketch Notes</title>
-                    <style>
-                      body {
-                        /* Ensuring body fills 100% of iframe */
-                        width: 100%; 
-                        font-family: "Comic Sans MS", "Segoe UI", sans-serif;
-                        background: #fff8e7;
-                        color: #333;
-                        margin: 0;
-                        padding: 0;
-                        overflow-x: hidden;
-                      }
-                      header {
-                        text-align: center;
-                        background: #fdd835;
-                        padding: 2em 1em;
-                        font-size: 1.8em;
-                        position: relative;
-                      }
-                      header h1 {
-                        font-family: "Permanent Marker", cursive;
-                        font-size: 2em;
-                      }
-                      section {
-                        padding: 2em;
-                        width: 100%; /* Explicitly set to 100% */
-                        margin: auto;
-                        position: relative;
-                      }
-                      .note-box {
-                        background: #fff;
-                        border: 3px dashed #444;
-                        border-radius: 15px;
-                        padding: 1.5em;
-                        margin: 2em 0;
-                        box-shadow: 4px 4px 0 #333;
-                      }
-                      .title {
-                        font-family: "Permanent Marker", cursive;
-                        font-size: 1.5em;
-                        color: #d32f2f;
-                      }
-                      .arrow {
-                        text-align: center;
-                        font-size: 2em;
-                        margin: 1em 0;
-                      }
-                      .clickable {
-                        background: #ffe082;
-                        padding: 0.5em 1em;
-                        border-radius: 10px;
-                        cursor: pointer;
-                        font-weight: bold;
-                        display: inline-block;
-                        margin-top: 1em;
-                      }
-                      .hidden {
-                        display: none;
-                        margin-top: 1em;
-                        font-size: 1em;
-                        line-height: 1.5;
-                      }
-                      footer {
-                        background: #fbc02d;
-                        text-align: center;
-                        padding: 1em;
-                        font-size: 0.9em;
-                        font-style: italic;
-                      }
-                      @media (max-width: 600px) {
-                        .note-box {
-                          font-size: 0.95em;
-                        }
-                      }
-                    </style>
-                    <script>
-                      // Function to make sure details can be clicked within the iframe
-                      function toggleInfo(id) {
-                        const el = document.getElementById(id);
-                        el.classList.toggle("hidden");
-                      }
-                    </script>
-                    </head>
-                    <body>
-                    <header>
-                      <h1>🐦 Moses & 🐴 Mollie</h1>
-                      <p>Character & Context Synthesis — Sketchnote Edition</p>
-                    </header>
-
-                    <section>
-                      <div class="note-box">
-                        <div class="title">Moses (The Raven)</div>
-                        <p><b>Key Traits:</b> Storyteller of Sugar Candy Mountain, cynical observer, non-worker, tolerated by the pigs.</p>
-                        <p><b>Symbol:</b> 🕊️ Religion & False Hope</p>
-                        <div class="arrow">⬇️</div>
-                        <div class="clickable" onclick="toggleInfo('moses1')">📜 Literary Role</div>
-                        <div id="moses1" class="hidden">
-                          <p>Moses offers comfort through tales of <b>Sugar Candy Mountain</b>, distracting animals from oppression. The pigs allow his stories because it helps control the others.</p>
+                            <section class="p-4 bg-yellow-50 border-l-4 border-yellow-500 rounded-lg shadow-md">
+                                <h2 class="text-xl font-bold text-accent-red mb-2">🪓 Historical Parallel</h2>
+                                <p class="text-gray-700">Boxer allegorically represents the <strong>Proletariat and Peasantry</strong> of Soviet Russia.</p>
+                                <details class="mt-4 p-2 bg-yellow-100 rounded-md">
+                                    <summary class="font-semibold cursor-pointer text-primary-red">🔗 Explore the Allegory</summary>
+                                    <p class="text-sm pt-2">His relentless work on the windmill mirrors the Soviet people’s sacrifices under Stalin’s Five-Year Plans. His final betrayal and sale to the knacker is Orwell's harshest indictment of the Soviet state's cruelty toward its most loyal subjects.</p>
+                                </details>
+                            </section>
+                            
+                            <section class="md:col-span-2 p-4 bg-green-50 border-l-4 border-green-500 rounded-lg shadow-md">
+                                <h2 class="text-xl font-bold text-accent-red mb-2">💭 Big Picture & Thematic Warning</h2>
+                                <p class="text-gray-700">Boxer’s story blends **hope, tragedy, and warning**—a reminder that revolutions can devour their own heroes.</p>
+                                <ul class="list-disc list-inside mt-2 text-gray-600">
+                                    <li>His tragedy warns against **unthinking devotion** to any political leader or ideology.</li>
+                                    <li>His faith allowed the farm's corruption; awareness without action is complicity.</li>
+                                </ul>
+                            </section>
                         </div>
-                        <div class="arrow">⬇️</div>
-                        <div class="clickable" onclick="toggleInfo('moses2')">⚙️ Historical Connection</div>
-                        <div id="moses2" class="hidden">
-                          <p>Moses represents the <b>Russian Orthodox Church</b>. Like Stalin, Napoleon realizes that religion can maintain order and obedience through <b>propaganda</b>.</p>
-                        </div>
-                      </div>
 
-                      <div class="note-box">
-                        <div class="title">Mollie (The Mare)</div>
-                        <p><b>Key Traits:</b> Vain, materialistic, self-interested, resists change.</p>
-                        <p><b>Symbol:</b> 🎀 The Bourgeoisie / Upper-Class Defectors</p>
-                        <div class="arrow">⬇️</div>
-                        <div class="clickable" onclick="toggleInfo('mollie1')">📜 Literary Role</div>
-                        <div id="mollie1" class="hidden">
-                          <p>Mollie loves luxury and refuses the hardships of equality. Her sugar and ribbons show her loyalty to comfort over revolution.</p>
-                        </div>
-                        <div class="arrow">⬇️</div>
-                        <div class="clickable" onclick="toggleInfo('mollie2')">⚙️ Historical Connection</div>
-                        <div id="mollie2" class="hidden">
-                          <p>She mirrors the <b>Bourgeoisie</b> who fled Russia after 1917, unwilling to give up privilege. Her defection represents those who chose comfort over ideology.</p>
-                        </div>
-                      </div>
-
-                      <div class="note-box" style="background:#fff9c4;">
-                        <div class="title">🎯 Allegorical Takeaway</div>
-                        <p>Both characters expose how <b>faith</b> and <b>privilege</b> can weaken revolutionary unity.</p>
-                        <p>👉 Moses distracts with heaven.  
-                        👉 Mollie abandons for luxury.  
-                        Together, they show how control and comfort can defeat idealism.</p>
-                      </div>
-                    </section>
-
-                    <footer>
-                      Sketchnote Webpage by Manuela P & Enrico L — Designed with ❤️ using HTML & CSS.
-                    </footer>
-
-                    </body>
-                    </html>
-                    '
-                    class="student-iframe"></iframe>
-        </section>
-
-        <!-- The Humans Page (Embedded Content) --><section id="the-humans-page" class="character-page p-0 bg-white rounded-xl shadow-lg overflow-hidden">
-            <!-- Back button placed above the embedded content for visibility --><div class="p-6 bg-white border-b border-gray-100">
-                <button onclick="navigate('home')" class="px-6 py-2 bg-[var(--color-primary)] text-white font-semibold rounded-full hover:bg-red-700 transition duration-150 shadow-md">
-                    ← Back to Character List
-                </button>
-                <p class="mt-4 text-sm text-gray-600">Group: Manuela R, Mirela, Gaga, Peçanha</p>
-            </div>
-            
-            <iframe id="the-humans-iframe" 
-                    srcdoc='
-                    <!DOCTYPE html>
-                    <html lang="en">
-                    <head>
-                    <meta charset="utf-8" />
-                    <meta name="viewport" content="width=device-width, initial-scale=1" />
+                        <footer class="mt-6 pt-4 border-t border-gray-200 text-center text-xs text-gray-500">
+                            ✏️ Adapted from sketch-note web summary.
+                        </footer>
+                    </div>
+                `,
+                // UPDATED: Benjamin to Benjamin & Clover
+                'benjamin-clover': `
+                    <div class="bg-paper p-8 rounded-xl shadow-xl border-t-4 border-accent-red">
+                        <h2 class="text-3xl font-extrabold text-primary-red mb-4">🐐 Benjamin & Clover: The Silent and the Maternal Witnesses</h2>
+                        <p class="text-gray-700">Paste the HTML content for your <strong>Benjamin & Clover</strong> report here. This section explores their roles as passive witnesses and the moral center of the farm. Remove external tags.</p>
+                    </div>
+                `,
+                'humans': `
                     <title>Character & Context Synthesis — The Humans (Animal Farm)</title>
                     <style>
-                      /* Global Variables (Paper Theme) */
                       :root{
                         --bg:#fcfbf7;
                         --ink:#222;
                         --ink-soft:#333;
-                        --accent:#5b7cfa; /* Blue */
-                        --accent-2:#ff8a5b; /* Orange */
+                        --accent:#5b7cfa;
+                        --accent-2:#ff8a5b;
                         --good:#1aa36f;
                         --warn:#c6781b;
                         --bad:#d34848;
                         --card:#fffef8;
                         --shadow: 0 2px 10px rgba(0,0,0,.07);
                       }
-                      
-                      body {
-                        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-                        background: var(--bg);
-                        color: var(--ink);
-                        margin: 0;
-                        padding: 0;
-                        /* IMPORTANT FIX: Ensure internal body takes full width */
-                        width: 100%; 
+                      @media (prefers-color-scheme: dark){
+                        :root{
+                          --bg:#0f1115;
+                          --ink:#eae9e6;
+                          --ink-soft:#d5d3cd;
+                          --accent:#8ea2ff;
+                          --accent-2:#ffb38f;
+                          --good:#41d399;
+                          --warn:#ffb35b;
+                          --bad:#ff6d6d;
+                          --card:#141820;
+                          --shadow: 0 2px 14px rgba(0,0,0,.35);
+                        }
                       }
-                      
-                      .container {
-                        /* IMPORTANT FIX: Explicitly setting the container to full width */
-                        width: 100%;
-                        padding: 2rem 1rem;
-                        box-sizing: border-box;
-                        line-height: 1.6;
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
+                      html,body{height:100%}
+                      body{
+                        margin:0;
+                        font:16px/1.45 "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+                        background:var(--bg);
+                        color:var(--ink);
+                        -webkit-font-smoothing:antialiased;
+                        -moz-osx-font-smoothing:grayscale;
                       }
-
-                      h1 {
-                        font-size: 2.2rem;
-                        color: var(--bad);
-                        text-align: center;
-                        border-bottom: 3px solid var(--bad);
-                        padding-bottom: 0.5rem;
-                        margin-bottom: 1rem;
+                    
+                      /* Hand-drawn vibe */
+                      .scribble-border{
+                        border:2px solid var(--ink);
+                        border-radius:18px;
+                        box-shadow:
+                          0 0 0 2px var(--bg) inset,
+                          3px 3px 0 0 rgba(0,0,0,.15);
+                        position:relative;
                       }
-
-                      h2 {
-                        font-size: 1.5rem;
-                        color: var(--accent);
-                        margin-top: 2rem;
-                        border-left: 5px solid var(--accent);
-                        padding-left: 10px;
-                        width: 100%;
-                        max-width: 800px;
+                      .scribble-border:after{
+                        content:"";
+                        position:absolute; inset:-6px;
+                        border:2px dashed rgba(0,0,0,.15);
+                        border-radius:24px;
+                        pointer-events:none;
+                        filter: url(#wiggle);
                       }
-
-                      p {
-                          margin-bottom: 1rem;
-                          max-width: 800px;
-                          width: 100%;
+                      .sketch{
+                        background:var(--card);
+                        filter: url(#paper);
                       }
-
-                      .allegory-map {
-                        width: 100%;
-                        max-width: 800px;
-                        margin: 2rem 0;
-                        padding: 1rem;
-                        background: var(--card);
-                        border-radius: 12px;
+                      .wavy-underline{
+                        text-decoration:none;
+                        background:
+                          linear-gradient(transparent 65%, rgba(255,223,0,.6) 0) no-repeat;
+                      }
+                    
+                      /* Layout */
+                      .wrap{
+                        display:grid;
+                        grid-template-columns: 280px 1fr;
+                        gap:24px;
+                        max-width:1200px; margin:24px auto; padding:0 16px;
+                      }
+                      @media (max-width: 900px){
+                        .wrap{grid-template-columns: 1fr}
+                      }
+                      header{
+                        display:flex; align-items:center; justify-content:space-between;
+                        gap:16px; margin:16px auto 0; max-width:1200px; padding:0 16px;
+                      }
+                      .title{
+                        display:flex; gap:12px; align-items:center; flex-wrap:wrap;
+                      }
+                      .title h1{
+                        margin:0; font-size: clamp(1.4rem, 2.5vw, 2rem);
+                      }
+                      .tag{
+                        font-size:.85rem; padding:.25rem .55rem; border-radius:999px;
+                        border:1.5px solid var(--ink);
+                        background:var(--card);
+                      }
+                      .controls{
+                        display:flex; gap:8px; align-items:center;
+                      }
+                      button, .chip{
+                        cursor:pointer; border:2px solid var(--ink); background:var(--card); color:var(--ink);
+                        padding:.55rem .8rem; border-radius:12px; font-weight:600;
                         box-shadow: var(--shadow);
                       }
-                      
-                      .map-title {
-                        text-align: center;
-                        font-weight: bold;
-                        font-size: 1.1rem;
-                        margin-bottom: 1rem;
-                        color: var(--ink-soft);
+                      button:hover{transform:translateY(-1px)}
+                      .nav{
+                        position:sticky; top:12px;
+                        display:flex; flex-direction:column; gap:12px;
                       }
-                      
-                      .map-svg {
-                        display: block;
-                        width: 100%;
-                        height: 300px;
+                      .step{
+                        display:grid; grid-template-columns: 36px 1fr; gap:10px; align-items:center;
+                        padding:10px; border-radius:14px; border:2px solid var(--ink);
+                        background:var(--card);
+                        transition:transform .06s ease;
                       }
-                      
-                      .pin {
-                        cursor: pointer;
-                        transition: all 0.2s ease-in-out;
-                        stroke: var(--ink);
-                        stroke-width: 1;
-                        fill: var(--accent-2);
-                        transform-origin: center center;
+                      .step.active{outline:3px dashed var(--accent); outline-offset:3px; transform:rotate(-.3deg)}
+                      .step svg{width:28px; height:28px}
+                      .step small{display:block; color:var(--ink-soft); margin-top:2px}
+                    
+                      main{display:grid; gap:20px}
+                      section{
+                        padding:18px; border-radius:18px;
                       }
-                      .pin:hover {
-                        transform: scale(1.1);
-                        outline: 4px solid var(--accent);
-                        outline-offset: 4px;
-                        outline-style: dashed;
+                      .card{
+                        padding:16px; border-radius:16px; background:var(--card); border:2px solid var(--ink);
                       }
-
-                      /* Line styling for connections */
-                      line {
-                        stroke-width: 3;
-                        stroke: var(--ink);
-                        opacity: 0.25;
-                        transition: opacity 0.3s, stroke 0.3s;
+                    
+                      /* Flip cards for Characters / Mapping */
+                      .grid{
+                        display:grid; grid-template-columns: repeat(12, 1fr); gap:16px;
                       }
-                      
-                      .fact-card {
-                        background: var(--card);
-                        border-radius: 8px;
-                        padding: 1.5rem;
-                        margin: 1rem 0;
-                        box-shadow: var(--shadow);
-                        border-top: 5px solid var(--accent-2);
-                        max-width: 800px;
-                        width: 100%;
+                      .g-6{grid-column: span 6}
+                      .g-4{grid-column: span 4}
+                      .g-8{grid-column: span 8}
+                      .g-12{grid-column: span 12}
+                      @media (max-width:900px){
+                        .g-6,.g-4,.g-8{grid-column: span 12}
                       }
-                      
-                      .fact-card h3 {
-                        font-size: 1.2rem;
-                        color: var(--accent);
-                        margin-bottom: 0.5rem;
+                      .flip{
+                        perspective:1000px; position:relative; height:260px;
                       }
-                      
-                      .quote {
-                        font-style: italic;
-                        color: var(--ink-soft);
-                        margin-top: 1rem;
-                        border-left: 2px solid var(--accent-2);
-                        padding-left: 10px;
+                      .flip .inner{
+                        position:absolute; inset:0; transform-style:preserve-3d; transition:transform .6s ease;
                       }
-
-                      footer {
-                        text-align: center;
-                        padding: 1.5rem;
-                        margin-top: 2rem;
-                        background: var(--card);
-                        border-top: 3px solid var(--accent);
-                        width: 100%;
+                      .flip[aria-pressed="true"] .inner{transform:rotateY(180deg)}
+                      .face{
+                        position:absolute; inset:0; backface-visibility:hidden;
+                        border-radius:16px; border:2px solid var(--ink); padding:14px; background:var(--card);
+                        display:flex; flex-direction:column; justify-content:center; gap:10px;
                       }
+                      .back{transform:rotateY(180deg)}
+                      .face h3{margin:.2rem 0}
+                      .face p{margin:0}
+                    
+                      /* Accordions */
+                      details{
+                        border:2px solid var(--ink); border-radius:14px; padding:10px 12px; background:var(--card);
+                      }
+                      details summary{
+                        cursor:pointer; list-style:none; font-weight:700;
+                      }
+                      details summary::-webkit-details-marker{display:none}
+                    
+                      /* Hotspots diagram */
+                      .diagram{
+                        position:relative; min-height:300px; border-radius:18px; border:2px solid var(--ink);
+                        background:var(--card);
+                      }
+                      .pin{
+                        position:absolute; transform:translate(-50%,-50%); padding:.25rem .5rem;
+                        border-radius:10px; border:2px solid var(--ink); background:var(--bg); font-size:.85rem;
+                        white-space:nowrap; box-shadow: var(--shadow);
+                      }
+                      .pin[data-key]:hover{outline:3px dashed var(--accent-2); outline-offset:2px}
+                      .legend{display:flex; gap:8px; flex-wrap:wrap}
+                      .legend .chip{font-size:.85rem}
+                    
+                      /* Progress dots */
+                      .progress{
+                        display:flex; gap:8px; align-items:center; justify-content:center; margin:8px 0;
+                      }
+                      .dot{
+                        width:12px; height:12px; border-radius:50%; border:2px solid var(--ink);
+                        background:var(--card);
+                      }
+                      .dot.on{background:var(--accent)}
+                    
+                      /* CTA */
+                      .cta{
+                        display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;
+                      }
+                      .kbd{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+                           padding:.1rem .35rem; border:1.5px solid var(--ink); border-radius:6px; background:var(--card); font-size:.9rem}
+                      .muted{opacity:.7}
+                    
+                      /* Link buttons */
+                      .pill{
+                        display:inline-flex; align-items:center; gap:.45rem;
+                        padding:.5rem .8rem; border:2px solid var(--ink); border-radius:999px; text-decoration:none; color:var(--ink);
+                        background:var(--card);
+                      }
+                    
+                      /* Tiny arrows and doodles */
+                      .arrow{
+                        display:inline-block; transform: translateY(-1px) rotate(-6deg);
+                        font-weight:900; margin:0 6px;
+                      }
+                    
+                      /* Accessibility focus */
+                      :focus-visible{outline:3px dashed var(--accent); outline-offset:3px}
                     </style>
+                    </head>
+                    <body>
+                    <!-- SVG filters for paper + wiggle -->
+                    <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+                      <defs>
+                        <filter id="paper">
+                          <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" result="noise" seed="2"/>
+                          <feColorMatrix type="saturate" values="0"/>
+                          <feBlend in="SourceGraphic" in2="noise" mode="multiply" result="blend"/>
+                          <feComponentTransfer>
+                            <feFuncA type="linear" slope="0.97"/>
+                          </feComponentTransfer>
+                        </filter>
+                        <filter id="wiggle">
+                          <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="1" result="turb" seed="7"/>
+                          <feDisplacementMap in="SourceGraphic" in2="turb" scale="1.5" xChannelSelector="R" yChannelSelector="G"/>
+                        </filter>
+                        <!-- Reusable icons -->
+                        <symbol id="ico-hat" viewBox="0 0 24 24">
+                          <path d="M3 14c4-2 14-2 18 0l-1 2c-4-2-12-2-16 0l-1-2Z" fill="none" stroke="currentColor" stroke-width="2"/>
+                          <path d="M6 12c3-2 9-2 12 0" fill="none" stroke="currentColor" stroke-width="2"/>
+                          <path d="M12 9c2 0 3-1 3-2s-1-2-3-2-3 1-3 2 1 2 3 2Z" fill="currentColor"/>
+                        </symbol>
+                        <symbol id="ico-bottle" viewBox="0 0 24 24">
+                          <path d="M9 4h6v3l1 2v11a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2V9l1-2V4Z" fill="none" stroke="currentColor" stroke-width="2"/>
+                          <path d="M12 4v-2" stroke="currentColor" stroke-width="2" />
+                        </symbol>
+                        <symbol id="ico-crown" viewBox="0 0 24 24">
+                          <path d="M3 17l2-9 5 4 2-6 3 6 6-5 0 10H3Z" fill="none" stroke="currentColor" stroke-width="2"/>
+                        </symbol>
+                        <symbol id="ico-handshake" viewBox="0 0 24 24">
+                          <path d="M4 13l4-4 4 4-2 2 2 2 2-2 2 2 4-4" fill="none" stroke="currentColor" stroke-width="2"/>
+                          <path d="M8 9l-3-3M19 9l3-3" stroke="currentColor" stroke-width="2"/>
+                        </symbol>
+                        <symbol id="ico-book" viewBox="0 0 24 24">
+                          <path d="M4 5a3 3 0 0 1 3-3h11v18H7a3 3 0 0 0-3 3V5Z" fill="none" stroke="currentColor" stroke-width="2"/>
+                          <path d="M8 4h9" stroke="currentColor" stroke-width="2"/>
+                        </symbol>
+                        <symbol id="ico-globe" viewBox="0 0 24 24">
+                          <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/>
+                          <path d="M3 12h18M12 3a16 16 0 0 1 0 18M12 3a16 16 0 0 0 0 18" stroke="currentColor" stroke-width="2"/>
+                        </symbol>
+                        <symbol id="ico-arrow" viewBox="0 0 24 24">
+                          <path d="M3 12h14" stroke="currentColor" stroke-width="2" fill="none"/>
+                          <path d="M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none"/>
+                        </symbol>
+                      </defs>
+                    </svg>
+                    
+                    <header>
+                      <div class="title">
+                        <svg width="42" height="42" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-book"/></svg>
+                        <h1><span class="wavy-underline">Character & Context Synthesis</span> — <em>The Humans</em></h1>
+                        <span class="tag">Animal Farm</span>
+                        <span class="tag">Sketchnote Edition</span>
+                      </div>
+                      <div class="controls">
+                        <button id="darkToggle" aria-pressed="false" title="Toggle dark mode">🌗 Theme</button>
+                        <a class="pill" href="#how-to-read">How to read <span class="arrow">➶</span></a>
+                      </div>
+                    </header>
+                    
+                    <div class="wrap">
+                      <!-- Left nav -->
+                      <nav class="nav">
+                        <a class="step active" href="#step-1" data-step="1" aria-current="step">
+                          <svg><use href="#ico-hat"/></svg>
+                          <div><strong>1) Literary Data</strong><small>Traits & quotes</small></div>
+                        </a>
+                        <a class="step" href="#step-2" data-step="2">
+                          <svg><use href="#ico-globe"/></svg>
+                          <div><strong>2) Historical Context</strong><small>1917 & beyond</small></div>
+                        </a>
+                        <a class="step" href="#step-3" data-step="3">
+                          <svg><use href="#ico-arrow"/></svg>
+                          <div><strong>3) Allegory Map</strong><small>Who = Who</small></div>
+                        </a>
+                        <a class="step" href="#step-4" data-step="4">
+                          <svg><use href="#ico-handshake"/></svg>
+                          <div><strong>4) External Pressures</strong><small>Pacts & threats</small></div>
+                        </a>
+                        <a class="step" href="#step-5" data-step="5">
+                          <svg><use href="#ico-crown"/></svg>
+                          <div><strong>5) Synthesis</strong><small>So what?</small></div>
+                        </a>
+                    
+                        <div class="card sketch scribble-border" id="how-to-read" style="margin-top:8px">
+                          <strong>How to use this page</strong>
+                          <ul>
+                            <li><span class="kbd">Click</span> cards to flip for details.</li>
+                            <li><span class="kbd">Open</span> accordions for quotes.</li>
+                            <li><span class="kbd">Tap</span> diagram pins to highlight links.</li>
+                            <li><span class="kbd">N</span>/<span class="kbd">P</span> for Next/Prev section.</li>
+                          </ul>
+                        </div>
+                      </nav>
+                    
+                      <!-- Main content -->
+                      <main>
+                        <!-- Step 1 -->
+                        <section id="step-1" class="sketch scribble-border">
+                          <div class="progress" aria-label="progress">
+                            <span class="dot on"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                          </div>
+                          <h2>1) Literary Data <span class="arrow">➜</span> <em>The Humans</em></h2>
+                          <div class="grid">
+                            <div class="g-4">
+                              <div class="flip" role="button" tabindex="0" aria-pressed="false" aria-label="Flip Farmer Jones card" data-flip>
+                                <div class="inner">
+                                  <div class="face">
+                                    <h3><svg width="22" height="22"><use href="#ico-hat"/></svg> Farmer Jones</h3>
+                                    <p><strong>Key Traits:</strong> Drunk, Incompetent, Neglectful, Exploitative.</p>
+                                    <details>
+                                      <summary>Key Action/Quote</summary>
+                                      <p>“Too drunk to remember to shut the pop-holes” (Ch. 1) — triggers the animals’ final, successful rebellion.</p>
+                                    </details>
+                                    <p class="muted">Click to flip <span aria-hidden="true">↺</span></p>
+                                  </div>
+                                  <div class="face back">
+                                    <p><strong>Symbolic function:</strong> Embodies the decayed <em>old regime</em> — power without care, order without provision.</p>
+                                    <p><strong>Mechanism of collapse:</strong> Not a master plan by animals, but the regime’s <em>own neglect</em> (no food).</p>
+                                    <p class="muted">Click to flip back</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="g-4">
+                              <div class="flip" role="button" tabindex="0" aria-pressed="false" aria-label="Flip Mr. Pilkington card" data-flip>
+                                <div class="inner">
+                                  <div class="face">
+                                    <h3>Mr. Pilkington (Foxwood)</h3>
+                                    <p><strong>Role:</strong> External landowner, skeptical neighbor.</p>
+                                    <p><strong>Allegory:</strong> Western <em>Britain</em>—capitalist power.</p>
+                                    <p class="muted">Click to flip</p>
+                                  </div>
+                                  <div class="face back">
+                                    <p>Represents <em>ongoing pressure</em> from the capitalist world: skepticism, opportunism, and later deals with the pigs.</p>
+                                    <p class="muted">Click to flip back</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="g-4">
+                              <div class="flip" role="button" tabindex="0" aria-pressed="false" aria-label="Flip Mr. Frederick card" data-flip>
+                                <div class="inner">
+                                  <div class="face">
+                                    <h3>Mr. Frederick (Pinchfield)</h3>
+                                    <p><strong>Role:</strong> Hard, aggressive neighbor.</p>
+                                    <p><strong>Allegory:</strong> <em>Germany</em>—hostile, tactical.</p>
+                                    <p class="muted">Click to flip</p>
+                                  </div>
+                                  <div class="face back">
+                                    <p>Signals <em>deals & deceit</em> (e.g., forged banknotes), foreshadowing fragile pacts and betrayal.</p>
+                                    <p class="muted">Click to flip back</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="g-12">
+                              <details class="card">
+                                <summary><strong>Narrator / Old Major Commentary</strong> (open)</summary>
+                                <p><em>“Man is the only creature that consumes without producing.”</em> — establishes the ideological opponent the animals unite against.</p>
+                              </details>
+                            </div>
+                          </div>
+                        </section>
+                    
+                        <!-- Step 2 -->
+                        <section id="step-2" class="sketch scribble-border">
+                          <div class="progress"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+                          <h2>2) Historical Context <span class="arrow">➜</span> 1917 & the End of the Tsarist Regime</h2>
+                    
+                          <div class="grid">
+                            <div class="g-6">
+                              <div class="card">
+                                <h3><svg width="20" height="20"><use href="#ico-crown"/></svg> Historical Parallel</h3>
+                                <ul>
+                                  <li><strong>Farmer Jones</strong> <span class="arrow">→</span> <strong>Tsar Nicholas II</strong> & Tsarist aristocracy.</li>
+                                  <li><strong>Pilkington</strong> <span class="arrow">→</span> Britain (capitalist West).</li>
+                                  <li><strong>Frederick</strong> <span class="arrow">→</span> Germany (hostile power).</li>
+                                </ul>
+                                <p class="muted">Nickname: “<em>Bloody Nicholas</em>” underscores repression & indifference.</p>
+                              </div>
+                            </div>
+                            <div class="g-6">
+                              <div class="card">
+                                <h3>Key Concepts</h3>
+                                <ul>
+                                  <li><strong>1917 Revolution:</strong> Collapse of monarchy; abdication of Nicholas II.</li>
+                                  <li><strong>External Hostility:</strong> Western suspicion of the Soviet experiment.</li>
+                                  <li><strong>Shifting Deals:</strong> Tactical cooperation despite ideological enmity.</li>
+                                </ul>
+                              </div>
+                            </div>
+                            <div class="g-12">
+                              <details class="card">
+                                <summary><strong>Click to connect dots</strong> — Why Jones’s negligence matters historically</summary>
+                                <p>The rebellion is sparked by a <em>basic failure to feed</em> the animals. Allegorically, this mirrors the regime’s incapacity to meet essential needs—amplifying public unrest and making the fall inexorable.</p>
+                              </details>
+                            </div>
+                          </div>
+                        </section>
+                    
+                        <!-- Step 3 -->
+                        <section id="step-3" class="sketch scribble-border">
+                          <div class="progress"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div>
+                          <h2>3) Allegory Map <span class="arrow">➜</span> Tap pins to highlight relationships</h2>
+                    
+                          <div class="diagram" id="map" aria-label="Interactive allegory map">
+                            <!-- Animals side -->
+                            <div class="pin" data-key="jones" style="left:14%;top:38%"><svg width="16" height="16" style="vertical-align:-2px"><use href="#ico-bottle"/></svg> Jones</div>
+                            <div class="pin" data-key="pilk" style="left:18%;top:68%">Pilkington</div>
+                            <div class="pin" data-key="fred" style="left:29%;top:16%">Frederick</div>
+                    
+                            <!-- History side -->
+                            <div class="pin" data-key="nicholas" style="left:74%;top:40%"><svg width="16" height="16" style="vertical-align:-2px"><use href="#ico-crown"/></svg> Nicholas II</div>
+                            <div class="pin" data-key="britain" style="left:82%;top:70%">Britain / Capitalist West</div>
+                            <div class="pin" data-key="germany" style="left:66%;top:18%">Germany</div>
+                    
+                            <!-- SVG arrows -->
+                            <svg width="100%" height="100%" style="position:absolute; inset:0" aria-hidden="true">
+                              <!-- default grey lines -->
+                              <defs>
+                                <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+                                  <polygon points="0 0, 8 3, 0 6" fill="currentColor"></polygon>
+                                </marker>
+                              </defs>
+                              <g stroke="currentColor" stroke-width="2" opacity=".25">
+                                <line id="line-jones-nicholas" x1="16%" y1="40%" x2="76%" y2="42%" marker-end="url(#arrowhead)"/>
+                                <line id="line-pilk-brit" x1="20%" y1="70%" x2="84%" y2="72%" marker-end="url(#arrowhead)"/>
+                                <line id="line-fred-ger" x1="31%" y1="18%" x2="68%" y2="20%" marker-end="url(#arrowhead)"/>
+                              </g>
+                            </svg>
+                          </div>
+                          <div class="legend" style="margin-top:8px">
+                            <span class="chip">Tap a pin to highlight its mapping</span>
+                            <span class="chip">Tap background to clear</span>
+                          </div>
+                        </section>
+                    
+                        <!-- Step 4 -->
+                        <section id="step-4" class="sketch scribble-border">
+                          <div class="progress"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
+                          <h2>4) External Pressures <span class="arrow">➜</span> Deals, Threats, & Treachery</h2>
+                          <div class="grid">
+                            <div class="g-8">
+                              <div class="card">
+                                <h3><svg width="18" height="18"><use href="#ico-handshake"/></svg> Fragile Cooperation</h3>
+                                <p>The farm’s revolutionary ideals face <strong>constant outside pressure</strong>: suspicion, opportunism, and short-term pacts that erode purity.</p>
+                                <ul>
+                                  <li>Frederick’s <em>deceit</em> (e.g., forged notes) <span class="arrow">→</span> shows the cost of expedient alliances.</li>
+                                  <li>Shifting relations with Pilkington <span class="arrow">→</span> mirrors the uneasy posture of the capitalist West.</li>
+                                </ul>
+                              </div>
+                            </div>
+                            <div class="g-4">
+                              <div class="flip" role="button" tabindex="0" aria-pressed="false" aria-label="Flip Pact card" data-flip>
+                                <div class="inner">
+                                  <div class="face">
+                                    <h3>Historical Echo</h3>
+                                    <p><strong>Temporary cooperation</strong> between hostile powers for strategic gain.</p>
+                                    <p class="muted">Click to flip</p>
+                                  </div>
+                                  <div class="face back">
+                                    <p>Think of <em>infamous pacts</em> where rivals made time-bound deals despite core hostility—useful, but corrosive to ideals.</p>
+                                    <p class="muted">Click to flip back</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="g-12">
+                              <details class="card">
+                                <summary><strong>Why it matters to the story</strong></summary>
+                                <p>These pressures justify <em>tactical compromises</em> by the pigs, helping explain how the revolution’s egalitarian promise is surrendered for survival and power.</p>
+                              </details>
+                            </div>
+                          </div>
+                        </section>
+                    
+                        <!-- Step 5 -->
+                        <section id="step-5" class="sketch scribble-border">
+                          <div class="progress"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span></div>
+                          <h2>5) Synthesis <span class="arrow">➜</span> What the Humans Do in the Novel’s Machine</h2>
+                    
+                          <div class="grid">
+                            <div class="g-6">
+                              <div class="card">
+                                <h3>Literary Function</h3>
+                                <p>The Humans personify the <strong>exploitative status quo</strong>. Jones’s personal flaws are symbols of a <em>systemic failure</em> that starves its subjects—so weak that it <strong>falls by neglect</strong>.</p>
+                              </div>
+                            </div>
+                            <div class="g-6">
+                              <div class="card">
+                                <h3>Historical Mapping</h3>
+                                <p>Jones <span class="arrow">→</span> <strong>Nicholas II</strong>. Chased off the farm <span class="arrow">→</span> <strong>1917 Revolution</strong>. Pilkington & Frederick <span class="arrow">→</span> <strong>Britain & Germany</strong> exerting pressure, cutting deals, and shaping outcomes.</p>
+                              </div>
+                            </div>
+                            <div class="g-12">
+                              <div class="card">
+                                <h3>So What?</h3>
+                                <p>By making <em>human failure</em> the spark for revolt and <em>human pressure</em> the acid that corrodes its ideals, Orwell shows how revolutions can be <strong>born from neglect</strong> and later <strong>bent by geopolitics</strong>.</p>
+                              </div>
+                            </div>
+                          </div>
+                    
+                          <div class="cta">
+                            <div>
+                              <a class="pill" href="#step-1">Start Over ⤺</a>
+                              <a class="pill" href="#step-3">Jump to Map ⤳</a>
+                            </div>
+                            <div class="muted">Tip: press <span class="kbd">N</span> / <span class="kbd">P</span> to move between sections.</div>
+                          </div>
+                        </section>
+                      </main>
+                    </div>
+                    
                     <script>
-                      function initializeAllegoryMap() {
-                        // Data structure to link humans to their historical parallels
-                        const connections = {
-                          'jones': { target: 'nicholas', name: 'Mr. Jones', allegory: 'Tsar Nicholas II (Autocracy)' },
-                          'pilk': { target: 'britain', name: 'Mr. Pilkington', allegory: 'The Allies / Western Powers (Capitalism)' },
-                          'fred': { target: 'germany', name: 'Mr. Frederick', allegory: 'Nazi Germany (Fascism)' }
-                        };
-
-                        const map = document.getElementById('map');
-                        const statusBox = document.getElementById('status-box');
-
-                        // References to the SVG lines (must have matching IDs)
-                        const lines = {
-                          jones: document.getElementById('line-jones-nicholas'),
-                          pilk: document.getElementById('line-pilk-brit'),
-                          fred: document.getElementById('line-fred-ger'),
-                        };
-
-                        // Helper function to reset all visual states
-                        const clearAll = () => {
-                          map.querySelectorAll('.pin').forEach(p=>p.style.outline='none');
-                          map.querySelectorAll('line').forEach(l=>{ l.style.opacity=.25; l.style.stroke = 'currentColor'; });
-                          statusBox.innerHTML = 'Hover over a character pin (human or historical) to see the connection.';
-                        };
-
-                        // Helper function to highlight a connection
-                        const highlight = (key) => {
-                          clearAll(); // Start by clearing everything
-                          
-                          // Determine the connection data based on the key
-                          let connection;
-                          if (connections[key]) {
-                            connection = connections[key];
-                          } else {
-                            // Find connection where the target is the key (e.g., historical figure clicked)
-                            connection = Object.values(connections).find(c => c.target === key);
+                      // Theme toggle (graceful: just toggles a class on body)
+                      const btn = document.getElementById('darkToggle');
+                      const applyMode = () => {
+                        const m = localStorage.getItem('sketchMode') || 'auto';
+                        document.documentElement.dataset.theme = m;
+                      };
+                      btn.addEventListener('click', () => {
+                        const cur = localStorage.getItem('sketchMode');
+                        const next = cur === 'dark' ? 'light' : cur === 'light' ? 'dark' : 'dark';
+                        localStorage.setItem('sketchMode', next);
+                        // simulate theme by toggling a class — browsers will respect prefers-color-scheme too
+                        document.body.classList.toggle('manual-dark', next === 'dark');
+                        document.body.classList.toggle('manual-light', next === 'light');
+                      });
+                    
+                      // Flip cards
+                      document.querySelectorAll('[data-flip]').forEach(el=>{
+                        el.addEventListener('click', ()=> el.setAttribute('aria-pressed', el.getAttribute('aria-pressed')!=='true'));
+                        el.addEventListener('keypress', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); el.click(); }});
+                      });
+                    
+                      // Progress & nav highlighting on scroll
+                      const steps = [...document.querySelectorAll('.step')];
+                      const sections = [...document.querySelectorAll('main section')];
+                      const dotsBySection = s => s.querySelectorAll('.dot');
+                      const io = new IntersectionObserver(entries=>{
+                        entries.forEach(ent=>{
+                          if(ent.isIntersecting){
+                            const id = ent.target.id;
+                            steps.forEach(s=> s.classList.toggle('active', s.getAttribute('href')==='#'+id));
+                            // turn on dots up to this section
+                            const idx = sections.indexOf(ent.target);
+                            sections.forEach((sec,i)=>{
+                              const dots = dotsBySection(sec);
+                              dots.forEach((d,j) => d.classList.toggle('on', j<=i));
+                            });
                           }
-                          
-                          if (!connection) {
-                            // If key is not part of a connection, just clear and return
-                            return; 
-                          }
-
-                          // Keys to highlight: the human (jones/pilk/fred) and their target (nicholas/britain/germany)
-                          const humanKey = Object.keys(connections).find(k => connections[k] === connection);
-                          const targetKey = connection.target;
-                          
-                          // Highlight the pins
-                          map.querySelector('.pin[data-key="' + humanKey + '"]').style.outline='4px dashed var(--accent)';
-                          map.querySelector('.pin[data-key="' + targetKey + '"]').style.outline='4px dashed var(--accent)';
-                          
-                          // Highlight the line
-                          const line = lines[humanKey];
+                        });
+                      }, {threshold:.5});
+                      sections.forEach(s=> io.observe(s));
+                    
+                      // N / P keyboard navigation
+                      addEventListener('keydown', (e)=>{
+                        if (['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)) return;
+                        const idx = sections.findIndex(s=> {
+                          const r = s.getBoundingClientRect();
+                          return r.top<window.innerHeight/2 && r.bottom>window.innerHeight/2;
+                        });
+                        if(e.key.toLowerCase()==='n'){
+                          const next = sections[Math.min(idx+1, sections.length-1)];
+                          next?.scrollIntoView({behavior:'smooth', block:'start'});
+                        } else if(e.key.toLowerCase()==='p'){
+                          const prev = sections[Math.max(idx-1, 0)];
+                          prev?.scrollIntoView({behavior:'smooth', block:'start'});
+                        }
+                      });
+                    
+                      // Allegory map interactions
+                      const map = document.getElementById('map');
+                      const lines = {
+                        jones: document.getElementById('line-jones-nicholas'),
+                        nicholas: document.getElementById('line-jones-nicholas'),
+                        pilk: document.getElementById('line-pilk-brit'),
+                        britain: document.getElementById('line-pilk-brit'),
+                        fred: document.getElementById('line-fred-ger'),
+                        germany: document.getElementById('line-fred-ger')
+                      };
+                      let clearTimer;
+                      const clearAll = () => {
+                        map.querySelectorAll('.pin').forEach(p=>p.style.outline='none');
+                        map.querySelectorAll('line').forEach(l=>{ l.style.opacity=.25; l.style.stroke = 'currentColor'; });
+                      };
+                      const highlight = (key) => {
+                        clearTimeout(clearTimer);
+                        clearAll();
+                        const pin = map.querySelector(`.pin[data-key="${key}"]`);
+                        if(pin){
+                          pin.style.outline='4px dashed var(--accent)';
+                          const line = lines[key];
                           if(line){
                             line.style.opacity=1;
                             line.style.stroke='var(--accent)';
                           }
-                          
-                          // Update the status box
-                          statusBox.innerHTML = '<strong>' + connection.name + '</strong> &rarr; <strong>' + connection.allegory + '</strong>. Click to clear.';
-                        };
-
-                        // Event Listener for the SVG map area
-                        map.addEventListener('click', (e)=>{
-                          const pin = e.target.closest('.pin');
-                          if(!pin){ 
-                            clearAll(); 
-                            return; 
-                          }
-                          const key = pin.dataset.key;
-                          highlight(key);
-                        });
-
-                        // Initial state setup
-                        clearAll();
-                      }
-
-                      window.onload = initializeAllegoryMap;
-                    </script>
-                    </head>
-                    <body>
-                    
-                    <div class="container">
-                    
-                      <h1>The Human Element: Tyranny, Apathy, and Exploitation</h1>
-                      <p>
-                        The human characters in <em>Animal Farm</em> are not just villains; they are allegorical representations of real-world political and economic forces that both start and threaten the revolution. They symbolize the failure of pre-revolutionary Russia and the competing interests of international powers.
-                      </p>
-
-                      <h2>The Allegory Map: Humans and History</h2>
-
-                      <div class="allegory-map">
-                        <div class="map-title">Click the pins to explore the historical parallels.</div>
-                        
-                        <svg class="map-svg" viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
-                          <!-- Connection Lines (Default opacity is low) -->
-                          <line id="line-jones-nicholas" x1="100" y1="100" x2="300" y2="100"/>
-                          <line id="line-pilk-brit" x1="100" y1="200" x2="300" y2="200"/>
-                          <line id="line-fred-ger" x1="500" y1="100" x2="700" y2="100"/>
-                          
-                          <!-- Group 1: Jones and Tsar Nicholas II -->
-                          <circle class="pin" data-key="jones" cx="100" cy="100" r="15" fill="var(--bad)"/>
-                          <text x="100" y="80" text-anchor="middle" font-size="16" fill="var(--bad)">Mr. Jones</text>
-
-                          <circle class="pin" data-key="nicholas" cx="300" cy="100" r="15" fill="var(--accent)"/>
-                          <text x="300" y="80" text-anchor="middle" font-size="16" fill="var(--accent)">Tsar Nicholas II</text>
-
-
-                          <!-- Group 2: Pilkington and the West -->
-                          <circle class="pin" data-key="pilk" cx="100" cy="200" r="15" fill="var(--warn)"/>
-                          <text x="100" y="220" text-anchor="middle" font-size="16" fill="var(--warn)">Mr. Pilkington</text>
-
-                          <circle class="pin" data-key="britain" cx="300" cy="220" r="15" fill="var(--good)"/>
-                          <text x="300" y="240" text-anchor="middle" font-size="16" fill="var(--good)">Western Powers</text>
-
-
-                          <!-- Group 3: Frederick and Germany -->
-                          <circle class="pin" data-key="fred" cx="500" cy="100" r="15" fill="var(--bad)"/>
-                          <text x="500" y="80" text-anchor="middle" font-size="16" fill="var(--bad)">Mr. Frederick</text>
-                          
-                          <circle class="pin" data-key="germany" cx="700" cy="100" r="15" fill="var(--accent-2)"/>
-                          <text x="700" y="80" text-anchor="middle" font-size="16" fill="var(--accent-2)">Nazi Germany</text>
-
-                        </svg>
-
-                        <div id="status-box" style="text-align:center; margin-top:1rem; padding: 0.5rem; background: var(--bg); border-radius: 6px; color: var(--ink);">
-                          Hover over a character pin (human or historical) to see the connection.
-                        </div>
-                      </div>
-
-                      <h2>Character Breakdown</h2>
-                      
-                      <div class="fact-card">
-                        <h3>Mr. Jones</h3>
-                        <p>The original owner of Manor Farm, Jones is a lazy, drunken, and neglectful master. His poor management is the immediate trigger for the revolution. Allegorically, he represents **Tsar Nicholas II**, the autocratic Russian leader whose incompetence and indifference led to the February Revolution.</p>
-                        <div class="quote">
-                          “Mr. Jones, of the Manor Farm, had locked the hen-houses for the night, but was too drunk to remember to shut the pop-holes.”
-                        </div>
-                      </div>
-
-                      <div class="fact-card">
-                        <h3>Mr. Pilkington (Foxwood)</h3>
-                        <p>Owner of the large, old-fashioned, neglected farm next door. He is easy-going but primarily concerned with his own pleasure. He represents the **Allied/Western Powers** (like Britain and the U.S.)—countries that were initially hesitant or hostile towards Soviet Russia but ultimately sought to trade and coexist, albeit uneasily.</p>
-                        <div class="quote">
-                          “Mr. Pilkington was an easy-going gentleman farmer who spent most of his time in fishing or hunting according to the season.”
-                        </div>
-                      </div>
-
-                      <div class="fact-card">
-                        <h3>Mr. Frederick (Pinchfield)</h3>
-                        <p>Owner of a smaller, well-kept, and tightly run farm. Frederick is consistently aggressive, deceitful, and drives a hard bargain. He symbolizes **Nazi Germany** and Hitler. His purchase of timber with fake money and subsequent attack on Animal Farm directly parallels the Molotov-Ribbentrop Pact (non-aggression treaty) followed by Hitler’s invasion of the Soviet Union.</p>
-                        <div class="quote">
-                          “Mr. Frederick, whom seven years of revolutionary song and eloquence had failed to alter, was still the owner of Pinchfield, and still the shrewd, hard-fisted man he had always been.”
-                        </div>
-                      </div>
-
-                      <h2>Conclusion: The Final Indistinction</h2>
-                      <p>
-                        The final, most damning statement on the humans comes when the pigs, now walking on two legs and dressing like men, meet with Pilkington and the others. The famous final line, where the animals cannot tell the difference between the pigs and the men, confirms the tragic circularity of the revolution: the new tyrannical rulers are merely the old oppressors in a different guise.
-                      </p>
-                    
-                    </div>
-                    
-                    <footer>
-                      Group Project by Manuela R, Mirela, Gaga, Peçanha
-                    </footer>
-                    
-                    </body>
-                    </html>
-                    '
-                    class="student-iframe"></iframe>
-        </section>
-
-        <!-- Snowball Page (Placeholder) --><section id="snowball-page" class="character-page p-6 bg-white rounded-xl shadow-lg">
-            <h2 class="text-3xl font-extrabold text-[var(--color-primary)] mb-4">Snowball</h2>
-            <div id="snowball-content" class="text-gray-700 space-y-4">
-                <!-- Student Content Placeholder --><p><strong>Group:</strong> Sophia F, Caio, Miguel</p>
-                <p class="text-xl italic p-4 bg-gray-50 border-l-4 border-[var(--color-secondary)]">
-                    This is the dedicated space for the **Snowball** group's project. When the final pages are complete, this section will be replaced with their HTML content.
-                </p>
-                <div class="mt-6 p-4 bg-pink-100 border border-red-300 rounded">
-                    <h3 class="font-semibold text-red-700">Mock Content Template:</h3>
-                    <p>Snowball represents the idealistic but ultimately exiled intellectual, often compared to Leon Trotsky. His focus on expanding literacy and planning the windmill demonstrated a genuine commitment to improving life on the farm, a vision tragically undermined by Napoleon's opportunism.</p>
-                </div>
-            </div>
-            <!-- Back button uses Primary Red --><button onclick="navigate('home')" class="mt-8 px-6 py-2 bg-[var(--color-primary)] text-white font-semibold rounded-full hover:bg-red-700 transition duration-150 shadow-md">
-                ← Back to Character List
-            </button>
-        </section>
-
-        <!-- Napoleon Page (Placeholder) --><section id="napoleon-page" class="character-page p-6 bg-white rounded-xl shadow-lg">
-            <h2 class="text-3xl font-extrabold text-[var(--color-primary)] mb-4">Napoleon</h2>
-            <div id="napoleon-content" class="text-gray-700 space-y-4">
-                <p><strong>Group:</strong> Sophia O, Rafaella, Geraldo, Leo</p>
-                <p class="text-xl italic p-4 bg-gray-50 border-l-4 border-[var(--color-secondary)]">
-                    This is the dedicated space for the **Napoleon** group's project.
-                </p>
-                <div class="mt-6 p-4 bg-pink-100 border border-red-300 rounded">
-                    <h3 class="font-semibold text-red-700">Mock Content Template:</h3>
-                    <p>Napoleon embodies the ruthless, totalitarian dictator, mirroring Joseph Stalin. His ascent is marked by manipulation, reliance on the brute force of the dogs, and the gradual erosion of the initial revolutionary principles. He prioritizes personal power over the welfare of the animals.</p>
-                </div>
-            </div>
-            <!-- Back button uses Primary Red --><button onclick="navigate('home')" class="mt-8 px-6 py-2 bg-[var(--color-primary)] text-white font-semibold rounded-full hover:bg-red-700 transition duration-150 shadow-md">
-                ← Back to Character List
-            </button>
-        </section>
-
-        <!-- Squealer Page (Embedded Content) --><section id="squealer-page" class="character-page p-0 bg-white rounded-xl shadow-lg overflow-hidden">
-            <!-- Back button placed above the embedded content for visibility --><div class="p-6 bg-white border-b border-gray-100">
-                <button onclick="navigate('home')" class="px-6 py-2 bg-[var(--color-primary)] text-white font-semibold rounded-full hover:bg-red-700 transition duration-150 shadow-md">
-                    ← Back to Character List
-                </button>
-                <p class="mt-4 text-sm text-gray-600">Group: MaLu, Isabella Y, Gui</p>
-            </div>
-            
-            <iframe id="squealer-iframe" 
-                    srcdoc='
-                    <!DOCTYPE html>
-                    <html lang="en">
-                    <head>
-                    <meta charset="utf-8" />
-                    <meta name="viewport" content="width=device-width, initial-scale=1" />
-                    <title>Squealer — Character & Context SketchNotes</title>
-                    <style>
-                      :root{
-                        --ink:#1b1b1b;
-                        --paper:#faf7ef;
-                        --accent:#ffd34d;
-                        --accent-2:#a3d5ff;
-                        --accent-3:#ffc2e2;
-                        --leaf:#c6f6d5;
-                        --shadow:rgba(0,0,0,.18);
-                        --ring:rgba(0,0,0,.12);
-                      }
-                      html,body{margin:0; width: 100%;} /* <-- Added width: 100% here */
-                      body{
-                        background:
-                          radial-gradient(1000px 600px at 120% -10%, #ffffff 10%, #f5efe2 60%, #efe7d8 100%),
-                          repeating-linear-gradient(0deg, #f7f3ea, #f7f3ea 28px, #f1ebdf 28px, #f1ebdf 56px);
-                        color:var(--ink);
-                        font:16px/1.5 "Segoe UI","Helvetica Neue",system-ui,-apple-system,ui-rounded,"Comic Sans MS","Segoe Print",cursive;
-                      }
-                    
-                      /* Layout */
-                      .wrap{max-width:1100px;margin:auto;padding:20px}
-                      header{
-                        display:flex;
-                        align-items:center;
-                        justify-content:space-between;
-                        padding:10px 0 20px 0;
-                        border-bottom:1px dashed var(--ink);
-                      }
-                      header h1{
-                        font-size:2em;
-                        margin:0;
-                        color:var(--ink);
-                      }
-                      .cta-group{
-                        display:flex;gap:10px;
-                      }
-                      .cta{
-                        padding:8px 15px;
-                        background:var(--accent);
-                        color:var(--ink);
-                        border:2px solid var(--ink);
-                        border-radius:25px;
-                        font-weight:bold;
-                        cursor:pointer;
-                        box-shadow:4px 4px 0 var(--ink);
-                        transition:box-shadow .1s, transform .1s;
-                      }
-                      .cta:hover{
-                        box-shadow:2px 2px 0 var(--ink);
-                        transform:translate(2px, 2px);
-                      }
-                    
-                      /* Core Content Blocks */
-                      .section{
-                        margin-top:20px;
-                        padding:20px;
-                        border-radius:10px;
-                        box-shadow:var(--shadow);
-                        background:var(--card);
-                        border-left:5px solid var(--accent);
-                      }
-                      .section h2{
-                        font-size:1.6em;
-                        color:var(--ink);
-                        border-bottom:2px solid var(--accent);
-                        padding-bottom:5px;
-                      }
-                      .propaganda-map{
-                        position:relative;
-                        padding:20px 0;
-                        min-height:400px;
-                      }
-                    
-                      /* Map Nodes */
-                      .node{
-                        position:absolute;
-                        width:150px;
-                        padding:15px;
-                        background:var(--accent-2);
-                        border:2px solid var(--ink);
-                        border-radius:10px;
-                        box-shadow:4px 4px 0 var(--ink);
-                        text-align:center;
-                        transition:all .3s ease-in-out;
-                        cursor:pointer;
-                      }
-                      .node:hover{
-                        background:var(--accent-3);
-                        z-index:10;
-                        transform:scale(1.05);
-                      }
-                      .node-title{
-                        font-weight:bold;
-                        font-size:1.1em;
-                        color:var(--ink);
-                        border-bottom:1px dashed var(--ink);
-                        padding-bottom:5px;
-                        margin-bottom:5px;
-                      }
-                      .node-allegory{
-                        font-size:0.9em;
-                        font-style:italic;
-                      }
-                    
-                      /* Arrows (SVG for connection) */
-                      .arrow{
-                        position:absolute;
-                        pointer-events:none;
-                        z-index:5;
-                      }
-                      .arrow line{
-                        stroke:var(--ink);
-                        stroke-width:3;
-                        marker-end:url(#arrowhead);
-                      }
-                      .arrow-path{
-                        fill:none;
-                        stroke:var(--ink);
-                        stroke-width:3;
-                        marker-end:url(#arrowhead);
-                      }
-                      #arr1{top:50px; left:10px; width:100%; height:300px;}
-                      #arr2{top:50px; left:10px; width:100%; height:300px;}
-                      #arr3{top:50px; left:10px; width:100%; height:300px;}
-                    
-                    
-                      /* Example Drawer (Hidden by default) */
-                      #example{
-                        padding:15px;
-                        background:var(--leaf);
-                        border:1px solid #9ae6b4;
-                        border-radius:8px;
-                        margin-top:15px;
-                        transition:height 0.3s ease-out;
-                      }
-                      #example h3{
-                        color:#2f855a;
-                        font-weight:bold;
-                        font-size:1.1em;
-                        margin-top:0;
-                        border-bottom:1px dotted #2f855a;
-                        padding-bottom:5px;
-                      }
-                    
-                      /* Quotes Section */
-                      #quotes{
-                        padding:20px;
-                        background:var(--accent-3);
-                        border-left:5px solid #d53f8c;
-                        margin-top:20px;
-                        border-radius:10px;
-                        box-shadow:var(--shadow);
-                      }
-                      .quote-box{
-                        margin-bottom:15px;
-                        padding-bottom:10px;
-                        border-bottom:1px dashed #d53f8c;
-                      }
-                      .quote-box:last-child{
-                        border-bottom:none;
-                      }
-                    
-                      /* Responsive Adjustments */
-                      @media (max-width: 600px) {
-                        .wrap {
-                          padding: 10px;
                         }
-                        header {
-                          flex-direction: column;
-                          text-align: center;
-                          padding: 10px 0;
-                        }
-                        .cta-group {
-                          margin-top: 10px;
-                          justify-content: center;
-                          flex-wrap: wrap;
-                        }
-                        .propaganda-map {
-                          min-height: 550px; /* Increased height for stacking nodes */
-                        }
-                        .node {
-                          position: relative;
-                          width: 90%;
-                          margin-bottom: 20px;
-                          left: auto !important;
-                          top: auto !important;
-                        }
-                        .arrow {
-                          display: none; /* Hide complex arrows on mobile */
-                        }
-                      }
-                    </style>
-                    <script>
-                      // Utility to select the right position based on media query for desktop
-                      function getNodePosition(key) {
-                        const positions = {
-                          'squealer': { top: '10px', left: '400px', allegory: 'Propaganda Master' },
-                          'fear': { top: '150px', left: '600px', allegory: 'Fear of Jones\'s Return' },
-                          'revision': { top: '150px', left: '200px', allegory: 'Historical Revisionism' },
-                          'data': { top: '290px', left: '400px', allegory: 'Misleading Statistics' }
-                        };
-                        return positions[key];
-                      }
-                    
-                      // Handle mobile layout
-                      function isMobile() {
-                        return window.matchMedia("(max-width: 600px)").matches;
-                      }
-                    
-                      // Function to initialize map nodes and interactivity
-                      function initializeMap() {
-                        const map = document.getElementById('map');
-                        const status = document.getElementById('status');
-                        
-                        // Add nodes to the map
-                        ['squealer', 'fear', 'revision', 'data'].forEach(key => {
-                          const pos = getNodePosition(key);
-                          const node = document.createElement('div');
-                          node.className = 'node';
-                          node.dataset.key = key;
-                          node.innerHTML = '\n        <div class="node-title">' + pos.allegory + '</div>\n        <div class="node-allegory">(' + (key.charAt(0).toUpperCase() + key.slice(1)) + ')</div>\n      ';
-                          
-                          // Position only on desktop
-                          if (!isMobile()) {
-                            node.style.top = pos.top;
-                            node.style.left = pos.left;
-                          }
-                          
-                          node.addEventListener('click', () => {
-                            // Simple example: update status based on click
-                            const info = {
-                              'squealer': 'Squealer is the pig\'s spokesperson, tasked with turning lies into truth through silver-tongued rhetoric.',
-                              'fear': 'He constantly reminds the animals that if the pigs fail, Mr. Jones will return, exploiting their deepest anxieties.',
-                              'revision': 'Squealer rewrites the Commandments and revises history (like Snowball\'s heroism) to make Napoleon look infallible.',
-                              'data': 'He uses confusing and often fabricated statistics ("figures, figures, figures") to prove that the farm is prospering, even when animals are starving.'
-                            };
-                            status.innerHTML = '<strong>' + pos.allegory + ':</strong> ' + info[key];
-                            status.style.background = 'var(--accent-2)';
-                          });
-                          map.appendChild(node);
-                        });
-                        
-                        // Initial status message
-                        status.innerHTML = 'Click any node above to see how Squealer wields propaganda!';
-                      }
-                      
-                      // Reveal example drawer
-                      const ex = document.getElementById('example');
-                      document.getElementById('revealExample').addEventListener('click',() => {
-                        ex.hidden = !ex.hidden;
-                        if(!ex.hidden){ ex.scrollIntoView({behavior:'smooth', block:'start'}); }
+                        clearTimer = setTimeout(()=>{}, 0);
+                      };
+                      map.addEventListener('click', (e)=>{
+                        const pin = e.target.closest('.pin');
+                        if(!pin){ clearAll(); return; }
+                        const key = pin.dataset.key;
+                        highlight(key);
                       });
                     
-                      // Jump to quotes
-                      document.getElementById('jumpQuotes').addEventListener('click',() => {
-                        document.getElementById('quotes').scrollIntoView({behavior:'smooth', block:'start'});
-                      });
-                    
-                      // Footer CTA buttons (smooth scroll)
-                      document.querySelectorAll('[data-scroll]').forEach(b => {
-                        b.addEventListener('click',() => {
-                          const el=document.querySelector(b.dataset.scroll);
-                          if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+                      // Anchor clicks update nav
+                      steps.forEach(s=>{
+                        s.addEventListener('click', ()=>{
+                          steps.forEach(x=>x.classList.remove('active'));
+                          s.classList.add('active');
                         });
                       });
                     
-                      // Initialize on load
-                      window.onload = initializeMap;
-                    
+                      // Initial theme apply
+                      applyMode();
                     </script>
-                    </head>
-                    <body>
-                    
-                    <div class="wrap">
-                      <header>
-                        <h1>🐷 Squealer: The Voice of Oppression</h1>
-                        <div class="cta-group">
-                          <button id="jumpQuotes" class="cta">Read Key Quotes</button>
-                          <button id="revealExample" class="cta">Propaganda Example</button>
-                        </div>
-                      </header>
-                    
-                      <div class="section">
-                        <h2>The Allegorical Role: State Propaganda</h2>
-                        <p>
-                          Squealer represents the **Pravda** (the official Soviet newspaper) and the **propaganda machine** of the Communist Party under Stalin. His sole purpose is to manipulate the other animals\' memories and perceptions, ensuring absolute loyalty to Napoleon. He is the rhetorical bridge between Napoleon\'s actions and the animals\' belief system.
-                        </p>
-                      </div>
-                    
-                      <div class="section">
-                        <h2>Propaganda Flowchart: Squealer\'s Methods</h2>
-                        
-                        <div class="propaganda-map" id="map">
-                          <!-- SVG for connection paths on desktop (hidden on mobile) -->
-                          <svg class="arrow" id="arr1" viewBox="0 0 800 300">
-                            <defs><marker id="arrowhead" markerWidth="8" markerHeight="5" refX="2" refY="2.5" orient="auto"><polygon points="0 0, 8 2.5, 0 5" fill="var(--ink)"/></marker></defs>
-                            <path class="arrow-path" d="M 475 35 C 550 50, 600 130, 675 165" />
-                          </svg>
-                          <svg class="arrow" id="arr2" viewBox="0 0 800 300">
-                            <path class="arrow-path" d="M 400 35 C 300 50, 250 130, 225 165" />
-                          </svg>
-                          <svg class="arrow" id="arr3" viewBox="0 0 800 300">
-                            <path class="arrow-path" d="M 475 35 C 500 200, 500 280, 425 305" />
-                          </svg>
-                    
-                          <!-- Nodes generated by JavaScript initializeMap() -->
-                        </div>
-                        
-                        <div id="status" class="section" style="border-left:5px solid var(--ink); background:var(--paper);">
-                          <!-- Status message goes here -->
-                        </div>
-                      </div>
-                      
-                      <div id="example" hidden>
-                        <h3>Example: The Milk and Apples</h3>
-                        <p>
-                          When the animals notice the pigs are hoarding the milk and apples, Squealer is sent to rationalize the injustice. His argument uses three key rhetorical tools:
-                        </p>
-                        <ul>
-                          <li><strong>False Science:</strong> Claims pigs need it for brainwork essential to the farm.</li>
-                          <li><strong>Emotional Blackmail:</strong> Suggests if pigs lose their ability to lead, Jones will return.</li>
-                          <li><strong>The Lie:</strong> Insists pigs actually <em>dislike</em> milk and apples, but consume them purely for the common good.</li>
-                        </ul>
-                      </div>
-                    
-                      <div id="quotes" class="section">
-                        <h2>Squealer\'s Essential Quotes</h2>
-                        <div class="quote-box">
-                          <em>"Surely, comrades, surely you do not want Jones back?"</em>
-                          <p class="text-sm italic">— The cornerstone of Squealer\'s argument, relying on **fear** to prevent critical thought.</p>
-                        </div>
-                        <div class="quote-box">
-                          <em>"Do you know the enemy who has come in the night and overthrown our windmill? SNOWBALL!"</em>
-                          <p class="text-sm italic">— Establishing a **scapegoat** to redirect blame and consolidate Napoleon\'s power.</p>
-                        </div>
-                        <div class="quote-box">
-                          <em>"It had been found necessary to make a slight readjustment of the Commandments."</em>
-                          <p class="text-sm italic">— A euphemism used for **historical revisionism**—changing the law to suit the pigs\' desires.</p>
-                        </div>
-                      </div>
-                    
-                      <footer style="text-align:center; padding:10px 0; font-size:0.9em;">
-                        <p>&copy; Character Synthesis Project | MaLu, Isabella Y, Gui</p>
-                      </footer>
-                    </div>
-                    
                     </body>
-                    </html>
-                    '
-                    class="student-iframe"></iframe>
-        </section>
 
-        <!-- Clover & Benjamin Page (Embedded Content) --><section id="clover-benjamin-page" class="character-page p-0 bg-white rounded-xl shadow-lg overflow-hidden">
-            <!-- Back button placed above the embedded content for visibility --><div class="p-6 bg-white border-b border-gray-100">
-                <button onclick="navigate('home')" class="px-6 py-2 bg-[var(--color-primary)] text-white font-semibold rounded-full hover:bg-red-700 transition duration-150 shadow-md">
-                    ← Back to Character List
-                </button>
-                <p class="mt-4 text-sm text-gray-600">Group: Sophia T, Samantha, Joca</p>
-            </div>
-            
-            <iframe id="clover-benjamin-iframe" 
-                    srcdoc='
-                    <!DOCTYPE html>
-                    <html lang="en">
-                    <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Character & Context Sketch: Benjamin the Donkey</title>
-                    <style>
-                      @import url("https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Shadows+Into+Light&display=swap");
-
-                      body {
-                        margin: 0;
-                        background: #faf8f5;
-                        font-family: "Gloria Hallelujah", cursive;
-                        color: #2b2b2b;
-                        overflow-x: hidden;
-                      }
-
-                      header {
-                        text-align: center;
-                        padding: 2rem 1rem;
-                        background: #fdf6ec;
-                        border-bottom: 3px dashed #b89f7b;
-                      }
-
-                      h1 {
-                        font-size: 2.2rem;
-                        margin: 0.5rem 0;
-                      }
-
-                      h2 {
-                        font-size: 1.5rem;
-                        margin-top: 1.2rem;
-                        color: #4a3c2a;
-                      }
-
-                      .sketch-container {
-                        max-width: 900px;
-                        margin: 2rem auto;
-                        padding: 1rem;
-                        position: relative;
-                      }
-
-                      .note {
-                        background: #fff;
-                        border: 4px solid #b89f7b;
-                        border-radius: 15px;
-                        padding: 20px;
-                        margin-bottom: 30px;
-                        box-shadow: 6px 6px 0 #4a3c2a;
-                        position: relative;
-                      }
-
-                      .quote {
-                        border-left: 5px solid #d4a574;
-                        padding-left: 15px;
-                        margin-top: 15px;
-                        font-style: italic;
-                        color: #6d5b40;
-                        font-family: "Shadows Into Light", cursive;
-                        font-size: 1.1rem;
-                      }
-
-                      .toggle {
-                        display: inline-block;
-                        margin-top: 10px;
-                        padding: 5px 10px;
-                        background: #d4a574;
-                        color: #fff;
-                        border-radius: 8px;
-                        cursor: pointer;
-                        font-family: sans-serif;
-                        font-size: 0.9rem;
-                      }
-
-                      .hidden {
-                        display: none;
-                        margin-top: 15px;
-                        border-top: 1px dashed #b89f7b;
-                        padding-top: 10px;
-                      }
-
-                      .arrow {
-                        display: block;
-                        margin: 0 auto 30px auto;
-                        width: 80px;
-                        height: 40px;
-                      }
-                      .arrow path {
-                        fill: none;
-                        stroke: #b89f7b;
-                        stroke-width: 5;
-                      }
-
-                      @media (max-width: 600px) {
-                        .note {
-                          box-shadow: 4px 4px 0 #4a3c2a;
-                          margin-bottom: 20px;
-                        }
-                        h1 { font-size: 1.8rem; }
-                      }
-                    </style>
-                    <script>
-                      function toggleSection(id) {
-                        const el = document.getElementById(id);
-                        el.classList.toggle("hidden");
-                      }
-                    </script>
-                    </head>
-                    <body>
-
-                    <header>
-                      <h1>Benjamin the Donkey: The Silent Sentry</h1>
-                      <p>Character & Context Synthesis — Clover & Benjamin Group</p>
-                    </header>
-
-                    <div class="sketch-container">
-
-                      <div class="note" style="background:#f4f0e6;">
-                        <h2>I. Core Identity & Traits</h2>
-                        <p>Benjamin is the oldest and most cynical animal on the farm. He believes life will always be hard, regardless of who is in charge. He is literate and highly intelligent but refuses to use his knowledge to help others or challenge the pigs.</p>
-                        <div class="quote">
-                          “Donkeys live a long time. None of you has ever seen a dead donkey.”
-                          <p class="text-sm" style="margin-top: 5px; font-style: normal; font-family: sans-serif;">— A quote summarizing his fatalistic and passive worldview.</p>
-                        </div>
-                        <span class="toggle" onclick="toggleSection("analysis1")">💡 Reveal Benjamin\'s Paradox</span>
-                        <div id="analysis1" class="hidden">
-                          <p>Benjamin\'s paradox: he is the only animal who truly understands what is happening (that the revolution has failed and the pigs are tyrants), yet he chooses **cynical detachment** over action.</p>
-                        </div>
-                      </div>
-
-                      <svg class="arrow" viewBox="0 0 100 50">
-                        <path d="M10 25 Q50 0, 90 25 Q50 50, 10 25 Z" />
-                      </svg>
-
-                      <div class="note">
-                        <h2>II. The Allegory: The Apathetic Intelligentsia</h2>
-                        <p>Benjamin allegorically represents the **skeptical intelligentsia**—intellectuals in Russia and worldwide who observed the rise of Stalinism but felt powerless or unwilling to intervene.</p>
-                        <p>His silence mirrors the philosophical despair that political efforts are doomed to fail, leading to non-engagement.</p>
-                      </div>
-
-                      <svg class="arrow" viewBox="0 0 100 50">
-                        <path d="M10 25 Q50 0, 90 25 Q50 50, 10 25 Z" />
-                      </svg>
-
-                      <div class="note" style="background:#fff7e6;">
-                        <h2>III. Role in the Narrative (The Turning Point)</h2>
-                        <p>Benjamin\'s only moment of passion and action is when he sees Boxer being taken away to the knacker. He breaks his lifelong rule of silence and reads the side of the van to the other animals, confirming Boxer\'s betrayal.</p>
-                        <p>Even though he refuses to use his literacy to correct the Commandments, when a personal tragedy breaks out—about Boxer—it’s a moment of moral awakening that comes too late. His passivity makes him both wise and tragic.</p>
-                      </div>
-
-                      <svg class="arrow" viewBox="0 0 100 50">
-                        <path d="M10 25 Q50 0, 90 25 Q50 50, 10 25 Z" />
-                      </svg>
-
-                      <div class="note">
-                        <h2>IV. Allegorical Mapping</h2>
-                        <p><strong>Literary Event:</strong> Refuses to read the Commandments or choose a side.</p>
-                        <p><strong>Historical Event:</strong> Mirrors educated individuals who knew Stalin’s truths but stayed silent.</p>
-                        <span class="toggle" onclick="toggleSection("analysis2")">💡 Reveal Insight</span>
-                        <div id="analysis2" class="hidden">
-                          <p>Benjamin’s final cry about Boxer parallels the breaking point of silent intellectuals under totalitarianism—when horror becomes undeniable but action is futile.</p>
-                        </div>
-                      </div>
-
-                      <svg class="arrow" viewBox="0 0 100 50">
-                        <path d="M10 25 Q50 0, 90 25 Q50 50, 10 25 Z" />
-                      </svg>
-
-                      <div class="note" style="background:#e8f9e3;">
-                        <h2>🌀 Takeaway Thought</h2>
-                        <p><strong>Awareness without action</strong> is complicity. Benjamin proves that intelligence is useless if not paired with moral courage to confront injustice.</p>
-                      </div>
-
+                `,
+                'mollie-moses': `
+                    <div class="bg-paper p-8 rounded-xl shadow-xl border-t-4 border-accent-red">
+                        <h2 class="text-3xl font-extrabold text-primary-red mb-4">🎀 Mollie & Moses: Distraction and Escape</h2>
+                        <p class="text-gray-700">Paste the HTML content for your <strong>Mollie & Moses</strong> report here. Remove external tags.</p>
                     </div>
-
-                    </body>
-                    </html>
-                    '
-                    class="student-iframe"></iframe>
-        </section>
-
-    </div>
-
-    <script>
-        // Data structure for the characters and their groups
-        const characterData = [
-            { id: 'snowball', name: 'Snowball', group: 'Sophia F, Caio, Miguel' },
-            { id: 'napoleon', name: 'Napoleon', group: 'Sophia O, Rafaella, Geraldo, Leo' },
-            { id: 'squealer', name: 'Squealer', group: 'MaLu, Isabella Y, Gui' },
-            { id: 'boxer', name: 'Boxer', group: 'Sofia G, Isabela S, Ryan' },
-            { id: 'moses-mollie', name: 'Moses & Mollie', group: 'Manuela P, Julia X, Enrico' },
-            { id: 'clover-benjamin', name: 'Clover & Benjamin', group: 'Sophia T, Samantha, Joca' },
-            { id: 'the-humans', name: 'The Humans', group: 'Manuela R, Mirela, Gaga, Peçanha' }
-        ];
-
-        // Function to dynamically create the list on the home page
-        function initializeHomePage() {
-            const list = document.getElementById('character-list');
-            list.innerHTML = ''; // Clear existing list items
+                `
+            };
             
-            characterData.forEach(char => {
-                const li = document.createElement('li');
-                const displayGroup = char.group;
+            // --- 2. Routing Logic ---
 
-                li.innerHTML = `
-                    <button onclick="navigate('${char.id}')" 
-                            class="character-link w-full p-4 text-left bg-white border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] transition duration-150 ease-in-out">
-                        <span class="text-xl font-bold text-[var(--color-primary)] block">${char.name}</span>
-                        <span class="text-sm text-gray-500 block mt-1">Group: ${displayGroup}</span>
-                        <span class="text-xs text-[var(--color-primary)] mt-2 inline-block font-medium">Click to View Page →</span>
-                    </button>
-                `;
-                list.appendChild(li);
-            });
-        }
-
-        // Navigation function to switch between the home page and character pages
-        function navigate(pageId) {
-            const homePage = document.getElementById('home-page');
-            const characterPages = document.querySelectorAll('.character-page');
-            
-            // Get iframe references
-            const boxerIframe = document.getElementById('boxer-iframe');
-            const mosesMollieIframe = document.getElementById('moses-mollie-iframe');
-            const theHumansIframe = document.getElementById('the-humans-iframe');
-            const squealerIframe = document.getElementById('squealer-iframe');
-            const cloverBenjaminIframe = document.getElementById('clover-benjamin-iframe');
-
-
-            // 1. Hide all pages and iframes first
-            homePage.style.display = 'none';
-            characterPages.forEach(page => {
-                page.style.display = 'none';
-            });
-            // Ensure all iframes are hidden before showing the new one
-            if (boxerIframe) boxerIframe.style.display = 'none';
-            if (mosesMollieIframe) mosesMollieIframe.style.display = 'none';
-            if (theHumansIframe) theHumansIframe.style.display = 'none';
-            if (squealerIframe) squealerIframe.style.display = 'none';
-            if (cloverBenjaminIframe) cloverBenjaminIframe.style.display = 'none';
-
-
-            // 2. Show the requested page
-            if (pageId === 'home') {
-                homePage.style.display = 'block';
-                // Scroll to the top of the container
-                document.getElementById('app-container').scrollIntoView({ behavior: 'smooth' });
-            } else {
-                const targetPage = document.getElementById(pageId + '-page');
-                if (targetPage) {
-                    targetPage.style.display = 'block';
-
-                    let activeIframe;
-                    if (pageId === 'boxer') {
-                        activeIframe = boxerIframe;
-                    } else if (pageId === 'moses-mollie') {
-                        activeIframe = mosesMollieIframe;
-                    } else if (pageId === 'the-humans') {
-                        activeIframe = theHumansIframe;
-                    } else if (pageId === 'squealer') {
-                        activeIframe = squealerIframe;
-                    } else if (pageId === 'clover-benjamin') {
-                        activeIframe = cloverBenjaminIframe;
-                    }
-                    
-                    if (activeIframe) {
-                        activeIframe.style.display = 'block';
-                        // Use a slight delay to ensure the DOM has rendered the iframe container
-                        setTimeout(() => {
-                            document.getElementById('app-container').scrollIntoView({ behavior: 'smooth' });
-                        }, 50);
+            // Function to render the specific page content
+            const renderPage = (pageId) => {
+                const content = PAGES[pageId] || PAGES['home'];
+                contentView.innerHTML = content;
+                
+                // Update active link styling
+                document.querySelectorAll('.nav-item a').forEach(link => {
+                    if (link.dataset.page === pageId) {
+                        // Active link style using accent-red background
+                        link.classList.remove('text-red-100', 'hover:bg-primary-red');
+                        link.classList.add('bg-accent-red', 'text-white', 'shadow-md');
                     } else {
-                        // For static (placeholder) pages, scroll immediately
-                        document.getElementById('app-container').scrollIntoView({ behavior: 'smooth' });
+                        // Inactive link style
+                        link.classList.add('text-red-100', 'hover:bg-primary-red');
+                        link.classList.remove('bg-accent-red', 'text-white', 'shadow-md');
                     }
-                }
-            }
-        }
+                });
 
-        // Initialize the home page list and set the initial view
-        window.onload = () => {
-            initializeHomePage();
-            navigate('home'); // Ensure the home page is visible on load
-        };
+                // Close sidebar on mobile after navigating
+                if (window.innerWidth < 768) {
+                    sidebar.classList.add('-translate-x-full');
+                }
+
+                // Update the URL hash without reloading the page
+                history.pushState(null, '', '#' + pageId);
+                
+                // Scroll to the top of the content area
+                window.scrollTo(0, 0);
+            };
+
+            // Event listener for navigation clicks
+            document.querySelectorAll('.nav-item a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const pageId = link.dataset.page;
+                    renderPage(pageId);
+                });
+            });
+
+            // Handle initial load and browser back/forward buttons
+            const loadInitialPage = () => {
+                const hash = window.location.hash.substring(1) || 'home';
+                renderPage(hash);
+            };
+
+            window.addEventListener('hashchange', loadInitialPage);
+            loadInitialPage(); // Load content on first page visit
+
+            // --- 3. Mobile Menu Toggle ---
+            menuBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+            });
+
+        });
     </script>
 </body>
 </html>
