@@ -105,7 +105,7 @@
             
             // --- 1. Define Page Content ---
             const PAGES = {
-                'home': 
+                'home': `
                     <!-- Home page content -->
                     <div class="bg-paper p-8 rounded-xl shadow-xl border-t-4 border-accent-red">
                         <h2 class="text-3xl font-extrabold text-primary-red mb-4">F/G Period Character Portfolio</h2>
@@ -113,20 +113,89 @@
                         <p class="mt-6 text-sm text-gray-500 italic">Select a character from the menu on the left to load their analysis report.</p>
                     </div>
                 `,
-                'napoleon': 
-                 
-                'snowball': 
-                 
-                'squealer': 
-                   
-                'boxer': 
-                   
-                'benjamin-clover':
-                   
-                'humans': 
-            
+                'napoleon': `
+                    <!-- NEW: Napoleon Page Placeholder -->
+                    <div class="bg-paper p-8 rounded-xl shadow-xl border-t-4 border-accent-red">
+                        <h2 class="text-3xl font-extrabold text-primary-red mb-4">🐽 Napoleon: The Tyrant</h2>
+                        <p class="text-gray-700">Paste the HTML content for your <strong>Napoleon</strong> report here. This analysis focuses on his ruthless rise to power and consolidation of control. Remember to remove the <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code>, and <code>&lt;body&gt;</code> tags from your original file before pasting it into this string.</p>
+                    </div>
+                `,
+                'snowball': `
+                    <!-- NEW: Snowball Page Placeholder -->
+                    <div class="bg-paper p-8 rounded-xl shadow-xl border-t-4 border-accent-red">
+                        <h2 class="text-3xl font-extrabold text-primary-red mb-4">⚪ Snowball: Idealism and Exile</h2>
+                        <p class="text-gray-700">Paste the HTML content for your <strong>Snowball</strong> report here. This section covers his role as a brilliant but ultimately defeated revolutionary. Remove external tags.</p>
+                    </div>
+                `,
+                'squealer': `
+                    <div class="bg-paper p-8 rounded-xl shadow-xl border-t-4 border-accent-red">
+                        <h2 class="text-3xl font-extrabold text-primary-red mb-4">🐷 Squealer: Master of Propaganda</h2>
+                        <p class="text-gray-700">Paste the HTML content for your <strong>Squealer</strong> report here. Remember to remove the <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code>, and <code>&lt;body&gt;</code> tags from your original Squealer file before pasting it into this string.</p>
+                    </div>
+                `,
+                'boxer': `
+                    <!-- Boxer Sketchnotes Content (boxer_sketchnotes.html) adapted to use Tailwind styling -->
+                    <div class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-accent-red max-w-4xl mx-auto">
+                        <header class="text-center p-6 bg-yellow-100 rounded-t-lg border-b-4 border-yellow-500 mb-6">
+                            <h1 class="text-3xl font-extrabold text-primary-red mb-1">🐴 Boxer: The Tragic Proletariat</h1>
+                            <p class="text-lg text-gray-600">Character and Context Synthesis Report</p>
+                        </header>
+                        
+                        <div class="grid md:grid-cols-2 gap-8">
+                            
+                            <section class="p-4 bg-red-50 border-l-4 border-primary-red rounded-lg shadow-md">
+                                <h2 class="text-xl font-bold text-accent-red mb-2">⭐ Core Identity</h2>
+                                <p class="text-gray-700"><strong>Two Maxims:</strong> "I will work harder" and "Napoleon is always right."</p>
+                                <p class="text-gray-700 mt-2">The strongest animal on the farm, known for his incredible work ethic, simple-minded loyalty, and unquestioning trust in leadership.</p>
+                                <details class="mt-4 p-2 bg-red-100 rounded-md">
+                                    <summary class="font-semibold cursor-pointer text-primary-red">🔎 Character Analysis</summary>
+                                    <p class="text-sm pt-2">His strength is his downfall; it makes him valuable to the Pigs until he is no longer useful. Boxer's loyalty reveals how a dictator's power can be sustained by the genuine devotion of the exploited.</p>
+                                </details>
+                            </section>
+
+                            <section class="p-4 bg-yellow-50 border-l-4 border-yellow-500 rounded-lg shadow-md">
+                                <h2 class="text-xl font-bold text-accent-red mb-2">🪓 Historical Parallel</h2>
+                                <p class="text-gray-700">Boxer allegorically represents the <strong>Proletariat and Peasantry</strong> of Soviet Russia.</p>
+                                <details class="mt-4 p-2 bg-yellow-100 rounded-md">
+                                    <summary class="font-semibold cursor-pointer text-primary-red">🔗 Explore the Allegory</summary>
+                                    <p class="text-sm pt-2">His relentless work on the windmill mirrors the Soviet people’s sacrifices under Stalin’s Five-Year Plans. His final betrayal and sale to the knacker is Orwell's harshest indictment of the Soviet state's cruelty toward its most loyal subjects.</p>
+                                </details>
+                            </section>
+                            
+                            <section class="md:col-span-2 p-4 bg-green-50 border-l-4 border-green-500 rounded-lg shadow-md">
+                                <h2 class="text-xl font-bold text-accent-red mb-2">💭 Big Picture & Thematic Warning</h2>
+                                <p class="text-gray-700">Boxer’s story blends **hope, tragedy, and warning**—a reminder that revolutions can devour their own heroes.</p>
+                                <ul class="list-disc list-inside mt-2 text-gray-600">
+                                    <li>His tragedy warns against **unthinking devotion** to any political leader or ideology.</li>
+                                    <li>His faith allowed the farm's corruption; awareness without action is complicity.</li>
+                                </ul>
+                            </section>
+                        </div>
+
+                        <footer class="mt-6 pt-4 border-t border-gray-200 text-center text-xs text-gray-500">
+                            ✏️ Adapted from sketch-note web summary.
+                        </footer>
+                    </div>
+                `,
+                // UPDATED: Benjamin to Benjamin & Clover
+                'benjamin-clover': `
+                    <div class="bg-paper p-8 rounded-xl shadow-xl border-t-4 border-accent-red">
+                        <h2 class="text-3xl font-extrabold text-primary-red mb-4">🐐 Benjamin & Clover: The Silent and the Maternal Witnesses</h2>
+                        <p class="text-gray-700">Paste the HTML content for your <strong>Benjamin & Clover</strong> report here. This section explores their roles as passive witnesses and the moral center of the farm. Remove external tags.</p>
+                    </div>
+                `,
+                'humans': `
+                    <div class="bg-paper p-8 rounded-xl shadow-xl border-t-4 border-accent-red">
+                        <h2 class="text-3xl font-extrabold text-primary-red mb-4">👤 The Humans: Pilkington, Frederick & Jones</h2>
+                        <p class="text-gray-700">Paste the HTML content for your <strong>Humans</strong> report here. Remove external tags.</p>
+                    </div>
+                `,
                 'mollie-moses': `
-                   
+                    <div class="bg-paper p-8 rounded-xl shadow-xl border-t-4 border-accent-red">
+                        <h2 class="text-3xl font-extrabold text-primary-red mb-4">🎀 Mollie & Moses: Distraction and Escape</h2>
+                        <p class="text-gray-700">Paste the HTML content for your <strong>Mollie & Moses</strong> report here. Remove external tags.</p>
+                    </div>
+                `
             };
             
             // --- 2. Routing Logic ---
