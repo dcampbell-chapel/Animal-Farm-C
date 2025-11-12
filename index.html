@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Animal Farm Character Analysis Hub</title>
+  <title>Animal Farm Character Analysis Hub — C Period</title>
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -16,7 +16,7 @@
             'page-bg': '#FFCCCC',
             'primary-red': '#B30000',
             'accent-red': '#CC0000',
-            'sidebar-bg': '#800000',
+            'navbar-bg': '#800000',
             'paper': '#fefefe',
           },
           fontFamily: { sans: ['Inter', 'sans-serif'] },
@@ -27,73 +27,29 @@
 
   <style>
     body, html { height: 100%; margin: 0; }
-    iframe { width: 100%; height: 100%; border: none; }
+    iframe { width: 100%; height: calc(100vh - 80px); border: none; }
   </style>
 </head>
 
-<body class="flex bg-page-bg font-sans min-h-screen">
+<body class="bg-page-bg font-sans min-h-screen flex flex-col">
 
-  <!-- Sidebar -->
-  <nav class="w-64 bg-sidebar-bg text-white flex flex-col shadow-2xl">
-    <header class="p-6 border-b border-[#a00000] bg-[#a00000]">
-      <h1 class="text-2xl font-bold text-white">Animal Farm</h1>
-      <p class="text-xs text-red-200 mt-1">Character & Context Synthesis</p>
-    </header>
+  <!-- Top Navbar -->
+  <nav class="bg-navbar-bg text-white flex items-center justify-between px-6 py-4 shadow-2xl">
+    <div>
+      <h1 class="text-2xl font-bold">Animal Farm — C Period</h1>
+      <p class="text-xs text-red-200">Character & Context Synthesis</p>
+    </div>
 
-    <ul id="sidebar-links" class="flex-1 p-4 space-y-2 overflow-y-auto">
-      <li>
-        <a href="overview.html" target="content-frame"
-           class="block py-3 px-4 rounded-lg text-lg font-medium text-red-100 hover:bg-primary-red hover:text-white transition">
-          🏠 Overview
-        </a>
-      </li>
-      <li>
-        <a href="pages/napoleon.html" target="content-frame"
-           class="block py-3 px-4 rounded-lg text-lg font-medium text-red-100 hover:bg-primary-red hover:text-white transition">
-          🐽 Napoleon
-        </a>
-      </li>
-      <li>
-        <a href="pages/snowball.html" target="content-frame"
-           class="block py-3 px-4 rounded-lg text-lg font-medium text-red-100 hover:bg-primary-red hover:text-white transition">
-          ⚪ Snowball
-        </a>
-      </li>
-      <li>
-        <a href="pages/squealer.html" target="content-frame"
-           class="block py-3 px-4 rounded-lg text-lg font-medium text-red-100 hover:bg-primary-red hover:text-white transition">
-          🐷 Squealer
-        </a>
-      </li>
-      <li>
-        <a href="pages/boxer.html" target="content-frame"
-           class="block py-3 px-4 rounded-lg text-lg font-medium text-red-100 hover:bg-primary-red hover:text-white transition">
-          🐴 Boxer
-        </a>
-      </li>
-      <li>
-        <a href="pages/benjamin-moses.html" target="content-frame"
-           class="block py-3 px-4 rounded-lg text-lg font-medium text-red-100 hover:bg-primary-red hover:text-white transition">
-          🐐 Benjamin & Moses
-        </a>
-      </li>
-      <li>
-        <a href="pages/humans.html" target="content-frame"
-           class="block py-3 px-4 rounded-lg text-lg font-medium text-red-100 hover:bg-primary-red hover:text-white transition">
-          👤 The Humans
-        </a>
-      </li>
-      <li>
-        <a href="pages/mollie-clover-hens.html" target="content-frame"
-           class="block py-3 px-4 rounded-lg text-lg font-medium text-red-100 hover:bg-primary-red hover:text-white transition">
-          🎀 Mollie, Clover & The Hens
-        </a>
-      </li>
+    <ul id="navbar-links" class="flex space-x-4 text-sm font-medium">
+      <li><a href="overview.html" target="content-frame" class="px-3 py-2 rounded-lg hover:bg-primary-red transition">🏠 Overview</a></li>
+      <li><a href="pages/napoleon.html" target="content-frame" class="px-3 py-2 rounded-lg hover:bg-primary-red transition">🐽 Napoleon</a></li>
+      <li><a href="pages/snowball.html" target="content-frame" class="px-3 py-2 rounded-lg hover:bg-primary-red transition">⚪ Snowball</a></li>
+      <li><a href="pages/squealer.html" target="content-frame" class="px-3 py-2 rounded-lg hover:bg-primary-red transition">🐷 Squealer</a></li>
+      <li><a href="pages/boxer.html" target="content-frame" class="px-3 py-2 rounded-lg hover:bg-primary-red transition">🐴 Boxer</a></li>
+      <li><a href="pages/benjamin-moses.html" target="content-frame" class="px-3 py-2 rounded-lg hover:bg-primary-red transition">🐐 Benjamin & Moses</a></li>
+      <li><a href="pages/humans.html" target="content-frame" class="px-3 py-2 rounded-lg hover:bg-primary-red transition">👤 Humans</a></li>
+      <li><a href="pages/mollie-clover-hens.html" target="content-frame" class="px-3 py-2 rounded-lg hover:bg-primary-red transition">🎀 Mollie, Clover & Hens</a></li>
     </ul>
-
-    <footer class="p-4 text-xs text-red-400 border-t border-[#a00000] text-center">
-      Project Structure v3.2
-    </footer>
   </nav>
 
   <!-- Content area -->
@@ -103,35 +59,30 @@
 
   <!-- Script: Active link highlighting -->
   <script>
-    const sidebarLinks = document.querySelectorAll('#sidebar-links a');
+    const navbarLinks = document.querySelectorAll('#navbar-links a');
     const iframe = document.getElementById('content-frame');
 
-    // Function to highlight the active link
     function setActiveLink(href) {
-      sidebarLinks.forEach(link => {
+      navbarLinks.forEach(link => {
         if (link.getAttribute('href') === href) {
           link.classList.add('bg-accent-red', 'text-white', 'shadow-md');
           link.classList.remove('text-red-100');
         } else {
           link.classList.remove('bg-accent-red', 'text-white', 'shadow-md');
-          link.classList.add('text-red-100');
         }
       });
     }
 
-    // Update active link when clicked
-    sidebarLinks.forEach(link => {
+    navbarLinks.forEach(link => {
       link.addEventListener('click', () => {
         const href = link.getAttribute('href');
         setActiveLink(href);
       });
     });
 
-    // Detect when iframe changes (for direct link loads or navigation)
     iframe.addEventListener('load', () => {
       const src = iframe.contentWindow.location.pathname.split('/').pop();
-      // Match only file names (handles overview.html or pages/...)
-      sidebarLinks.forEach(link => {
+      navbarLinks.forEach(link => {
         const href = link.getAttribute('href');
         if (href.endsWith(src)) {
           setActiveLink(href);
@@ -139,9 +90,7 @@
       });
     });
 
-    // Set initial active link (overview)
     setActiveLink('overview.html');
   </script>
-
 </body>
 </html>
