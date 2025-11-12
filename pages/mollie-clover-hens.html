@@ -3,138 +3,319 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Moses & Mollie – Character and Context Sketch Notes</title>
+<title>Animal Farm: Clover, Mollie & The Hens</title>
 <style>
-  body {
-    font-family: 'Comic Sans MS', 'Segoe UI', sans-serif;
-    background: #fff8e7;
-    color: #333;
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
-  }
-  header {
-    text-align: center;
-    background: #fdd835;
-    padding: 2em 1em;
-    font-size: 1.8em;
-    position: relative;
-  }
-  header h1 {
-    font-family: 'Permanent Marker', cursive;
-    font-size: 2em;
-  }
-  section {
-    padding: 2em;
-    max-width: 900px;
-    margin: auto;
-    position: relative;
-  }
-  .note-box {
-    background: #fff;
-    border: 3px dashed #444;
-    border-radius: 15px;
-    padding: 1.5em;
-    margin: 2em 0;
-    box-shadow: 4px 4px 0 #333;
-  }
-  .title {
-    font-family: 'Permanent Marker', cursive;
-    font-size: 1.5em;
-    color: #d32f2f;
-  }
-  .arrow {
-    text-align: center;
-    font-size: 2em;
-    margin: 1em 0;
-  }
-  .clickable {
-    background: #ffe082;
-    padding: 0.5em 1em;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: bold;
-    display: inline-block;
-    margin-top: 1em;
-  }
-  .hidden {
-    display: none;
-    margin-top: 1em;
-    font-size: 1em;
-    line-height: 1.5;
-  }
-  footer {
-    background: #fbc02d;
-    text-align: center;
-    padding: 1em;
-    font-size: 0.9em;
-    font-style: italic;
-  }
-  @media (max-width: 600px) {
-    .note-box {
-      font-size: 0.95em;
-    }
-  }
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Patrick+Hand&display=swap');
+body{
+  margin:0;
+  background:#fefcf6;
+  font-family:'Patrick Hand',cursive;
+  color:#2c2c2c;
+  overflow-x:hidden;
+}
+
+/* ============ HEADER ============ */
+header{
+  background:#ffeb99;
+  padding:1.5em;
+  text-align:center;
+  font-family:'Permanent Marker',cursive;
+  font-size:2.2em;
+  box-shadow:0 2px 5px rgba(0,0,0,0.2);
+  animation:slideDown 1s ease;
+}
+@keyframes slideDown{
+  from{transform:translateY(-40px);opacity:0;}
+  to{transform:translateY(0);opacity:1;}
+}
+
+.intro{
+  text-align:center;
+  margin:1.5em auto;
+  font-size:1.2em;
+  width:85%;
+  line-height:1.5;
+  animation:fadeIn 2s ease;
+}
+@keyframes fadeIn{
+  from{opacity:0;}
+  to{opacity:1;}
+}
+
+/* ============ CHARACTER CARDS ============ */
+.container{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:3em;
+  padding:2em;
+  position:relative;
+}
+.card{
+  background:white;
+  border:3px dashed #444;
+  border-radius:20px;
+  padding:1.5em;
+  width:320px;
+  position:relative;
+  transition:transform 0.3s ease,box-shadow 0.3s ease;
+  opacity:0;
+  animation:floatUp 1s ease forwards;
+}
+.card:nth-child(1){animation-delay:0.2s;}
+.card:nth-child(3){animation-delay:0.4s;}
+.card:nth-child(5){animation-delay:0.6s;}
+@keyframes floatUp{
+  from{opacity:0;transform:translateY(40px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.card:hover{
+  transform:translateY(-6px) scale(1.03);
+  box-shadow:0 6px 16px rgba(0,0,0,0.25);
+}
+
+.card h2{
+  font-family:'Permanent Marker',cursive;
+  font-size:1.8em;
+  text-align:center;
+  color:#222;
+}
+.subtitle{
+  text-align:center;
+  font-size:1.1em;
+  color:#00796b;
+  margin-top:-10px;
+  margin-bottom:10px;
+}
+details summary{
+  cursor:pointer;
+  font-weight:bold;
+  color:#d84315;
+  margin-top:1em;
+}
+details[open] summary::after{content:" ▲";}
+summary::after{content:" ▼";}
+.fun-fact{
+  margin-top:0.8em;
+  background:#fff9c4;
+  padding:0.6em 0.8em;
+  border-left:4px solid #f57f17;
+  border-radius:8px;
+}
+
+/* ============ MOVING ARROWS ============ */
+.arrow-line{
+  position:absolute;
+  top:50%;
+  width:150px;
+  height:4px;
+  background:repeating-linear-gradient(to right,#000 0 10px,transparent 10px 20px);
+  transform:translateY(-50%);
+  animation:dashFlow 2s linear infinite;
+}
+.arrow-tip{
+  position:absolute;
+  top:calc(50% - 7px);
+  right:-15px;
+  width:0;height:0;
+  border-top:7px solid transparent;
+  border-bottom:7px solid transparent;
+  border-left:15px solid #000;
+}
+@keyframes dashFlow{
+  from{background-position:0;}
+  to{background-position:20px;}
+}
+
+/* ============ TIMELINE ============ */
+.timeline-section{
+  margin:3em auto;
+  width:90%;
+  text-align:center;
+}
+.timeline-title{
+  font-family:'Permanent Marker',cursive;
+  font-size:1.8em;
+  margin-bottom:1em;
+  animation:fadeIn 1.5s ease;
+}
+.timeline{
+  position:relative;
+  margin:0 auto;
+  border-left:4px solid #333;
+  padding-left:2em;
+}
+.timeline-item{
+  margin:1.5em 0;
+  position:relative;
+  opacity:0;
+  transform:translateY(30px);
+  animation:fadeSlide 0.8s ease forwards;
+}
+.timeline-item:nth-child(1){animation-delay:0.2s;}
+.timeline-item:nth-child(2){animation-delay:0.4s;}
+.timeline-item:nth-child(3){animation-delay:0.6s;}
+.timeline-item:nth-child(4){animation-delay:0.8s;}
+.timeline-item:nth-child(5){animation-delay:1s;}
+@keyframes fadeSlide{
+  to{opacity:1;transform:translateY(0);}
+}
+.timeline-item::before{
+  content:"★";
+  position:absolute;
+  left:-1.1em;
+  top:0;
+  color:#d84315;
+  font-size:1.2em;
+  transition:transform 0.3s, color 0.3s;
+}
+.timeline-item:hover::before{
+  color:#ffb300;
+  transform:scale(1.3) rotate(20deg);
+}
+.timeline-label{
+  font-weight:bold;
+  color:#00796b;
+  font-size:1.1em;
+  margin-bottom:0.3em;
+}
+
+/* ============ FOOTER ============ */
+footer{
+  text-align:center;
+  padding:1.2em;
+  font-size:0.9em;
+  background:#f3f3f3;
+  font-family:'Patrick Hand',cursive;
+  animation:fadeIn 2s ease;
+}
+
+/* ============ RESPONSIVE ============ */
+@media(max-width:900px){
+  .card{width:90%;}
+  .arrow-line{display:none;}
+}
 </style>
 </head>
 <body>
 <header>
-  <h1>🐦 Moses & 🐴 Mollie</h1>
-  <p>Character & Context Synthesis — Sketchnote Edition</p>
+  Animal Farm Sketch Notes: Clover, Mollie & The Hens
 </header>
 
-<section>
-  <div class="note-box">
-    <div class="title">Moses (The Raven)</div>
-    <p><b>Key Traits:</b> Storyteller of Sugar Candy Mountain, cynical observer, non-worker, tolerated by the pigs.</p>
-    <p><b>Symbol:</b> 🕊️ Religion & False Hope</p>
-    <div class="arrow">⬇️</div>
-    <div class="clickable" onclick="toggleInfo('moses1')">📜 Literary Role</div>
-    <div id="moses1" class="hidden">
-      <p>Moses offers comfort through tales of <b>Sugar Candy Mountain</b>, distracting animals from oppression. The pigs allow his stories because it helps control the others.</p>
-    </div>
-    <div class="arrow">⬇️</div>
-    <div class="clickable" onclick="toggleInfo('moses2')">⚙️ Historical Connection</div>
-    <div id="moses2" class="hidden">
-      <p>Moses represents the <b>Russian Orthodox Church</b>. Like Stalin, Napoleon realizes that religion can maintain order and obedience through <b>propaganda</b>.</p>
-    </div>
+<div class="intro">
+  ✏️ Explore how three unforgettable animals from <em>George Orwell’s Animal Farm</em> connect to real-world history.<br>
+  Click, hover, and scroll — the story comes alive as you learn!
+</div>
+
+<div class="container">
+
+  <!-- Clover -->
+  <div class="card">
+    <h2>🐴 Who is Clover?</h2>
+    <p class="subtitle">The Maternal Working Class</p>
+    <p>Clover is kind, loyal, and protective — the heart of Animal Farm’s moral compass. She sees the rules change but fears her own memory has betrayed her.</p>
+    <details open>
+      <summary>📖 Literary Role</summary>
+      <p>Clover embodies compassion and quiet strength. She’s the voice of conscience among the animals — noticing injustice yet feeling powerless to resist. Her struggle reflects the tragedy of ordinary workers who sense betrayal but lack education to fight back. She often asks Muriel to read the commandments, showing how illiteracy becomes a tool of oppression.</p>
+    </details>
+    <details>
+      <summary>⚙️ Historical Connection</summary>
+      <p>Clover parallels the older generation of Russian proletariat during the revolution — loyal, hopeful, yet manipulated by state propaganda. Her reliance on others for truth mirrors how citizens depended on censored media like <em>Pravda</em>.</p>
+    </details>
+    <details>
+      <summary>💬 Key Quote</summary>
+      <p>“The three horses, Boxer, Clover, and Muriel, settled down into a sort of universal motherhood.” (Ch. 3)</p>
+    </details>
+    <div class="fun-fact">🌿 <strong>Fun Fact:</strong> Clover’s gentleness contrasts Napoleon’s brutality — she represents the emotional cost of blind loyalty.</div>
   </div>
 
-  <div class="note-box">
-    <div class="title">Mollie (The Mare)</div>
-    <p><b>Key Traits:</b> Vain, materialistic, self-interested, resists change.</p>
-    <p><b>Symbol:</b> 🎀 The Bourgeoisie / Upper-Class Defectors</p>
-    <div class="arrow">⬇️</div>
-    <div class="clickable" onclick="toggleInfo('mollie1')">📜 Literary Role</div>
-    <div id="mollie1" class="hidden">
-      <p>Mollie loves luxury and refuses the hardships of equality. Her sugar and ribbons show her loyalty to comfort over revolution.</p>
-    </div>
-    <div class="arrow">⬇️</div>
-    <div class="clickable" onclick="toggleInfo('mollie2')">⚙️ Historical Connection</div>
-    <div id="mollie2" class="hidden">
-      <p>She mirrors the <b>Bourgeoisie</b> who fled Russia after 1917, unwilling to give up privilege. Her defection represents those who chose comfort over ideology.</p>
-    </div>
+  <!-- Arrow -->
+  <div class="arrow-line"><div class="arrow-tip"></div></div>
+
+  <!-- Mollie -->
+  <div class="card">
+    <h2>🎀 Who is Mollie?</h2>
+    <p class="subtitle">The Bourgeoisie / White Russian Emigrés</p>
+    <p>Mollie is vain and comfort-loving — more interested in ribbons and sugar than freedom. She leaves the farm for a softer life with humans.</p>
+    <details open>
+      <summary>📖 Literary Role</summary>
+      <p>Mollie stands for the selfishness and vanity of those unwilling to give up luxury for equality. Her love of ribbons and treats mocks the upper classes who valued comfort over community. She refuses to adapt to hardship and sneaks away, symbolizing the flight of privilege when revolution demands sacrifice.</p>
+    </details>
+    <details>
+      <summary>⚙️ Historical Connection</summary>
+      <p>Mollie mirrors the Russian aristocracy and bourgeoisie who fled after the Bolshevik Revolution. Like them, she preferred wealth and elegance abroad to the austerity of Soviet life.</p>
+    </details>
+    <details>
+      <summary>💬 Key Quote</summary>
+      <p>“Mollie was found in the farmyard, throwing her head and flirting her tail, with a ribbon tied around her mane.” (Ch. 1)</p>
+    </details>
+    <div class="fun-fact">🎩 <strong>Fun Fact:</strong> Mollie’s ribbons aren’t just pretty — they symbolize nostalgia for privilege and resistance to change.</div>
   </div>
 
-  <div class="note-box" style="background:#fff9c4;">
-    <div class="title">🎯 Allegorical Takeaway</div>
-    <p>Both characters expose how <b>faith</b> and <b>privilege</b> can weaken revolutionary unity.</p>
-    <p>👉 Moses distracts with heaven.  
-    👉 Mollie abandons for luxury.  
-    Together, they show how control and comfort can defeat idealism.</p>
+  <!-- Arrow -->
+  <div class="arrow-line"><div class="arrow-tip"></div></div>
+
+  <!-- The Hens -->
+  <div class="card">
+    <h2>🥚 Who are the Hens?</h2>
+    <p class="subtitle">The Peasantry / Victims of Collectivization</p>
+    <p>The hens are small but fierce when pushed. When Napoleon demands their eggs, they rebel — smashing them in protest.</p>
+    <details open>
+      <summary>📖 Literary Role</summary>
+      <p>The hens represent collective defiance born from desperation. Their rebellion is short-lived and tragic — a turning point where fear replaces hope on Animal Farm. They remind us that even the meekest can resist when survival is threatened.</p>
+    </details>
+    <details>
+      <summary>⚙️ Historical Connection</summary>
+      <p>They parallel the <em>Kulaks</em> — independent peasants who resisted Stalin’s collectivization. Many destroyed livestock rather than surrender it to the state. Their brutal suppression echoes Stalin’s <em>Great Purge</em> and the famine that followed.</p>
+    </details>
+    <details>
+      <summary>💬 Key Quote</summary>
+      <p>“The hens rebelled by flying up to the rafters and smashing their eggs rather than surrendering them.” (Ch. 7)</p>
+    </details>
+    <div class="fun-fact">🐔 <strong>Fun Fact:</strong> Their defiance is the first open revolt against Napoleon — foreshadowing the purges to come.</div>
   </div>
-</section>
+</div>
+
+<!-- Timeline -->
+<div class="timeline-section">
+  <div class="timeline-title">📜 Revolution Timeline – History vs Animal Farm</div>
+  <div class="timeline">
+
+    <div class="timeline-item">
+      <div class="timeline-label">1917 – Russian Revolution Begins</div>
+      <div>The Tsarist regime collapses; Bolsheviks promise equality and reform.</div>
+      <div><strong>Animal Farm Parallel:</strong> Animals overthrow Mr. Jones — a moment of unity and hope.</div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-label">1920s – Propaganda & Rewriting History</div>
+      <div>Stalin rises through manipulation and propaganda (<em>Pravda</em> reshapes truth).</div>
+      <div><strong>Clover’s Moment:</strong> She notices the Seven Commandments changing but doubts her memory.</div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-label">1920s–1930s – Aristocrats Flee Russia</div>
+      <div>The wealthy escape to Western Europe rather than sacrifice comfort.</div>
+      <div><strong>Mollie’s Moment:</strong> She leaves Animal Farm for life with humans, craving luxury.</div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-label">1930–1934 – Collectivization & the Great Purge</div>
+      <div>Peasants resist Stalin’s collectivization; many are executed or starved.</div>
+      <div><strong>The Hens’ Rebellion:</strong> They smash their eggs rather than surrender them to Napoleon.</div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-label">1940s – Totalitarian Control</div>
+      <div>The Soviet Union solidifies into dictatorship; fear replaces hope.</div>
+      <div><strong>Animal Farm:</strong> Napoleon’s rule becomes absolute; animals can no longer tell pig from man.</div>
+    </div>
+
+  </div>
+</div>
 
 <footer>
-  Sketchnote Webpage by Manuela P & Enrico L — Designed with ❤️ using HTML & CSS.
+  🖋️ Animated sketchnote design — hover and scroll to see the story flow between fiction and history.
 </footer>
-
-<script>
-  function toggleInfo(id) {
-    const el = document.getElementById(id);
-    el.classList.toggle('hidden');
-  }
-</script>
 </body>
 </html>
-
