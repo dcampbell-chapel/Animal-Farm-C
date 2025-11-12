@@ -8,11 +8,11 @@
   :root{
     --ink:#222;
     --paper:#fcfcf7;
-    --accent:#ffbf3f;
-    --accent-2:#9be7ff;
-    --accent-3:#ffd1dc;
-    --success:#c3f0ca;
-    --danger:#ffd4b8;
+    --accent:#ffbf3f; /* sticky note */
+    --accent-2:#9be7ff; /* highlight card */
+    --accent-3:#ffd1dc; /* pink highlight */
+    --success:#c3f0ca; /* green */
+    --danger:#ffd4b8; /* orange */
     --shadow: 0 2px 0 rgba(0,0,0,.2), 0 10px 30px rgba(0,0,0,.08);
   }
   html,body{margin:0;}
@@ -22,19 +22,31 @@
     background: repeating-linear-gradient(180deg, var(--paper), var(--paper) 28px, #f7f7f2 29px);
     line-height:1.3;
   }
+  /* Page container */
   .wrap{max-width:1100px;margin:0 auto;padding:20px 18px 100px;}
+
+  /* Hand-drawn vibe */
   .scribble-border{border:2px dashed rgba(0,0,0,.75); border-radius:18px; box-shadow:var(--shadow); background:#fff;}
-  .sticky{background:var(--accent); transform: rotate(-1.2deg); box-shadow: 0 10px 25px rgba(0,0,0,.15), inset 0 -10px 30px rgba(0,0,0,.08);}
+  .sticky{
+    background:var(--accent);
+    transform: rotate(-1.2deg);
+    box-shadow: 0 10px 25px rgba(0,0,0,.15), inset 0 -10px 30px rgba(0,0,0,.08);
+  }
   .torn{background:linear-gradient(#fff, #fff) padding-box, repeating-linear-gradient(-45deg, #ccc 0 10px, transparent 10px 20px) border-box; border:4px dashed transparent;}
-  .pencil{filter: drop-shadow(0 4px 10px rgba(0,0,0,.12));}
+  .pencil{
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,.12));
+  }
   .marker{background:linear-gradient(90deg, rgba(255,255,0,.35), rgba(255,255,0,.15)); box-decoration-break: clone; padding:.1rem .3rem;}
 
   header.hero{position:relative; padding:28px; display:grid; gap:16px; grid-template-columns:1.2fr .8fr; align-items:center;}
   header .title{font-size:clamp(28px, 5vw, 48px); font-weight:900; letter-spacing:.5px;}
   header .subtitle{font-size:clamp(14px,2.8vw,18px); opacity:.85;}
-
+  
+  /* Badge row */
   .badges{display:flex; flex-wrap:wrap; gap:8px; align-items:center}
   .badge{border:2px solid #000; border-radius:999px; padding:6px 10px; background:#fff; font-weight:700; box-shadow:var(--shadow);}
+
+  /* Diagram + CTA */
   .diagram{position:relative; min-height:220px;}
   .windmill{position:absolute; right:8%; top:10%; width:min(38vw, 280px);}
   .cta{display:flex; gap:10px; align-items:center;}
@@ -42,10 +54,12 @@
   .btn:hover{transform:translateY(-2px);} 
   .btn.primary{background:var(--accent-2);} 
 
+  /* Section grid */
   section{margin:26px 0;}
   .grid{display:grid; gap:18px; grid-template-columns: repeat(12, 1fr);} 
   .col-6{grid-column: span 6;} .col-4{grid-column: span 4;} .col-8{grid-column: span 8;} .col-12{grid-column: span 12;}
 
+  /* Cards */
   .card{padding:18px; position:relative;}
   .card h3{margin:.2rem 0 .6rem; font-size:clamp(18px, 3.2vw, 22px)}
   .card p{margin:.2rem 0 .5rem}
@@ -53,36 +67,44 @@
   .pin::before{content:"📌"; position:absolute; right:12px; top:-12px; font-size:26px; transform:rotate(12deg)}
   .turn{transform:rotate(-.8deg)}
 
+  /* Accordion */
   details{border:2px solid #000; border-radius:14px; padding:12px 14px; background:#fff; box-shadow:var(--shadow);}
   details+details{margin-top:10px}
   summary{cursor:pointer; font-weight:900; list-style:none}
   summary::-webkit-details-marker{display:none}
 
-  /* Relationship Map (expanded) */
-  .map{position:relative; min-height:700px; overflow:visible;}
+  /* Relationship Map */
+  .map{position:relative; min-height:320px;}
   .node{position:absolute; padding:12px 14px; border:2px solid #000; background:#fff; border-radius:16px; font-weight:800; box-shadow:var(--shadow);}
   .node:hover{z-index:10;}
   .node.small{font-weight:700; font-size:14px}
   .node.note{background:var(--success)}
   .node.warn{background:var(--danger)}
+  
+  /* SVG arrows layer */
   .lines{position:absolute; inset:0; pointer-events:none}
 
+  /* Timeline */
   .timeline{display:grid; grid-template-columns:1fr; gap:14px}
   .step{display:grid; grid-template-columns: 64px 1fr; align-items:center; gap:12px}
   .step .num{width:64px; height:64px; border:2px solid #000; background:#fff; border-radius:50%; display:grid; place-items:center; font-weight:900; box-shadow:var(--shadow)}
   .step .content{border-left:4px solid #000; padding:10px 14px;}
 
+  /* Quiz */
   .quiz{padding:16px; background:#fff; border:2px solid #000; border-radius:16px; box-shadow:var(--shadow)}
   .quiz .q{font-weight:800}
   .quiz button{margin-top:8px}
   .result{font-weight:900; margin-top:10px}
 
+  /* Progress & floating next */
   .progress{position:fixed; left:0; top:0; height:6px; background:#000; width:0; z-index:2000}
   .next{position:fixed; right:14px; bottom:14px; background:#000; color:#fff; border:none; padding:12px 16px; border-radius:999px; cursor:pointer; box-shadow:var(--shadow); font-weight:900}
 
+  /* Tooltips */
   .tip{position:relative; cursor:help; border-bottom:3px dotted #000}
   .tip:hover::after{content:attr(data-tip); position:absolute; left:0; top:110%; background:#000; color:#fff; padding:8px 10px; border-radius:10px; white-space:nowrap; font-size:12px}
 
+  /* Responsive */
   @media (max-width:900px){
     header.hero{grid-template-columns:1fr;}
     .col-6{grid-column: span 12;} .col-4{grid-column: span 12;} .col-8{grid-column: span 12;}
@@ -93,28 +115,276 @@
 <body>
   <div class="progress" id="progress"></div>
   <div class="wrap">
-    <!-- same header, traits, allegory etc. -->
+    <header class="hero scribble-border">
+      <div>
+        <div class="title">SketchNotes: <span class="marker">Boxer</span> — Character & Context</div>
+        <p class="subtitle">A click‑through, sketch‑style brief on Orwell’s <em>Animal Farm</em> hero of labor and tragic victim of power.</p>
+        <div class="badges">
+          <span class="badge">Key Traits</span>
+          <span class="badge">Maxims</span>
+          <span class="badge">Narration</span>
+          <span class="badge">Allegory</span>
+          <span class="badge">Timeline</span>
+        </div>
+        <div class="cta" style="margin-top:10px">
+          <button class="btn primary" data-scroll="#traits">Start Exploring ⟶</button>
+          <button class="btn" data-scroll="#map">See the Relationships</button>
+        </div>
+      </div>
+      <div class="diagram">
+        <!-- Simple hand-drawn windmill SVG -->
+        <svg class="windmill pencil" viewBox="0 0 220 260" role="img" aria-label="Windmill sketch">
+          <rect x="90" y="120" width="40" height="120" fill="#fff" stroke="#000" stroke-width="3" rx="6"/>
+          <rect x="80" y="190" width="60" height="50" fill="#fff" stroke="#000" stroke-width="3" rx="8"/>
+          <circle cx="110" cy="120" r="10" fill="#fff" stroke="#000" stroke-width="3"/>
+          <g transform="translate(110,120)">
+            <g class="blade" id="blade1"><polygon points="0,0 0,-90 14,-80 10,0" fill="#fff" stroke="#000" stroke-width="3"/></g>
+            <g class="blade" id="blade2" transform="rotate(90)"><polygon points="0,0 0,-90 14,-80 10,0" fill="#fff" stroke="#000" stroke-width="3"/></g>
+            <g class="blade" id="blade3" transform="rotate(180)"><polygon points="0,0 0,-90 14,-80 10,0" fill="#fff" stroke="#000" stroke-width="3"/></g>
+            <g class="blade" id="blade4" transform="rotate(270)"><polygon points="0,0 0,-90 14,-80 10,0" fill="#fff" stroke="#000" stroke-width="3"/></g>
+          </g>
+        </svg>
+      </div>
+    </header>
+
+    <!-- Traits & Maxims -->
+    <section id="traits">
+      <div class="grid">
+        <div class="col-6 card scribble-border sticky pin turn">
+          <h3>Key Traits</h3>
+          <ul style="margin-top:.3rem;">
+            <li><strong>Hard‑working</strong> & devoted — the farm’s engine.</li>
+            <li>Loyal, <span class="tip" data-tip="He trusts leadership even when it harms him.">naive</span>, easily deceived.</li>
+          </ul>
+          <p class="quote">“I will work harder.”</p>
+          <p class="quote">“Napoleon is always right.”</p>
+        </div>
+        <div class="col-6 card scribble-border torn">
+          <h3>What the Narrator & Others Say</h3>
+          <p>Boxer’s “stupidity was not the slightest drawback”—his answer to every injustice was the same: <em>work more</em>.</p>
+          <details>
+            <summary>Why this matters</summary>
+            <p>It shows how virtue (industry) can be weaponized by power when it’s not paired with critical thought.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Allegory & Context -->
+    <section id="allegory">
+      <div class="grid">
+        <div class="col-4 card scribble-border" style="background:var(--accent-2)">
+          <h3>Historical Parallel</h3>
+          <p><strong>Proletariat/Peasantry</strong> — the hard‑working people of the Soviet Union.</p>
+        </div>
+        <div class="col-4 card scribble-border" style="background:var(--success)">
+          <h3>Concept</h3>
+          <p>Rapid Industrialization → <strong>Five‑Year Plans</strong>.</p>
+        </div>
+        <div class="col-4 card scribble-border" style="background:var(--accent-3)">
+          <h3>Propaganda</h3>
+          <p>“Party is infallible” ⇢ mirrors “<em>Napoleon is always right</em>.”</p>
+        </div>
+      </div>
+      <details style="margin-top:12px">
+        <summary><strong>Click</strong> to connect the dots</summary>
+        <ul>
+          <li>Windmill labor ≈ impossible state quotas under the Five‑Year Plans.</li>
+          <li>Boxer’s collapse ≈ workers sacrificed for targets.</li>
+          <li>Sale to knacker ≈ regime discarding its most loyal laborers when “spent”.</li>
+        </ul>
+      </details>
+    </section>
+
     <!-- Relationship Map -->
-    <section id="map" class="scribble-border card" style="overflow:visible">
+    <section id="map" class="scribble-border card" style="overflow:hidden">
       <h3 style="margin-bottom:12px">Relationship Map (tap the notes!)</h3>
       <div class="map" id="mapArea">
-        <svg class="lines" viewBox="0 0 1200 520" preserveAspectRatio="none"></svg>
+        <svg class="lines" viewBox="0 0 1400 600" preserveAspectRatio="none">
+          <!-- arrows will be drawn via JS -->
+        </svg>
         <div class="node" id="n1" style="left:40px; top:60px">Maxim: “Work Harder”</div>
         <div class="node" id="n2" style="left:380px; top:40px">Relentless Labor</div>
         <div class="node note" id="n3" style="left:760px; top:60px">Windmill Built/ Rebuilt</div>
+
         <div class="node" id="n4" style="left:40px; top:220px">Maxim: “Napoleon is right”</div>
         <div class="node" id="n5" style="left:380px; top:210px">Uncritical Loyalty</div>
         <div class="node note" id="n6" style="left:760px; top:210px">Propaganda Works</div>
+
         <div class="node warn" id="n7" style="left:380px; top:360px">Collapse/ Injury</div>
         <div class="node warn" id="n8" style="left:760px; top:360px">Sold to Knacker</div>
       </div>
       <p style="margin-top:12px; font-size:14px">Tip: click a node to reveal a note.</p>
     </section>
-    <!-- rest of page (timeline, sources, quiz, etc.) remains unchanged -->
+
+    <!-- Timeline of Boxer’s Arc -->
+    <section id="timeline">
+      <div class="scribble-border card">
+        <h3>Boxer’s Arc — from Hope to Betrayal</h3>
+        <div class="timeline">
+          <div class="step">
+            <div class="num">1</div>
+            <div class="content"><strong>Backbone of the Farm:</strong> Carries the heaviest loads; answers problems with more work.</div>
+          </div>
+          <div class="step">
+            <div class="num">2</div>
+            <div class="content"><strong>Windmill Obsession:</strong> Treats quotas as moral duty; embodies the Five‑Year Plan push.</div>
+          </div>
+          <div class="step">
+            <div class="num">3</div>
+            <div class="content"><strong>Injury & Removal:</strong> Work breaks his body; leadership sells him under a lie. <em>Tragedy seals the allegory.</em></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sources & Quote Explorer -->
+    <section id="sources">
+      <div class="grid">
+        <div class="col-8 card scribble-border">
+          <h3>Quote Explorer</h3>
+          <p>Click a token to highlight where it shows up in the story’s themes.</p>
+          <div class="badges" id="tokens">
+            <span class="badge" data-tag="labor">“I will work harder.”</span>
+            <span class="badge" data-tag="loyalty">“Napoleon is always right.”</span>
+            <span class="badge" data-tag="propaganda">Propaganda</span>
+            <span class="badge" data-tag="industrialization">Five‑Year Plans</span>
+            <span class="badge" data-tag="betrayal">Betrayal</span>
+          </div>
+          <div id="tagOutput" style="margin-top:10px; font-weight:800"></div>
+        </div>
+        <div class="col-4 card scribble-border sticky pin">
+          <h3>TL;DR</h3>
+          <p>Boxer embodies the <strong>productive good</strong> of ordinary people—
+            and the <strong>danger</strong> when power exploits that good.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Check Quiz -->
+    <section id="quiz">
+      <div class="quiz">
+        <div class="q">Quick Check: What does Boxer’s sale to the knacker symbolize?</div>
+        <div>
+          <label><input type="radio" name="a" value="wind"> A lucky escape from work</label><br>
+          <label><input type="radio" name="a" value="sacrifice"> The regime discarding loyal workers once they’re spent</label><br>
+          <label><input type="radio" name="a" value="reward"> A reward for service</label>
+        </div>
+        <button class="btn" id="check">Check</button>
+        <div class="result" id="result" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- Footer with doc provenance note (leave the URL out; this is for context) -->
+    <footer style="margin-top:18px; font-size:12px; opacity:.85">
+      Built as a sketch‑style study guide based on a synthesis of character charts, narrator commentary, and historical links to the Soviet Five‑Year Plans.
+    </footer>
   </div>
 
 <script>
-/* JS identical to your original — unchanged for brevity */
+  // progress bar
+  const progress = document.getElementById('progress');
+  document.addEventListener('scroll', () => {
+    const sTop = document.documentElement.scrollTop;
+    const sHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = Math.max(0, Math.min(1, sTop / sHeight));
+    progress.style.width = (pct * 100) + '%';
+  });
+
+  // smooth scroll buttons
+  document.querySelectorAll('[data-scroll]').forEach(btn=>{
+    btn.addEventListener('click', e=>{
+      const target = document.querySelector(btn.dataset.scroll);
+      if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+    })
+  });
+
+  // simple blade animation
+  let a = 0; const spin = ()=>{
+    a = (a + 1.2) % 360;
+    document.querySelectorAll('.blade').forEach((g,i)=>{
+      g.setAttribute('transform', `rotate(${a + i*90})`);
+    });
+    requestAnimationFrame(spin);
+  }; spin();
+
+  // Relationship lines auto-draw between nodes
+  const lines = document.querySelector('.lines');
+  const links = [
+    ['n1','n2'],['n2','n3'],['n4','n5'],['n5','n6'],['n2','n7'],['n7','n8']
+  ];
+  function rectOf(el){ const r = el.getBoundingClientRect(); const base = lines.getBoundingClientRect();
+    return {x:r.left - base.left + r.width/2, y:r.top - base.top + r.height/2}; }
+  function draw(){
+    const w = lines.viewBox.baseVal.width || lines.clientWidth;
+    const h = lines.viewBox.baseVal.height || lines.clientHeight;
+    lines.setAttribute('viewBox', `0 0 ${lines.clientWidth} ${lines.clientHeight}`);
+    lines.innerHTML = '';
+    links.forEach(([a,b])=>{
+      const A = rectOf(document.getElementById(a));
+      const B = rectOf(document.getElementById(b));
+      const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+      const d = `M ${A.x} ${A.y} C ${(A.x+B.x)/2} ${A.y-60}, ${(A.x+B.x)/2} ${B.y+60}, ${B.x} ${B.y}`;
+      path.setAttribute('d', d);
+      path.setAttribute('fill','none');
+      path.setAttribute('stroke','#000');
+      path.setAttribute('stroke-width','3');
+      path.setAttribute('stroke-linecap','round');
+      path.setAttribute('marker-end','url(#arrow)');
+      lines.appendChild(path);
+    });
+    // define arrow marker
+    const defs = document.createElementNS('http://www.w3.org/2000/svg','defs');
+    const marker = document.createElementNS('http://www.w3.org/2000/svg','marker');
+    marker.setAttribute('id','arrow'); marker.setAttribute('markerWidth','12'); marker.setAttribute('markerHeight','12'); marker.setAttribute('refX','6'); marker.setAttribute('refY','6'); marker.setAttribute('orient','auto');
+    const tip = document.createElementNS('http://www.w3.org/2000/svg','path');
+    tip.setAttribute('d','M0,0 L12,6 L0,12 L4,6 z'); tip.setAttribute('fill','#000');
+    marker.appendChild(tip); defs.appendChild(marker); lines.appendChild(defs);
+  }
+  new ResizeObserver(draw).observe(document.getElementById('mapArea'));
+  window.addEventListener('resize', draw);
+  setTimeout(draw, 100);
+
+  // Node click reveals
+  const nodeNotes = {
+    n1:'Effort is treated as a moral absolute.',
+    n2:'Industriousness powers the farm — and the regime.',
+    n3:'Windmill symbolizes state quotas/industrial targets.',
+    n4:'Authority is beyond question.',
+    n5:'Trust replaces scrutiny; propaganda thrives.',
+    n6:'Language reshapes truth: Squealer’s domain.',
+    n7:'Bodies break before myths do.',
+    n8:'Ultimate exploitation: usefulness → disposal.'
+  };
+  Object.keys(nodeNotes).forEach(id=>{
+    const el = document.getElementById(id);
+    el.addEventListener('click',()=>{
+      el.title = nodeNotes[id];
+      el.classList.toggle('sticky');
+    })
+  });
+
+  // Token explorer
+  const outputs = {
+    labor: 'Labor → Windmill → Economic backbone → Tragic overuse.',
+    loyalty: 'Loyalty without critique → complicity.',
+    propaganda: 'Squealer’s spin reframes cruelty as care.',
+    industrialization: 'Five‑Year Plans mirrored in the windmill project.',
+    betrayal: 'Collapse → sale to knacker → regime cashes in.'
+  };
+  const out = document.getElementById('tagOutput');
+  document.querySelectorAll('#tokens .badge').forEach(b=>{
+    b.addEventListener('click',()=>{ out.textContent = outputs[b.dataset.tag] || ''; });
+  });
+
+  // Quiz
+  document.getElementById('check').addEventListener('click',()=>{
+    const chosen = document.querySelector('input[name="a"]:checked');
+    const res = document.getElementById('result');
+    if(!chosen){ res.textContent = 'Pick an answer 🙂'; return; }
+    if(chosen.value === 'sacrifice'){ res.textContent = 'Correct ✔︎ — it symbolizes the state discarding its most loyal workers.'; res.style.color = '#0a0'; }
+    else{ res.textContent = 'Not quite. Think about how power treats labor when it’s “used up”.'; res.style.color = '#a00'; }
+  });
 </script>
 </body>
 </html>
