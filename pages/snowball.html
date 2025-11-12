@@ -1,1 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Snowball: Character & Context Synthesis</title>
+<style>
+  body {
+    font-family: 'Comic Neue', 'Segoe UI', sans-serif;
+    background: #f9f8f3;
+    color: #222;
+    margin: 0;
+    padding: 0;
+  }
+
+  header {
+    background: #fef3c7;
+    text-align: center;
+    padding: 2.5rem 1rem;
+    border-bottom: 3px dashed #e5b700;
+  }
+
+  h1 {
+    font-size: 2.4rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+    color: #444;
+    margin-bottom: 0.6rem;
+  }
+
+  p {
+    line-height: 1.7;
+  }
+
+  ul {
+    list-style-type: "✦ ";
+    padding-left: 1rem;
+  }
+
+  .section {
+    max-width: 950px;
+    margin: 2rem auto;
+    background: #fffef9;
+    border: 2px solid #f1e7b6;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    position: relative;
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .section:hover {
+    transform: scale(1.01);
+  }
+
+  .clickable {
+    cursor: pointer;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .arrow {
+    position: absolute;
+    color: #555;
+    font-size: 1.8rem;
+    opacity: 0.4;
+  }
+
+  .sketch {
+    position: absolute;
+    opacity: 0.15;
+    font-size: 3rem;
+  }
+
+  footer {
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.9rem;
+    color: #666;
+  }
+
+  @media (max-width: 700px) {
+    .section {
+      margin: 1rem;
+      padding: 1.2rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🐷 Snowball: Visionary, Exile, and Revolutionary Idealist</h1>
+  <p>Click each section to unfold Snowball’s literary role, historical parallels, and enduring symbolism.</p>
+</header>
+
+<!-- SECTION 1 -->
+<div class="section clickable" onclick="toggleSection('lit')">
+  <h2>📘 Literary Role and Personality</h2>
+  <p><strong>Traits:</strong> Vivacious • Inventive • Intelligent • Strategic • Idealistic • Charismatic</p>
+  <div id="lit" class="hidden">
+    <p>In <em>Animal Farm</em>, Snowball stands as the intellectual heart of the revolution. His energy and brilliance drive the farm’s early success — he writes the <em>Seven Commandments</em>, organizes educational programs, and plans technological innovations like the windmill to improve the animals’ lives.</p>
+
+    <p>His intelligence makes him both admired and envied. Snowball embodies the belief that progress and equality can be achieved through reason, education, and collective effort. He values transparency and discussion — unlike Napoleon, who relies on manipulation and fear.</p>
+
+    <p>Snowball’s vivacious nature makes him a figure of inspiration: he paints the revolution in colors of optimism and reform. However, this same openness and idealism make him an easy target. His commitment to intellectualism contrasts with Napoleon’s cunning pragmatism, setting the stage for betrayal.</p>
+
+    <ul>
+      <li>📚 Symbolizes the <strong>intellectual revolutionary</strong> who believes in progress and collective empowerment.</li>
+      <li>💨 The <strong>windmill</strong> project embodies his vision for modernization and self-sufficiency.</li>
+      <li>⚡ His downfall illustrates how revolutions often replace visionaries with power-hungry opportunists.</li>
+    </ul>
+  </div>
+  <div class="arrow" style="top:40px; right:-40px;">➡️</div>
+</div>
+
+<!-- SECTION 2 -->
+<div class="section clickable" onclick="toggleSection('conflict')">
+  <h2>⚔️ The Power Struggle: Snowball vs. Napoleon</h2>
+  <div id="conflict" class="hidden">
+    <p>The rivalry between Snowball and Napoleon is one of <strong>ideology versus dominance</strong>. Snowball believes in persuasion, education, and unity — Napoleon believes in intimidation and control. Their debate over the windmill encapsulates this divide: Snowball sees it as progress, Napoleon sees it as a threat to his authority.</p>
+
+    <p>The infamous scene where Napoleon’s dogs chase Snowball off the farm represents the <strong>violent suppression of intellectual opposition</strong>. It’s not just political exile — it’s the death of reason. Snowball’s ideas survive, but only as twisted propaganda used to manipulate others.</p>
+
+    <p>After his expulsion, Snowball becomes a ghost story, invoked by Squealer to explain every disaster. This transformation from hero to villain shows how power can control not only people, but also memory and truth.</p>
+
+    <ul>
+      <li>🐕 The <strong>dogs</strong> = Stalin’s secret police, symbolizing violence as a tool of political control.</li>
+      <li>📢 Squealer’s propaganda mirrors Stalin’s use of media to vilify Trotsky.</li>
+      <li>💀 Snowball’s erasure = the rewriting of history to maintain totalitarian control.</li>
+    </ul>
+  </div>
+  <div class="arrow" style="top:40px; left:-40px;">⬅️</div>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section clickable" onclick="toggleSection('context')">
+  <h2>🕰️ Historical Context: Snowball as Leon Trotsky</h2>
+  <p><strong>Historical Parallel:</strong> Leon Trotsky</p>
+  <p><strong>Concept:</strong> Permanent Revolution vs. Stalin’s “Socialism in One Country”</p>
+  <div id="context" class="hidden">
+    <p>George Orwell’s <em>Animal Farm</em> is an allegory for the Russian Revolution and its aftermath. Snowball directly represents <strong>Leon Trotsky</strong> — the revolutionary thinker and co-founder of the Soviet Union. Like Snowball, Trotsky was a brilliant orator and strategist, instrumental in the early victories of the revolution and the formation of the Red Army.</p>
+
+    <p>Trotsky’s belief in <strong>Permanent Revolution</strong> meant that socialism could only survive if the revolution continued to spread globally. Stalin, however, championed <strong>“Socialism in One Country”</strong>, arguing that the USSR should consolidate power internally. This ideological split paralleled Snowball’s vision of the windmill versus Napoleon’s obsession with control.</p>
+
+    <p>After Trotsky’s exile in 1929, Stalin launched a campaign of propaganda and historical erasure. Trotsky’s achievements were rewritten as betrayals; he was branded an “enemy of the people.” Snowball’s fate mirrors this perfectly — his very name becomes shorthand for treachery despite his genuine contributions.</p>
+
+    <ul>
+      <li>📖 Trotsky led the Red Army; Snowball led the Battle of the Cowshed.</li>
+      <li>🗺️ Trotsky’s exile and eventual assassination = Snowball’s flight and continued demonization.</li>
+      <li>📰 Pravda’s lies about Trotsky = Squealer’s endless fabrications about Snowball.</li>
+    </ul>
+
+    <p>Through Snowball, Orwell highlights the tragedy of revolutions betrayed from within — 
+    where visionaries are destroyed by those who crave absolute power.</p>
+  </div>
+  <div class="sketch" style="bottom:10px; right:20px;">🕊️</div>
+</div>
+
+<!-- SECTION 4 -->
+<div class="section clickable" onclick="toggleSection('themes')">
+  <h2>💡 Core Themes and Symbolism</h2>
+  <div id="themes" class="hidden">
+    <ul>
+      <li>⚙️ <strong>Revolutionary Idealism vs. Political Corruption</strong> — The noble dream of equality is crushed by the hunger for dominance.</li>
+      <li>🌀 <strong>The Power of Propaganda</strong> — Truth becomes whatever those in power declare it to be.</li>
+      <li>📚 <strong>Knowledge as Freedom</strong> — Snowball’s emphasis on education represents liberation; ignorance ensures subjugation.</li>
+      <li>🪞 <strong>Rewriting of History</strong> — Control over memory and narrative sustains totalitarian regimes.</li>
+      <li>🌍 <strong>Idealism’s Fragility</strong> — Dreamers like Snowball fall victim to cynics like Napoleon.</li>
+    </ul>
+    <p>Ultimately, Snowball’s story is not one of failure, but of martyrdom. His ideas outlive his presence — 
+    whispered through the lies of his enemies, surviving as sparks of resistance in the minds of those who still remember what the revolution once meant.</p>
+  </div>
+</div>
+
+<footer>
+  <p>🎨 Designed as a digital sketchnote • Responsive & Interactive • © 2025</p>
+</footer>
+
+<script>
+  function toggleSection(id) {
+    const section = document.getElementById(id);
+    section.classList.toggle('hidden');
+  }
+</script>
+
+</body>
+</html>
+
 
