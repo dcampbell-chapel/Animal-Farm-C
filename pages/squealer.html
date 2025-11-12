@@ -3,533 +3,428 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Squealer — Character & Context SketchNotes</title>
+<title>Squealer — Sketch-Note Report</title>
 <style>
   :root{
-    --ink:#1b1b1b;
-    --paper:#faf7ef;
-    --accent:#ffd34d;
-    --accent-2:#a3d5ff;
-    --accent-3:#ffc2e2;
-    --leaf:#c6f6d5;
-    --shadow:rgba(0,0,0,.18);
-    --ring:rgba(0,0,0,.12);
+    --bg:#fffdf7;
+    --ink:#20201f;
+    --accent:#ff7a59;
+    --accent-2:#4f46e5;
+    --paper:#fffaf0;
+    --shadow:rgba(0,0,0,.08);
   }
-  html,body{margin:0}
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0e0e0d; --ink:#f4f1ea; --paper:#161513;
+      --shadow:rgba(0,0,0,.4);
+    }
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
   body{
+    font-family: ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";
+    background: var(--bg);
+    color: var(--ink);
+    line-height:1.4;
+  }
+  .wrap{
+    max-width:1100px; margin:0 auto; padding:clamp(16px,2vw,32px);
+    position:relative;
+  }
+  /* dotted notebook bg */
+  .wrap:before{
+    content:""; position:fixed; inset:0; z-index:-1;
     background:
-      radial-gradient(1000px 600px at 120% -10%, #ffffff 10%, #f5efe2 60%, #efe7d8 100%),
-      repeating-linear-gradient(0deg, #f7f3ea, #f7f3ea 28px, #f1ebdf 28px, #f1ebdf 56px);
-    color:var(--ink);
-    font:16px/1.5 "Segoe UI","Helvetica Neue",system-ui,-apple-system,ui-rounded,"Comic Sans MS","Segoe Print",cursive;
+      radial-gradient(currentColor 0.6px, transparent 0.7px) 0 0/18px 18px;
+    opacity:.06; pointer-events:none;
   }
 
-  /* Layout */
-  .wrap{max-width:1100px;margin:auto;padding:20px}
   header{
-    display:grid;gap:10px;align-items:center;
-    grid-template-columns: 70px 1fr auto;
-    position:sticky;top:0;background:linear-gradient(#fff8e8, #fff0c5);
-    border-bottom:2px dashed #0003; z-index:10; padding:10px 14px;
-    box-shadow:0 8px 18px var(--shadow);
-  }
-  .logo{
-    width:64px;height:64px;border-radius:50%;
-    background:var(--accent); display:grid; place-items:center;
-    box-shadow: 3px 3px 0 #0003, -2px -2px 0 #fff8;
-    position:relative; border:2px solid #0005;
-  }
-  .logo svg{width:44px;height:44px}
-  h1{margin:0;font-size:clamp(1.2rem,3vw,1.8rem)}
-  .chips{display:flex;flex-wrap:wrap;gap:8px}
-  .chip{
-    border:2px dashed #0006; background:#fffcee; padding:.35rem .6rem;
-    border-radius:999px; cursor:pointer; box-shadow:2px 2px 0 #0002;
-    user-select:none; transition:transform .08s;
-  }
-  .chip:active{transform:translateY(1px)}
-  .chip[data-target]{outline:0}
-  .chip[data-active="true"]{background:var(--accent-2)}
-
-  main{display:grid; gap:18px; margin-top:16px}
-
-  /* Cards (flip) */
-  .grid{
-    display:grid; gap:14px;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  }
-  .flip{
-    perspective:1000px; position:relative; height:200px;
-  }
-  .card{
-    position:absolute; inset:0; border-radius:18px; padding:14px;
-    box-shadow:0 12px 24px var(--shadow), inset 0 0 0 2px #0005;
-    background: #fff;
-    transform-style:preserve-3d; transition:transform .6s;
-  }
-  .flip[data-flipped="true"] .card{transform:rotateY(180deg)}
-  .face{
-    position:absolute; inset:0; backface-visibility:hidden; display:grid;
-    align-content:center; justify-items:center; gap:8px; padding:16px;
-  }
-  .back{transform:rotateY(180deg); background:#fffbea}
-  .face h3{margin:4px 0 0;font-size:1.05rem; text-align:center}
-  .face p{margin:0; font-size:.95rem; text-align:center}
-  .pin{
-    position:absolute; width:18px; height:18px; background:#f44; border-radius:50%;
-    top:8px; left:calc(50% - 9px); box-shadow:0 4px 0 #0003;
-    border:2px solid #0006;
-  }
-
-  /* Accordion */
-  .accordion{border-radius:14px; overflow:hidden; box-shadow:0 10px 24px var(--shadow)}
-  .ac-item{background:#fff; border-bottom:2px dashed #0002}
-  .ac-btn{
-    width:100%; text-align:left; background:#fff; border:0; padding:14px 50px 14px 14px;
-    font-weight:700; cursor:pointer; position:relative;
-  }
-  .ac-btn:after{
-    content:"➤"; position:absolute; right:16px; top:50%; transform:translateY(-50%) rotate(90deg);
-    transition:transform .2s;
-  }
-  .ac-item[open] .ac-btn:after{transform:translateY(-50%) rotate(-90deg)}
-  .ac-panel{padding:0 16px 14px 16px}
-  blockquote{
-    border-left:6px solid #0008; margin:10px 0; padding:10px 12px; background:#f7f2e8;
-    font-style:italic
-  }
-
-  /* Relationship Map */
-  .map{
-    position:relative; background:#fff; border-radius:18px; padding:16px;
-    box-shadow:0 10px 24px var(--shadow), inset 0 0 0 2px #0005;
+    background: var(--paper);
+    border:2.5px solid var(--ink);
+    box-shadow: 6px 6px 0 var(--ink), 0 8px 24px var(--shadow);
+    border-radius:18px;
+    padding:22px 20px;
+    position:relative;
     overflow:hidden;
   }
-  .node{
-    position:relative; display:inline-grid; place-items:center; gap:4px;
-    padding:12px 14px; border-radius:14px; background:#fff;
-    outline:2px dashed #0008; box-shadow:3px 3px 0 #0003;
-    cursor:pointer; user-select:none; transition:transform .08s;
+  header h1{
+    margin:0 0 8px; font-size: clamp(28px, 5vw, 44px);
+    display:inline-block; padding: 2px 10px 6px 10px;
+    transform: rotate(-1deg);
+    background: linear-gradient(transparent 60%, rgba(255,122,89,.25) 60%);
   }
-  .node:active{transform:translateY(1px)}
-  .node small{opacity:.7}
-  .stack{display:flex; flex-wrap:wrap; gap:10px}
-  .cluster{display:grid; gap:10px}
-  .legend{display:flex; gap:10px; flex-wrap:wrap; margin-top:8px}
-  .legend .tag{padding:4px 8px; border-radius:999px; background:#eef; border:2px dashed #0005}
-  .callout{
-    position:absolute; right:12px; top:12px; background:var(--accent-3); border-radius:16px;
-    padding:10px 12px; border:2px dashed #0008; box-shadow:3px 3px 0 #0002; max-width:320px;
+  header p{margin:6px 0 0; max-width:70ch}
+  .badge{
+    position:absolute; right:16px; top:14px;
+    background:#fff; color:var(--ink); border:2px solid var(--ink);
+    padding:8px 12px; border-radius:999px; font-weight:700; font-size:12px;
+    box-shadow:3px 3px 0 var(--ink);
+  }
+  /* little hand-drawn arrow */
+  .arrow{
+    position:absolute; left:-12px; bottom:-8px; width:220px; height:120px; pointer-events:none;
+  }
+  .arrow path{stroke:var(--ink); stroke-width:3.5; fill:none; stroke-linecap:round; stroke-linejoin:round}
+
+  /* cards grid */
+  .grid{
+    display:grid; gap:16px; margin:24px 0;
+    grid-template-columns: repeat(12, 1fr);
+  }
+  .card{
+    grid-column: span 12;
+    background: var(--paper);
+    border:2.5px solid var(--ink);
+    border-radius:16px;
+    box-shadow: 6px 6px 0 var(--ink), 0 8px 24px var(--shadow);
+    padding:16px 16px 12px;
+    position:relative;
+    transition: transform .08s ease-in-out;
+  }
+  .card:hover{ transform: translateY(-2px) rotate(-.25deg) }
+  .card h3{
+    margin:0 0 6px; font-size: clamp(18px, 2.6vw, 24px);
+  }
+  .sketch-tag{
+    display:inline-flex; align-items:center; gap:8px;
+    border:2px dashed var(--ink); border-radius:999px;
+    padding:6px 10px; font-weight:700; background:#fff3;
+  }
+  .note{
+    background:#fff; padding:8px 10px; border:2px solid var(--ink); border-radius:10px;
+    transform: rotate(-.6deg); display:inline-block; margin-top:4px;
+  }
+  .quote{
+    font-style:italic; border-left:5px solid var(--accent); padding-left:10px; margin:8px 0 0;
+  }
+  .chip{
+    display:inline-block; border:2px solid var(--ink); padding:6px 10px; border-radius:999px;
+    background:#fff;
+  }
+  /* responsive spans */
+  .span-6{grid-column: span 12}
+  .span-4{grid-column: span 12}
+  .span-8{grid-column: span 12}
+  @media (min-width: 780px){
+    .span-6{grid-column: span 6}
+    .span-4{grid-column: span 4}
+    .span-8{grid-column: span 8}
   }
 
-  .arrow{position:absolute; pointer-events:none}
-  /* Decorative squiggles */
-  .doodle{
-    position:absolute; opacity:.35; filter:drop-shadow(0 1px 0 #fff);
+  /* click-to-reveal */
+  details{
+    margin-top:8px;
+    border:2px dashed var(--ink);
+    border-radius:12px;
+    padding:8px 10px;
+    background: #fff;
+  }
+  summary{
+    list-style:none; cursor:pointer; font-weight:800; position:relative; padding-left:28px;
+  }
+  summary::-webkit-details-marker{display:none}
+  summary:before{
+    content:"+";
+    position:absolute; left:4px; top:50%; transform:translateY(-50%);
+    width:18px; height:18px; border:2px solid var(--ink); border-radius:50%;
+    display:grid; place-items:center; font-size:13px; background:#fff;
+  }
+  details[open] summary:before{content:"–"}
+
+  /* timeline */
+  .timeline{
+    position:relative; padding:10px 0 0 0;
+  }
+  .timeline:before{
+    content:""; position:absolute; left:12px; top:0; bottom:0; width:3px; background: var(--ink);
+  }
+  .t-item{
+    position:relative; margin:0 0 16px 0; padding-left:38px;
+  }
+  .t-item:before{
+    content:""; position:absolute; left:5px; top:6px; width:16px; height:16px;
+    border:3px solid var(--ink); border-radius:50%; background:#fff;
   }
 
-  /* CTA strip */
+  /* sticky CTA bar */
   .cta{
-    background:linear-gradient(90deg, #fff8d6, #e8ffec);
-    border:2px dashed #0004; border-radius:18px; padding:14px; display:grid; gap:8px;
-    box-shadow:0 10px 24px var(--shadow)
+    position:sticky; bottom:8px; margin-top:12px;
+    display:flex; gap:12px; flex-wrap:wrap;
   }
-  .cta .row{display:flex; gap:10px; flex-wrap:wrap}
   .btn{
-    appearance:none; border:2px solid #0007; background:#fff;
-    padding:.6rem .9rem; border-radius:12px; cursor:pointer;
-    box-shadow:3px 3px 0 #0003; font-weight:700;
+    appearance:none; border:2.5px solid var(--ink); background:var(--accent);
+    color:#0b0b0a; padding:10px 14px; border-radius:12px; font-weight:900; cursor:pointer;
+    box-shadow:4px 4px 0 var(--ink); transform:rotate(-.6deg);
   }
-  .btn.primary{background:var(--leaf)}
-  .btn:focus{outline:3px solid var(--ring)}
+  .btn.secondary{ background:#fff }
+  .btn:active{ transform:translateY(2px) rotate(0deg); box-shadow:2px 2px 0 var(--ink) }
 
-  /* Footer */
-  footer{opacity:.8; font-size:.9rem; margin:18px 0 40px}
-
-  /* Responsive helpers */
-  .two-col{
-    display:grid; gap:14px; grid-template-columns:1.2fr .8fr;
+  /* modal */
+  dialog{
+    border:2.5px solid var(--ink); border-radius:16px; padding:0; width:min(760px, 92vw);
+    box-shadow: 8px 8px 0 var(--ink), 0 24px 80px var(--shadow);
+    background: var(--paper); color:var(--ink);
   }
-  @media (max-width:880px){ .two-col{grid-template-columns:1fr} .callout{position:static} }
+  .dlg-head{
+    padding:14px 16px; border-bottom:2px dashed var(--ink); display:flex; align-items:center; gap:10px;
+  }
+  .dlg-body{ padding:16px }
+  .x{ margin-left:auto; border:2px solid var(--ink); background:#fff; border-radius:8px; padding:6px 10px; cursor:pointer }
+  .kbd{ font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; padding:2px 6px; border:2px solid var(--ink); border-radius:6px; background:#fff }
+
+  /* small doodle icons */
+  .icon{width:22px; height:22px; display:inline-block; vertical-align:-5px}
+  .megaphone{stroke:var(--ink); fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round}
+  .spark{fill:var(--accent-2)}
+  footer{ margin:28px 0 8px; opacity:.8; font-size:.9rem }
 </style>
 </head>
 <body>
-  <header>
-    <div class="logo" aria-hidden="true">
-      <!-- pig megaphone icon -->
-      <svg viewBox="0 0 64 64" fill="none" stroke="#1b1b1b" stroke-width="2">
-        <path d="M33 22l18-6v20l-18-6v-8z" fill="#fff"/>
-        <path d="M19 28h14v4H19z" fill="#fff"/>
-        <circle cx="14" cy="30" r="7" fill="#fff"/>
-        <path d="M9 34c-2 4-2 8 3 8h11l7 6v-28l-7 6H12c-3 0-3 3-3 2z" fill="#ffd34d" stroke="#1b1b1b"/>
-      </svg>
-    </div>
-    <h1>Squealer — Character & Context <em>SketchNotes</em></h1>
-    <nav class="chips" aria-label="Quick nav">
-      <button class="chip" data-target="#traits" data-active="true">Key Traits</button>
-      <button class="chip" data-target="#quotes">Quotes</button>
-      <button class="chip" data-target="#map">Relationships</button>
-      <button class="chip" data-target="#allegory">Historical Allegory</button>
-    </nav>
-  </header>
-
   <div class="wrap">
-    <!-- Hero blurb -->
-    <section class="two-col" id="hero">
-      <div class="map" role="region" aria-label="Overview">
-        <h2 style="margin:2px 0 8px">Who is Squealer?</h2>
-        <p style="margin:0">
-          Napoleon’s silver-tongued messenger who turns power into “truth,” using stats, fear, and edits to the rules.
-          Click the <strong>sticky cards</strong>, open the <strong>quote drawers</strong>, and explore the <strong>relationship map</strong>.
+    <header>
+      <span class="badge">Sketch-Note Edition</span>
+      <h1>Squealer — The Propaganda Engine</h1>
+      <p>
+        A visual, interactive summary of Squealer’s role in <em>Animal Farm</em>: traits, key actions, and historical
+        mapping to <strong>Pravda</strong> and state propaganda—presented as clickable sketch-notes.
+      </p>
+      <svg class="arrow" viewBox="0 0 220 120" aria-hidden="true">
+        <path d="M5,90 C80,10 120,140 210,20 M205,25 l10,-10 M205,25 l-14,-1"/>
+      </svg>
+    </header>
+
+    <section class="grid" aria-label="Key Sections">
+      <!-- TRAITS -->
+      <article class="card span-6" id="traits">
+        <h3>
+          <span class="sketch-tag">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><g class="megaphone"><path d="M3 11l12-5v12L3 13v-2z"/><path d="M15 6l6-2v16l-6-2"/><path d="M7 14l-1 5h4l-1-4"/></g></svg>
+            Traits
+          </span>
+        </h3>
+        <p><span class="note">Eloquent · Persuasive · Manipulative</span></p>
+        <details>
+          <summary>See how he argues</summary>
+          <p>
+            He’s described as <em>skipping side-to-side</em> when arguing—showmanship that helps him sell distortions as truth.
+          </p>
+        </details>
+      </article>
+
+      <!-- QUOTE -->
+      <article class="card span-6" id="quote">
+        <h3>Signature Power</h3>
+        <p class="quote">“He could turn black into white.”</p>
+        <details>
+          <summary>Why this matters</summary>
+          <p>
+            This line defines Squealer’s literary function: he inverts reality with rhetoric, making the unbelievable feel inevitable.
+          </p>
+        </details>
+      </article>
+
+      <!-- COMMANDMENTS -->
+      <article class="card span-8" id="commandments">
+        <h3>Rewriting the Rules</h3>
+        <p>
+          After the pigs discover whiskey, Squealer alters the commandment to read
+          <strong>“No animal shall drink alcohol <u>to excess</u>.”</strong>
         </p>
-        <div class="callout">
-          <strong>Sketchnote tip:</strong> Look for <u>arrows</u> and <u>icons</u> that show cause → effect:
-          <br><em>Speech</em> ➜ <em>Belief</em> ➜ <em>Control</em>.
-        </div>
-        <!-- doodles -->
-        <svg class="doodle" style="left:-6px; top:-10px" width="180" height="90" viewBox="0 0 180 90">
-          <path d="M4 40 C40 10, 80 10, 120 40 S 180 70, 176 40" stroke="#000" stroke-width="2" fill="none" stroke-dasharray="6 6"/>
-          <circle cx="20" cy="20" r="6" fill="#a3d5ff" stroke="#000"/>
-          <rect x="130" y="10" width="28" height="18" rx="4" fill="#ffc2e2" stroke="#000"/>
+        <details>
+          <summary>Click to trace the logic</summary>
+          <div class="timeline" role="list">
+            <div class="t-item" role="listitem">
+              <strong>Original moral contract</strong> → simple, absolute prohibitions.
+            </div>
+            <div class="t-item" role="listitem">
+              <strong>Leader’s desire</strong> → self-serving exception appears.
+            </div>
+            <div class="t-item" role="listitem">
+              <strong>Text changed</strong> → retroactive “legalization” of corruption.
+            </div>
+            <div class="t-item" role="listitem">
+              <strong>Memory reshaped</strong> → animals accept the “new” truth.
+            </div>
+          </div>
+        </details>
+      </article>
+
+      <!-- HISTORICAL PARALLEL -->
+      <article class="card span-4" id="parallel">
+        <h3>Historical Parallel</h3>
+        <p>
+          <span class="chip">Pravda (Soviet State Media)</span>
+        </p>
+        <details>
+          <summary>What the parallel shows</summary>
+          <p>
+            As Pravda amplified the party line, Squealer filters all information so only the official narrative survives.
+          </p>
+        </details>
+      </article>
+
+      <!-- PROPAGANDA CONCEPT -->
+      <article class="card span-6" id="concept">
+        <h3>Concept: Propaganda</h3>
+        <p>
+          Systematic, state-controlled messaging to <em>control opinion</em>, <em>rewrite history</em>, and
+          <em>demonize opponents</em>.
+        </p>
+        <details>
+          <summary>Interactive checklist: spot the tactics</summary>
+          <ul style="margin:6px 0 0 18px">
+            <li><label><input type="checkbox"> Fear appeal (Jones will return!)</label></li>
+            <li><label><input type="checkbox"> False authority (“Leadership knows best”)</label></li>
+            <li><label><input type="checkbox"> Linguistic tweaks (“to excess”)</label></li>
+            <li><label><input type="checkbox"> History revision (Snowball reframed)</label></li>
+          </ul>
+        </details>
+      </article>
+
+      <!-- ALLEGORY -->
+      <article class="card span-6" id="allegory">
+        <h3>Allegory: Squealer ↔ Pravda</h3>
+        <p>
+          Squealer is the <strong>mouthpiece</strong> that keeps Napoleon’s power stable by controlling what others think is true.
+        </p>
+        <details>
+          <summary>Case study: The Battle of the Cowshed</summary>
+          <p>
+            Snowball’s role is progressively rewritten until he is branded a traitor—mirroring Stalinist revisionism against Trotsky
+            (e.g., public denouncements and forged narratives).
+          </p>
+        </details>
+      </article>
+    </section>
+
+    <!-- EXPLORE MORE -->
+    <section class="card" id="explore">
+      <h3>Explore Relationships</h3>
+      <p>Tap a node to see how Squealer connects rhetoric to power.</p>
+      <div id="map" style="background:#fff; border:2px dashed var(--ink); border-radius:12px; padding:10px;">
+        <svg viewBox="0 0 760 300" width="100%" height="100%" role="img" aria-label="Relationship sketch map">
+          <!-- nodes -->
+          <defs>
+            <filter id="wobble"><feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="1"/></filter>
+          </defs>
+          <g stroke="var(--ink)" fill="#fff" stroke-width="2.5" filter="url(#wobble)">
+            <g class="node" data-title="Squealer" data-body="Chief propagandist; turns lies into common sense.">
+              <rect x="320" y="28" rx="12" ry="12" width="120" height="40"></rect>
+              <text x="380" y="54" text-anchor="middle" style="font-weight:800">Squealer</text>
+            </g>
+            <g class="node" data-title="Language" data-body="Eloquence + agile wordplay (e.g., 'to excess').">
+              <rect x="70" y="150" rx="12" ry="12" width="140" height="40"></rect>
+              <text x="140" y="176" text-anchor="middle">Language</text>
+            </g>
+            <g class="node" data-title="Fear" data-body="Threat of Jones’s return keeps animals compliant.">
+              <rect x="300" y="210" rx="12" ry="12" width="120" height="40"></rect>
+              <text x="360" y="236" text-anchor="middle">Fear</text>
+            </g>
+            <g class="node" data-title="Revisionism" data-body="History rewritten (Snowball as traitor).">
+              <rect x="560" y="150" rx="12" ry="12" width="140" height="40"></rect>
+              <text x="630" y="176" text-anchor="middle">Revisionism</text>
+            </g>
+          </g>
+          <!-- arrows -->
+          <g stroke="var(--ink)" stroke-width="3" fill="none" marker-end="url(#arrow)">
+            <path d="M380,68 C380,110 360,130 210,150"/>
+            <path d="M380,68 C380,120 390,180 360,210"/>
+            <path d="M380,68 C430,100 520,120 630,150"/>
+          </g>
+          <!-- arrowhead -->
+          <defs>
+            <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+              <path d="M0,0 L9,3 L0,6 z" fill="currentColor" />
+            </marker>
+          </defs>
         </svg>
       </div>
-
-      <!-- Flip cards: Key traits -->
-      <section id="traits" aria-label="Key traits">
-        <h2 style="margin:0 0 8px">Key Traits (tap to flip)</h2>
-        <div class="grid">
-          <div class="flip" tabindex="0" aria-label="Eloquent & persuasive: flip for detail">
-            <div class="card">
-              <div class="face">
-                <div class="pin" aria-hidden="true"></div>
-                <svg width="56" height="56" viewBox="0 0 64 64" fill="none" stroke="#1b1b1b" stroke-width="2" aria-hidden="true">
-                  <path d="M12 26h26l10-6v24l-10-6H12z" fill="#fff"/>
-                  <circle cx="10" cy="32" r="6" fill="#fff"/>
-                </svg>
-                <h3>Eloquent & Persuasive</h3>
-                <p>“Turns black into white.”</p>
-              </div>
-              <div class="face back">
-                <h3>Rhetorical Acrobat</h3>
-                <p>Uses fear, stats, and spin so animals accept leadership without question.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="flip" tabindex="0" aria-label="Manipulative: flip for detail">
-            <div class="card">
-              <div class="face">
-                <div class="pin"></div>
-                <svg width="56" height="56" viewBox="0 0 64 64" fill="none" stroke="#1b1b1b" stroke-width="2">
-                  <rect x="8" y="14" width="48" height="36" rx="4" fill="#fff"/>
-                  <path d="M16 24h32M16 32h18" />
-                  <path d="M44 32h6M16 40h22" stroke-dasharray="4 4"/>
-                </svg>
-                <h3>Manipulative</h3>
-                <p>Rewrites commandments to fit the pigs’ agenda.</p>
-              </div>
-              <div class="face back">
-                <h3>Rule-Editor</h3>
-                <p>“No bed” → “No bed <em>with sheets</em>.” Language shifts move the goalposts.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="flip" tabindex="0" aria-label="Physically agile: flip for detail">
-            <div class="card">
-              <div class="face">
-                <div class="pin"></div>
-                <svg width="56" height="56" viewBox="0 0 64 64" fill="none" stroke="#1b1b1b" stroke-width="2">
-                  <path d="M12 38c12-2 28-2 40 0" stroke-dasharray="6 6"/>
-                  <circle cx="20" cy="26" r="6" fill="#fff"/>
-                  <circle cx="44" cy="26" r="6" fill="#fff"/>
-                </svg>
-                <h3>Agile Distraction</h3>
-                <p>Skips from side to side to derail hard questions.</p>
-              </div>
-              <div class="face back">
-                <h3>Non-verbal Persuasion</h3>
-                <p>Body language amplifies the message: style → credibility.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="flip" tabindex="0" aria-label="Loyal to power: flip for detail">
-            <div class="card">
-              <div class="face">
-                <div class="pin"></div>
-                <svg width="56" height="56" viewBox="0 0 64 64" fill="none" stroke="#1b1b1b" stroke-width="2">
-                  <path d="M10 42h44M22 42V22h20v20" />
-                  <circle cx="32" cy="16" r="6" fill="#a3d5ff" stroke="#1b1b1b"/>
-                </svg>
-                <h3>Loyal to Power</h3>
-                <p>Unquestioning mouthpiece for Napoleon.</p>
-              </div>
-              <div class="face back">
-                <h3>Voice of the Regime</h3>
-                <p>Turns force (Dogs) into “legitimacy” by shaping belief.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </section>
-
-    <!-- Quotes & Evidence -->
-    <section class="accordion" id="quotes" role="region" aria-label="Quotes & evidence">
-      <details class="ac-item">
-        <summary class="ac-btn">Key Action & Quote — Milk & Apples Justification</summary>
-        <div class="ac-panel">
-          <blockquote>
-            “It is for your sake that we drink that milk and eat those apples. Do you know what would
-            happen if we pigs failed in our duty? Jones would come back! Surely there is no animal among
-            you that wants to see Jones back?”
-          </blockquote>
-          <p><strong>Why it matters:</strong> Fear appeal + false dilemma shift luxury → necessity.</p>
-        </div>
-      </details>
-
-      <details class="ac-item">
-        <summary class="ac-btn">Narrator & Animal Commentary — Rhetorical Power</summary>
-        <div class="ac-panel">
-          <ul>
-            <li><em>“Could turn black into white.”</em></li>
-            <li><em>Skipping and tail-whisking</em> felt “very persuasive.”</li>
-          </ul>
-          <p>These lines frame Squealer as a <strong>professional persuader</strong>, not a truth-seeker.</p>
-        </div>
-      </details>
-
-      <details class="ac-item">
-        <summary class="ac-btn">Statistical Spin</summary>
-        <div class="ac-panel">
-          <p>He dazzles with “figures, figures, figures” — data as stage magic to quiet dissent.</p>
-        </div>
-      </details>
-    </section>
-
-    <!-- Relationship Map -->
-    <section class="map" id="map" role="region" aria-label="Relationship map">
-      <h2 style="margin:0 0 10px">How the System Works</h2>
-      <div class="stack">
-        <div class="node" data-hotspot="speech">
-          🐖📣 <strong>Squealer</strong><br/><small>Messaging</small>
-        </div>
-        <div class="node" data-hotspot="force">
-          🐕💥 <strong>Dogs</strong><br/><small>Force</small>
-        </div>
-        <div class="node" data-hotspot="rule">
-          🧱✍️ <strong>Commandments</strong><br/><small>Edited rules</small>
-        </div>
-        <div class="node" data-hotspot="audience">
-          🐑🐴 <strong>Working Animals</strong><br/><small>Belief & compliance</small>
-        </div>
-        <div class="node" data-hotspot="leader">
-          👑🐷 <strong>Napoleon</strong><br/><small>Power</small>
-        </div>
-      </div>
-      <div class="legend">
-        <span class="tag">Click a node → highlight arrows</span>
-        <span class="tag">Hover for tooltips</span>
-        <span class="tag">Cause → Effect</span>
-      </div>
-
-      <!-- Arrows (SVG) -->
-      <svg class="arrow" id="arr1" width="600" height="180" viewBox="0 0 600 180" aria-hidden="true">
-        <defs>
-          <marker id="arrowhead" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-            <polygon points="0 0, 6 3, 0 6" fill="#1b1b1b"/>
-          </marker>
-        </defs>
-        <path d="M130 50 C220 10, 340 10, 430 50" stroke="#1b1b1b" stroke-width="2.5" fill="none" marker-end="url(#arrowhead)" stroke-dasharray="6 5"/>
-        <text x="280" y="20" font-size="12">speech → belief</text>
-      </svg>
-
-      <svg class="arrow" id="arr2" width="600" height="180" viewBox="0 0 600 180" aria-hidden="true" style="top:40px">
-        <path d="M440 70 C520 90, 520 130, 430 150" stroke="#1b1b1b" stroke-width="2.5" fill="none" marker-end="url(#arrowhead)" stroke-dasharray="6 5"/>
-        <text x="470" y="120" font-size="12">orders → legitimacy</text>
-      </svg>
-
-      <svg class="arrow" id="arr3" width="600" height="180" viewBox="0 0 600 180" aria-hidden="true" style="top:20px">
-        <path d="M120 60 C90 100, 90 130, 180 150" stroke="#1b1b1b" stroke-width="2.5" fill="none" marker-end="url(#arrowhead)" stroke-dasharray="6 5"/>
-        <text x="90" y="120" font-size="12">fear + stats → compliance</text>
-      </svg>
-
-      <div id="map-toast" style="position:absolute; left:16px; bottom:12px; background:#fff; border:2px dashed #0006; border-radius:12px; padding:8px 10px; box-shadow:2px 2px 0 #0002;">
-        Tip: click “Squealer” to light the path from <em>message</em> → <em>belief</em>.
-      </div>
-    </section>
-
-    <!-- Allegory Toggle -->
-    <section class="two-col" id="allegory">
-      <div class="cta">
-        <div class="row">
-          <button class="btn primary" id="toggleView">Toggle View: Literary ↔ Historical</button>
-          <button class="btn" id="revealExample">Show Commandment Edit Example</button>
-          <button class="btn" id="jumpQuotes" aria-controls="quotes">Jump to Quotes</button>
-        </div>
-        <div id="viewPanel">
-          <h3 style="margin:.4rem 0">Literary View</h3>
-          <ul style="margin:.2rem 0 .2rem 1rem">
-            <li>Squealer prevents critical thought by reframing reality.</li>
-            <li>He justifies privilege (milk/apples) via fear of “Jones’s return.”</li>
-            <li>Data (“figures, figures, figures”) functions as rhetorical smoke.</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="map" role="region" aria-label="Historical mapping">
-        <h2 style="margin:0 0 8px">Historical Connection</h2>
-        <p style="margin:0 0 6px">
-          <strong>Allegory:</strong> Squealer ⇄ Soviet state media (<em>Pravda</em>).
+      <details style="margin-top:10px">
+        <summary>What this map shows</summary>
+        <p>
+          From a single speaker (Squealer), language tricks, fear appeals, and historical revisionism branch out to protect power.
         </p>
+      </details>
+    </section>
+
+    <div class="cta" role="group" aria-label="Actions">
+      <button class="btn" data-open="#glossary">Open Quick Glossary</button>
+      <button class="btn secondary" data-open="#sources">Show Source Notes</button>
+    </div>
+
+    <!-- GLOSSARY MODAL -->
+    <dialog id="glossary">
+      <div class="dlg-head">
+        <strong>Quick Glossary</strong>
+        <button class="x" data-close>Close</button>
+      </div>
+      <div class="dlg-body">
+        <p><span class="kbd">Propaganda</span> — messaging designed to steer opinion and behavior for power retention.</p>
+        <p><span class="kbd">Revisionism</span> — altering the record so the present leader is always right.</p>
+        <p><span class="kbd">Fear Appeal</span> — “The alternative is worse,” repeated until it feels true.</p>
+        <p><span class="kbd">Commandment Editing</span> — small textual tweaks with giant moral consequences.</p>
+      </div>
+    </dialog>
+
+    <!-- SOURCES MODAL -->
+    <dialog id="sources">
+      <div class="dlg-head">
+        <strong>Source Notes</strong>
+        <button class="x" data-close>Close</button>
+      </div>
+      <div class="dlg-body">
         <ul>
-          <li><b>Method:</b> Rewrite history, smear opponents, sanctify the leader.</li>
-          <li><b>Mirror:</b> Edits to the Seven Commandments ⇄ press “corrections” & fabrications.</li>
-          <li><b>Outcome:</b> Public discourse is controlled; authority seems unquestionable.</li>
+          <li>Traits & narrator line (“turn black into white”).</li>
+          <li>Commandment change: “No animal shall drink alcohol <em>to excess</em>.”</li>
+          <li>Historical parallel: Pravda & state propaganda; revisionism around Snowball/Trotsky.</li>
         </ul>
-        <svg class="doodle" style="right:-10px; bottom:-10px" width="160" height="120" viewBox="0 0 160 120">
-          <rect x="20" y="20" width="120" height="70" rx="8" fill="#fff" stroke="#000" stroke-width="2"/>
-          <path d="M30 35h90M30 50h75M30 65h60" stroke="#000" stroke-width="2" stroke-dasharray="6 6"/>
-        </svg>
+        <p style="margin-top:10px"><em>This page distills your provided report content.</em></p>
       </div>
-    </section>
-
-    <!-- Example drawer (hidden until button) -->
-    <section class="accordion" id="example" hidden>
-      <details class="ac-item" open>
-        <summary class="ac-btn">Commandment Edit — From Principle to Loophole</summary>
-        <div class="ac-panel">
-          <p><strong>Original spirit:</strong> “No animal shall sleep in a bed.”</p>
-          <p><strong>Edited form:</strong> “No animal shall sleep in a bed <em>with sheets</em>.”</p>
-          <p><em>Sketchnote pattern:</em> Add-on phrase = loophole. Arrow the add-on to show how meaning slides.</p>
-        </div>
-      </details>
-    </section>
-
-    <!-- Closing CTA -->
-    <section class="cta">
-      <h2 style="margin:.2rem 0">Keep Exploring</h2>
-      <p style="margin:.2rem 0">Pick your focus: rhetoric, rules, or power.</p>
-      <div class="row">
-        <button class="btn" data-scroll="#traits">🎴 Rhetoric Cards</button>
-        <button class="btn" data-scroll="#map">🗺️ Relationship Map</button>
-        <button class="btn" data-scroll="#allegory">📰 Historical Mapping</button>
-      </div>
-    </section>
+    </dialog>
 
     <footer>
-      <p>
-        Notes synthesized from your uploaded Squealer report and structured as interactive sketchnotes.
-      </p>
+      Tip: Click the <strong>+</strong> toggles and the <em>Open</em> buttons to reveal more. Press <span class="kbd">Esc</span> to close pop-ups.
     </footer>
   </div>
 
 <script>
-  // Chip nav scroll
-  document.querySelectorAll('.chip[data-target]').forEach(chip=>{
-    chip.addEventListener('click',()=>{
-      document.querySelectorAll('.chip').forEach(c=>c.dataset.active="false");
-      chip.dataset.active="true";
-      const el=document.querySelector(chip.dataset.target);
-      if(el){ el.scrollIntoView({behavior:'smooth', block:'start'}); }
+  // modal wiring
+  document.querySelectorAll("[data-open]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const dlg = document.querySelector(btn.dataset.open);
+      if(dlg) dlg.showModal();
     });
   });
-
-  // Flip cards: click or Enter/Space
-  document.querySelectorAll('.flip').forEach(f=>{
-    const toggle=()=>f.dataset.flipped = f.dataset.flipped === "true" ? "false" : "true";
-    f.addEventListener('click',toggle);
-    f.addEventListener('keydown',e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); toggle(); }});
-  });
-
-  // Accordion is native <details>; no extra JS needed
-
-  // Relationship map hotspot highlighting
-  const toast = document.getElementById('map-toast');
-  const arrows = [document.getElementById('arr1'),document.getElementById('arr2'),document.getElementById('arr3')];
-  const glow = (el,on)=>{ el.style.filter = on ? "drop-shadow(0 0 8px #ff0)" : "none"; el.style.opacity = on ? "1" : "1"; };
-  document.querySelectorAll('.node').forEach(n=>{
-    n.title = {
-      speech:"Squealer’s speeches shape belief.",
-      force:"Force lurks behind the words.",
-      rule:"Language edits make obedience ‘reasonable.’",
-      audience:"Belief becomes compliance.",
-      leader:"Orders need a story to feel legitimate."
-    }[n.dataset.hotspot] || "Node";
-    n.addEventListener('click', ()=>{
-      const key = n.dataset.hotspot;
-      // Simple mapping: show different arrows
-      arrows.forEach(a=>a.style.opacity=".25");
-      if(key==="speech"){ arrows[0].style.opacity="1"; }
-      if(key==="leader"){ arrows[1].style.opacity="1"; }
-      if(key==="audience"||key==="rule"||key==="force"){ arrows[2].style.opacity="1"; }
-      glow(n,true);
-      setTimeout(()=>glow(n,false), 800);
-      if(toast){ toast.textContent = n.title; }
+  document.querySelectorAll("[data-close]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const dlg = btn.closest("dialog");
+      if(dlg) dlg.close();
     });
   });
-
-  // Allegory toggle
-  const panel = document.getElementById('viewPanel');
-  document.getElementById('toggleView').addEventListener('click',()=>{
-    const isLit = panel.dataset.mode !== "historical";
-    if(isLit){
-      panel.dataset.mode = "historical";
-      panel.innerHTML = `
-        <h3 style="margin:.4rem 0">Historical View</h3>
-        <ul style="margin:.2rem 0 .2rem 1rem">
-          <li><strong>Pravda</strong> as party mouthpiece — decrees → “truth.”</li>
-          <li>Fabrication & erasure to secure the leader’s image.</li>
-          <li>Public accepts power because the story says so.</li>
-        </ul>`;
-    }else{
-      panel.dataset.mode = "literary";
-      panel.innerHTML = `
-        <h3 style="margin:.4rem 0">Literary View</h3>
-        <ul style="margin:.2rem 0 .2rem 1rem">
-          <li>Squealer prevents critical thought by reframing reality.</li>
-          <li>He justifies privilege (milk/apples) via fear of “Jones’s return.”</li>
-          <li>Data (“figures, figures, figures”) functions as rhetorical smoke.</li>
-        </ul>`;
-    }
+  // map click interactions – show tiny toast from SVG nodes
+  const map = document.getElementById("map");
+  const toast = document.createElement("div");
+  toast.style.cssText = "position:fixed; left:50%; transform:translateX(-50%); bottom:18px; background:#fff; color:inherit; border:2px solid currentColor; border-radius:12px; padding:8px 12px; box-shadow:4px 4px 0 currentColor; display:none; z-index:9999; max-width:min(90vw, 720px)";
+  document.body.appendChild(toast);
+  let hideTimer;
+  map.addEventListener("click", (e)=>{
+    const node = e.target.closest(".node");
+    if(!node) return;
+    clearTimeout(hideTimer);
+    toast.innerHTML = "<strong>" + node.dataset.title + ":</strong> " + node.dataset.body;
+    toast.style.display = "block";
+    hideTimer = setTimeout(()=> toast.style.display = "none", 2400);
   });
-
-  // Reveal example drawer
-  const ex = document.getElementById('example');
-  document.getElementById('revealExample').addEventListener('click',()=>{
-    ex.hidden = !ex.hidden;
-    if(!ex.hidden){ ex.scrollIntoView({behavior:'smooth', block:'start'}); }
-  });
-
-  // Jump to quotes
-  document.getElementById('jumpQuotes').addEventListener('click',()=>{
-    document.getElementById('quotes').scrollIntoView({behavior:'smooth', block:'start'});
-  });
-
-  // Footer CTA buttons (smooth scroll)
-  document.querySelectorAll('[data-scroll]').forEach(b=>{
-    b.addEventListener('click',()=>{
-      const el=document.querySelector(b.dataset.scroll);
-      if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+  // close dialogs on Esc (native) and backdrop click
+  document.querySelectorAll("dialog").forEach(dlg=>{
+    dlg.addEventListener("click", (e)=>{
+      const rect = dlg.getBoundingClientRect();
+      const inDialog = rect.top <= e.clientY && e.clientY <= rect.bottom
+                    && rect.left <= e.clientX && e.clientX <= rect.right;
+      if(!inDialog) dlg.close();
     });
   });
-
-  // Position arrows relative to nodes responsively (approx; decorative)
-  const positionArrows=()=>{
-    const map = document.getElementById('map');
-    const rect = map.getBoundingClientRect();
-    ['arr1','arr2','arr3'].forEach(id=>{
-      const a = document.getElementById(id);
-      a.style.left = "10px";
-      a.style.top = id==='arr1' ? "0px" : (id==='arr2' ? "20px" : "0px");
-      a.style.width = Math.min(rect.width-20, 900) + "px";
-      a.setAttribute('viewBox',`0 0 ${Math.min(rect.width-20,900)} 180`);
-    });
-  };
-  positionArrows();
-  window.addEventListener('resize', positionArrows);
 </script>
 </body>
 </html>
-
