@@ -1,1 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Napoleon — Character & Context Sketch‑Notes</title>
+<style>
+  :root{
+    --ink:#1f2937; /* graphite */
+    --paper:#faf7ef; /* warm notebook */
+    --accent:#fbbf24; /* sticky yellow */
+    --accent-2:#a7f3d0; /* mint */
+    --accent-3:#bfdbfe; /* sky */
+    --accent-4:#fecaca; /* blush */
+    --shadow:0 8px 30px rgba(0,0,0,.15);
+  }
+  html,body{margin:0;height:100%;}
+  body{
+    font-family: ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    background: var(--paper);
+    color: var(--ink);
+  }
+  /* Layout */
+  .wrap{display:grid;grid-template-columns: 380px 1fr;gap: clamp(16px,2vw,28px);max-width:1200px;margin:0 auto;padding:clamp(12px,2vw,24px);} 
+  @media (max-width: 960px){.wrap{grid-template-columns:1fr;}}
+
+  header{
+    grid-column:1/-1;
+    display:grid;gap:8px;align-items:center;justify-items:center;text-align:center;
+  }
+  h1{margin:0;font-size:clamp(28px,4.2vw,48px);letter-spacing:.5px;}
+  .tagline{font-size:clamp(14px,2.2vw,18px)}
+
+  /* Sketch board */
+  .board{
+    position:relative;overflow:hidden;background:#fff;border-radius:20px;box-shadow:var(--shadow);
+    min-height:580px;
+  }
+  .board::after{
+    /* dotted notebook background */
+    content:"";position:absolute;inset:0;background:
+      radial-gradient(rgba(31,41,55,.14) 1px, transparent 1px) 0 0/18px 18px;
+    pointer-events:none;
+  }
+  /* Sticky notes grid */
+  .notes{display:grid;gap:14px;grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));}
+
+  /* Sticky card (click to expand) */
+  .sticky{list-style:none;margin:0;padding:0;border:none;background:transparent}
+  .sticky > button{width:100%; text-align:left; background:var(--accent); border:none; padding:18px 16px; border-radius:10px; box-shadow:var(--shadow);
+    position:relative; transform:rotate(var(--rot, -1.2deg)); transition:transform .25s ease, box-shadow .25s ease; cursor:pointer; font-size:16px;}
+  .sticky > button:hover{transform:rotate(0deg) translateY(-2px); box-shadow:0 12px 38px rgba(0,0,0,.2);} 
+  .sticky .peek{opacity:.8; font-size:13px; margin-top:6px}
+  .sticky[data-color="mint"] > button{background:var(--accent-2)}
+  .sticky[data-color="sky"] > button{background:var(--accent-3)}
+  .sticky[data-color="blush"] > button{background:var(--accent-4)}
+  .pin{position:absolute; width:26px; height:26px; right:10px; top:-10px; background:#d1d5db; border-radius:50%; box-shadow:0 4px 10px rgba(0,0,0,.2);}
+  .pin::after{content:""; position:absolute; inset:6px; border-radius:50%; background:#9ca3af;}
+
+  details.pop{background:#fff; border-radius:14px; box-shadow:var(--shadow); padding:16px; margin-top:10px; border:1px dashed #e5e7eb}
+  details.pop[open]{animation:pop .2s ease-out}
+  @keyframes pop{from{transform:scale(.98); opacity:.5} to{transform:scale(1); opacity:1}}
+
+  /* Legend */
+  .legend{display:flex; gap:12px; flex-wrap:wrap; font-size:14px}
+  .legend .pill{display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; background:#fff; box-shadow: var(--shadow)}
+  .dot{width:10px; height:10px; border-radius:50%}
+
+  /* Footer */
+  footer{grid-column:1/-1; text-align:center; opacity:.75; font-size:13px; padding:18px 0}
+
+  /* Tooltips */
+  [data-tip]{position:relative}
+  [data-tip]:hover::after{content:attr(data-tip); position:absolute; left:50%; transform:translateX(-50%); bottom:calc(100% + 8px); background:#111; color:#fff; font-size:12px; padding:6px 8px; border-radius:6px; white-space:nowrap; box-shadow:var(--shadow);}
+
+  /* CTA chips */
+  .cta{display:flex; flex-wrap:wrap; gap:8px; margin-top:6px}
+  .cta a{display:inline-block; text-decoration:none; padding:8px 12px; border-radius:999px; background:#111; color:#fff; font-size:13px}
+
+  /* Accessibility focus */
+  :focus-visible{outline:3px dashed #111; outline-offset:3px}
+
+  /* Small helper classes */
+  .muted{opacity:.75}
+  .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
+
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>A visual, clickable sketch‑note on <em>Napoleon</em></h1>
+      <p class="tagline">Click any sticky note • Follow the arrows • Explore relationships</p>
+      <div class="legend" aria-label="Legend">
+        <span class="pill"><span class="dot" style="background:var(--accent)"></span> Literary facts</span>
+        <span class="pill"><span class="dot" style="background:var(--accent-3)"></span> Allegorical mapping</span>
+        <span class="pill"><span class="dot" style="background:var(--accent-2)"></span> Key quotes</span>
+        <span class="pill"><span class="dot" style="background:var(--accent-4)"></span> Themes & effects</span>
+      </div>
+    </header>
+
+    <!-- LEFT: Sticky notes (interactive summaries) -->
+    <section aria-label="Notes" class="notes">
+      <article class="sticky" data-color="mint" style="--rot:-2.5deg">
+        <button aria-expanded="false">
+          <span class="pin" aria-hidden="true"></span>
+          <strong>Character Snapshot</strong>
+          <div class="peek">Ruthless • Dictatorial • Scheming • Power‑hungry</div>
+          <details class="pop"><summary class="sr-only">Open</summary>
+            Napoleon is introduced as a “large, rather fierce‑looking Berkshire boar … not much of a talker, but with a reputation for getting his own way.” This foreshadows his covert path to absolute control.
+          </details>
+        </button>
+      </article>
+
+      <article class="sticky" data-color="sky" style="--rot:1.6deg">
+        <button>
+          <span class="pin" aria-hidden="true"></span>
+          <strong>Key Action</strong>
+          <div class="peek">Bans Sunday meetings (Ch. 5)</div>
+          <details class="pop"><summary class="sr-only">Open</summary>
+            After expelling Snowball, Napoleon immediately abolishes debates, ending the last democratic custom on the farm and centralizing all decisions.
+          </details>
+        </button>
+      </article>
+
+      <article class="sticky" data-color="blush" style="--rot:-.6deg">
+        <button>
+          <span class="pin" aria-hidden="true"></span>
+          <strong>Historical Parallel</strong>
+          <div class="peek">Joseph Stalin</div>
+          <details class="pop"><summary class="sr-only">Open</summary>
+            Napoleon mirrors Stalin’s rise: dismantling internal party democracy, elevating a privileged ruling class, and deploying terror to cement a cult of personality.
+          </details>
+        </button>
+      </article>
+
+      <article class="sticky" style="--rot:2.2deg">
+        <button>
+          <span class="pin" aria-hidden="true"></span>
+          <strong>Mechanism of Control</strong>
+          <div class="peek">The Dogs = Secret Police</div>
+          <details class="pop"><summary class="sr-only">Open</summary>
+            Public confessions and executions (Ch. 7) echo the Great Purge (1936–38), with the Dogs functioning like the NKVD to intimidate and eliminate rivals.
+          </details>
+        </button>
+      </article>
+
+      <article class="sticky" data-color="sky" style="--rot:-1.4deg">
+        <button>
+          <span class="pin" aria-hidden="true"></span>
+          <strong>Privilege Consolidation</strong>
+          <div class="peek">The Pigs = Nomenklatura</div>
+          <details class="pop"><summary class="sr-only">Open</summary>
+            By seizing sole decision‑making power, Napoleon elevates pigs and dogs into a non‑laboring elite, betraying the promise of equality.
+          </details>
+        </button>
+      </article>
+
+      <article class="sticky" data-color="mint" style="--rot:.8deg">
+        <button>
+          <span class="pin" aria-hidden="true"></span>
+          <strong>Quote</strong>
+          <div class="peek">“It had become usual to attribute every misfortune to Snowball.”</div>
+          <details class="pop"><summary class="sr-only">Open</summary>
+            Scapegoating Snowball (Trotsky) enables Napoleon to rewrite history and justify repression, a hallmark of authoritarian propaganda.
+          </details>
+        </button>
+      </article>
+
+      <article class="sticky" data-color="blush" style="--rot:-2deg">
+        <button>
+          <span class="pin" aria-hidden="true"></span>
+          <strong>Theme</strong>
+          <div class="peek">From revolution to tyranny</div>
+          <details class="pop"><summary class="sr-only">Open</summary>
+            The farm’s shift from collective ideals to one‑man rule illustrates how revolutions can be hijacked when power lacks checks and transparency.
+          </details>
+        </button>
+      </article>
+
+      <article class="sticky" data-color="sky" style="--rot:1deg">
+        <button>
+          <span class="pin" aria-hidden="true"></span>
+          <strong>Try this</strong>
+          <div class="peek">Follow relationships on the map →</div>
+          <details class="pop"><summary class="sr-only">Open</summary>
+            Tap the nodes on the right‑hand sketch to highlight how literary events map to historical mechanisms.
+          </details>
+        </button>
+      </article>
+    </section>
+
+    <!-- RIGHT: Interactive sketch map -->
+    <section aria-label="Sketch map" class="board">
+      <svg id="map" viewBox="0 0 1200 760" width="100%" height="100%" role="img" aria-labelledby="title desc">
+        <title id="title">Relationships map: Napoleon’s power network</title>
+        <desc id="desc">An SVG sketch with a windmill, pig icon for Napoleon, and dotted and solid arrows linking Snowball, Dogs, and Pigs with literary to historical mappings.</desc>
+
+        <!-- Hand‑drawn windmill (background cue to the setting) -->
+        <g opacity=".11" transform="translate(70,90)">
+          <path d="M120,420 l40,-220 l40,220 z" fill="none" stroke="var(--ink)" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="160" cy="180" r="24" fill="none" stroke="var(--ink)" stroke-width="4"/>
+          <path d="M160,180 l120,-70 M160,180 l-120,-70 M160,180 l120,70 M160,180 l-120,70" stroke="var(--ink)" stroke-width="4" fill="none" stroke-linecap="round"/>
+        </g>
+
+        <!-- Arrow defs -->
+        <defs>
+          <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto-start-reverse">
+            <path d="M0,0 L12,6 L0,12 z" fill="var(--ink)"/>
+          </marker>
+          <marker id="arrowHollow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto-start-reverse">
+            <path d="M0,0 L12,6 L0,12 z" fill="none" stroke="var(--ink)" stroke-width="2"/>
+          </marker>
+          <filter id="wobble">
+            <feTurbulence baseFrequency="0.005" numOctaves="2" seed="2"/>
+            <feDisplacementMap in="SourceGraphic" scale="1"/>
+          </filter>
+        </defs>
+
+        <!-- Central node: Napoleon -->
+        <g id="napoleon" class="node clickable" transform="translate(640,330)" tabindex="0" data-tip="Click to toggle highlight">
+          <circle r="78" fill="#fff" stroke="var(--ink)" stroke-width="4" filter="url(#wobble)"/>
+          <text x="0" y="-6" text-anchor="middle" font-size="22" font-weight="700">Napoleon</text>
+          <text x="0" y="22" text-anchor="middle" font-size="13" class="muted">Tyrant • Antagonist</text>
+        </g>
+
+        <!-- Node: Dogs / NKVD -->
+        <g id="dogs" class="node clickable" transform="translate(980,210)" tabindex="0" data-tip="Dogs = NKVD (secret police)">
+          <rect x="-110" y="-44" width="220" height="88" rx="14" fill="#fff" stroke="var(--ink)" stroke-width="3"/>
+          <text x="0" y="-6" text-anchor="middle" font-size="20" font-weight="700">Dogs</text>
+          <text x="0" y="20" text-anchor="middle" font-size="14" class="muted">→ NKVD / terror</text>
+        </g>
+
+        <!-- Node: Pigs / Nomenklatura -->
+        <g id="pigs" class="node clickable" transform="translate(980,500)" tabindex="0" data-tip="Pigs = Nomenklatura (privileged elite)">
+          <rect x="-130" y="-44" width="260" height="88" rx="14" fill="#fff" stroke="var(--ink)" stroke-width="3"/>
+          <text x="0" y="-6" text-anchor="middle" font-size="20" font-weight="700">Pigs</text>
+          <text x="0" y="20" text-anchor="middle" font-size="14" class="muted">→ Nomenklatura / privilege</text>
+        </g>
+
+        <!-- Node: Snowball / Trotsky -->
+        <g id="snowball" class="node clickable" transform="translate(300,220)" tabindex="0" data-tip="Snowball = Trotsky">
+          <rect x="-120" y="-44" width="240" height="88" rx="14" fill="#fff" stroke="var(--ink)" stroke-width="3"/>
+          <text x="0" y="-6" text-anchor="middle" font-size="20" font-weight="700">Snowball</text>
+          <text x="0" y="20" text-anchor="middle" font-size="14" class="muted">= Trotsky (exiled)</text>
+        </g>
+
+        <!-- Node: Sunday Meetings (democracy) -->
+        <g id="meetings" class="node clickable" transform="translate(300,520)" tabindex="0" data-tip="Banned after Ch.5">
+          <rect x="-150" y="-44" width="300" height="88" rx="14" fill="#fff" stroke="var(--ink)" stroke-width="3"/>
+          <text x="0" y="-6" text-anchor="middle" font-size="20" font-weight="700">Sunday Meetings</text>
+          <text x="0" y="20" text-anchor="middle" font-size="14" class="muted">debate → abolished</text>
+        </g>
+
+        <!-- Solid arrows (causal) -->
+        <path id="a1" d="M 560 310 C 720 220 850 210 880 210" fill="none" stroke="var(--ink)" stroke-width="3" marker-end="url(#arrow)"/>
+        <path id="a2" d="M 560 360 C 720 460 850 500 880 500" fill="none" stroke="var(--ink)" stroke-width="3" marker-end="url(#arrow)"/>
+        <path id="a3" d="M 420 520 C 520 520 540 430 590 390" fill="none" stroke="var(--ink)" stroke-width="3" marker-end="url(#arrow)"/>
+
+        <!-- Dotted arrow (antagonism / exile) ABOVE Snowball label as requested -->
+        <path id="a4" d="M 300 150 C 460 110 620 120 700 140" fill="none" stroke="var(--ink)" stroke-width="3" stroke-dasharray="6 8" marker-end="url(#arrowHollow)"/>
+        <text x="705" y="145" font-size="14" class="muted">chases off farm → exile</text>
+        <text x="480" y="120" font-size="13" class="muted">Napoleon vs. Snowball</text>
+
+        <!-- Labels near arrows -->
+        <g font-size="13" class="muted">
+          <text x="910" y="195">uses terror</text>
+          <text x="910" y="485">creates elite</text>
+          <text x="520" y="470">abolishes debate</text>
+        </g>
+      
+      </svg>
+
+      <!-- Click cues -->
+      <div style="position:absolute; right:16px; bottom:16px; background:#fff; padding:10px 12px; border-radius:10px; box-shadow:var(--shadow); font-size:13px">
+        Click nodes to highlight paths
+      </div>
+    </section>
+
+    <footer>
+      <div>Click any sticky note to read more. Then use the sketch map to trace how <em>literary events</em> map to <em>historical mechanisms</em>.</div>
+    </footer>
+  </div>
+
+<script>
+// Enhance sticky notes: toggle <details> on button click for a smooth, accessible interaction
+for (const btn of document.querySelectorAll('.sticky > button')){
+  btn.addEventListener('click', (e)=>{
+    const det = btn.querySelector('details');
+    const open = det.hasAttribute('open');
+    if(open){ det.removeAttribute('open'); btn.setAttribute('aria-expanded','false'); }
+    else { det.setAttribute('open',''); btn.setAttribute('aria-expanded','true'); }
+  });
+}
+
+// Interactive map highlighting
+const lines = {
+  dogs: ['a1'],
+  pigs: ['a2'],
+  meetings: ['a3'],
+  snowball: ['a4'],
+  napoleon: ['a1','a2','a3','a4']
+};
+
+function dimAll(){
+  document.querySelectorAll('#map path').forEach(p=>{p.style.opacity=.25});
+  document.querySelectorAll('#map text').forEach(t=>{t.style.opacity=.4});
+}
+function reset(){
+  document.querySelectorAll('#map path').forEach(p=>{p.style.opacity=1});
+  document.querySelectorAll('#map text').forEach(t=>{t.style.opacity=1});
+}
+function pulse(el){
+  el.animate([{transform:'scale(1)'},{transform:'scale(1.05)'},{transform:'scale(1)'}],{duration:300});
+}
+
+for (const id of Object.keys(lines)){
+  const el = document.getElementById(id);
+  el.addEventListener('click', ()=>{
+    const wasActive = el.classList.contains('active');
+    document.querySelectorAll('.node').forEach(n=>n.classList.remove('active'));
+    if(wasActive){ reset(); return; }
+    dimAll();
+    el.classList.add('active');
+    pulse(el);
+    for(const lid of lines[id]){
+      const p = document.getElementById(lid);
+      if(p){ p.style.opacity=1; p.style.filter='drop-shadow(0 0 0 rgba(0,0,0,0))'; }
+    }
+    // Re‑emphasize key labels near visible lines
+    document.querySelectorAll('#map text').forEach(t=>{
+      const tx = t.textContent.trim();
+      if(['uses terror','creates elite','abolishes debate','Napoleon vs. Snowball','chases off farm → exile'].includes(tx)){
+        t.style.opacity=1;
+      }
+    });
+  });
+  el.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); el.click(); } });
+}
+
+// Responsive hint: if narrow, auto‑open first sticky to entice interaction
+if (window.matchMedia('(max-width: 700px)').matches) {
+  const first = document.querySelector('.sticky details');
+  if(first) first.setAttribute('open','');
+}
+</script>
+</body>
+</html>
 
