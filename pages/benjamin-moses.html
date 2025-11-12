@@ -1,185 +1,438 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Character & Context Sketch: Benjamin the Donkey</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Sketch-Notes Deep Dive — Benjamin &amp; Moses</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Shadows+Into+Light&display=swap');
+  /* =============== Base =============== */
+  :root{
+    --paper:#fffbe9;
+    --accent:#f2c14e;
+    --ink:#2b2b2b;
+    --muted:#6b6b6b;
+    --panel:#fff;
+    --note:#8b5e3c;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;font-family:Inter, "Segoe UI", Roboto, Arial, sans-serif;background:var(--paper);color:var(--ink);}
+  a{color:inherit}
+  .wrap{max-width:1100px;margin:22px auto;padding:18px;}
 
-  body {
-    margin: 0;
-    background: #faf8f5;
-    font-family: 'Gloria Hallelujah', cursive;
-    color: #2b2b2b;
-    overflow-x: hidden;
+  /* =============== Header =============== */
+  header{display:flex;align-items:center;gap:16px;margin-bottom:14px}
+  .logo{width:68px;height:68px;border-radius:12px;background:linear-gradient(180deg,#fff,#fff3e0);display:flex;align-items:center;justify-content:center;border:3px solid rgba(0,0,0,0.06)}
+  h1{margin:0;font-size:1.5rem}
+  .subtitle{color:var(--muted);font-size:0.95rem;margin-top:6px}
+
+  /* =============== Paper =============== */
+  .paper{background:linear-gradient(180deg,rgba(255,255,255,0.95),rgba(253,249,235,0.95));border-radius:14px;padding:18px;box-shadow:0 10px 30px rgba(30,30,30,0.08);border:1px dashed rgba(0,0,0,0.05)}
+  .grid{display:grid;grid-template-columns:1fr 380px;gap:18px;align-items:start}
+  @media(max-width:980px){.grid{grid-template-columns:1fr}}
+
+  /* =============== Cards =============== */
+  .card{background:var(--panel);border-radius:12px;padding:14px;border:1px solid rgba(0,0,0,0.04);margin-bottom:14px;position:relative}
+  .card h3{margin:0 0 6px 0;font-size:1.05rem}
+  .card p{margin:0;color:#333}
+
+  /* handwritten note style */
+  .handwritten{font-family:"Segoe Script","Brush Script MT",cursive;color:var(--note);font-size:0.95rem}
+
+  /* small icons and chips */
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+  .chip{background:linear-gradient(180deg,#fff,#fffef0);border-radius:999px;padding:6px 10px;border:1px solid rgba(0,0,0,0.04);font-size:0.85rem}
+
+  /* sketch badges */
+  .badge-s{{display:inline-flex;align-items:center;gap:8px;padding:6px 8px;border-radius:10px;background:#fff;box-shadow:0 6px 12px rgba(0,0,0,0.04)}}
+
+  /* =============== Sketch diagram area =============== */
+  .diagram{background:linear-gradient(180deg,#fff,#fff8e6);border-radius:12px;padding:12px;border:1px dashed rgba(0,0,0,0.03)}
+  .diagram svg{width:100%;height:auto;display:block}
+
+  /* =============== Timeline =============== */
+  .timeline{padding:12px;border-radius:10px;background:linear-gradient(180deg,#fff,#fff3e0);border:1px dashed rgba(0,0,0,0.03)}
+  .t-point{display:flex;gap:10px;align-items:flex-start;margin-bottom:12px}
+  .dot{width:14px;height:14px;border-radius:50%;border:3px solid #fff;background:var(--muted);box-shadow:0 2px 6px rgba(0,0,0,0.06);}
+
+  /* =============== Interactions =============== */
+  .btn{display:inline-block;padding:8px 12px;border-radius:10px;background:var(--accent);color:var(--ink);font-weight:700;border:none;cursor:pointer;box-shadow:0 8px 16px rgba(242,193,78,0.16)}
+  .muted{color:var(--muted);font-size:0.9rem}
+
+  /* =============== Deep dive modal =============== */
+  .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.38);z-index:999;padding:20px}
+  .modal .dialog{width:min(980px,96%);max-height:86vh;overflow:auto;background:#fff;border-radius:12px;padding:18px;box-shadow:0 18px 50px rgba(0,0,0,0.28)}
+  .close{float:right;border-radius:8px;padding:6px 8px;background:#eee;border:none;cursor:pointer}
+
+  /* quote block */
+  blockquote{margin:8px 0;padding:10px 12px;border-left:4px dashed var(--muted);background:#fffaf0;color:#333;border-radius:6px}
+
+  /* =============== Comparison table =============== */
+  table{width:100%;border-collapse:collapse;margin-top:8px}
+  th,td{padding:10px;border-bottom:1px solid #faf0e6;text-align:left}
+  th{background:linear-gradient(180deg,#fff,#fff9ec);font-weight:700}
+
+  /* =============== Sticky right column note for print =============== */
+  @media print{
+    body{background:#fff}
+    .wrap{max-width:900px}
+    .btn{display:none}
+    .modal{display:none}
   }
 
-  header {
-    text-align: center;
-    padding: 2rem 1rem;
-    background: #fdf6ec;
-    border-bottom: 3px dashed #b89f7b;
-  }
-
-  h1 {
-    font-size: 2.2rem;
-    margin: 0.5rem 0;
-  }
-
-  h2 {
-    font-size: 1.5rem;
-    margin-top: 1.2rem;
-    color: #4a3c2a;
-  }
-
-  .sketch-container {
-    max-width: 900px;
-    margin: 2rem auto;
-    padding: 1rem;
-    position: relative;
-  }
-
-  .note {
-    background: #fffdf9;
-    border: 2px solid #d6c4a3;
-    box-shadow: 3px 3px 0px #c3b08a;
-    border-radius: 8px;
-    padding: 1rem;
-    margin: 1rem 0;
-    position: relative;
-    transition: transform 0.2s ease;
-  }
-
-  .note:hover {
-    transform: scale(1.02);
-  }
-
-  .arrow {
-    width: 100px;
-    height: 50px;
-    margin: 1rem auto;
-    display: block;
-  }
-
-  .arrow path {
-    stroke: #b08a52;
-    stroke-width: 3;
-    fill: none;
-    stroke-dasharray: 6;
-    animation: dash 2s infinite linear;
-  }
-
-  @keyframes dash {
-    to {
-      stroke-dashoffset: -12;
-    }
-  }
-
-  .toggle {
-    cursor: pointer;
-    background: #fff4c2;
-    display: inline-block;
-    padding: 0.3rem 0.6rem;
-    border-radius: 4px;
-    border: 1px dashed #b89f7b;
-    font-size: 1rem;
-  }
-
-  .hidden {
-    display: none;
-  }
-
-  footer {
-    text-align: center;
-    padding: 2rem;
-    font-size: 0.9rem;
-    color: #666;
-  }
-
-  /* Simple responsive tweak */
-  @media (max-width: 600px) {
-    h1 { font-size: 1.8rem; }
-    h2 { font-size: 1.2rem; }
-  }
+  /* =============== small helpers =============== */
+  .small{font-size:0.9rem;color:var(--muted)}
+  .note-flag{background:#fffbe9;border-left:4px solid var(--accent);padding:10px;border-radius:6px;margin-top:8px}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 </style>
 </head>
 <body>
+  <div class="wrap">
+    <header>
+      <div class="logo" aria-hidden>
+        <!-- sketchy open-book -->
+        <svg width="46" height="46" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 12h26v36H10z" fill="#fff"/>
+          <path d="M28 12h26v36H28z" fill="#fff"/>
+          <path d="M12 14c8-6 20-6 28 0" stroke="#2b2b2b" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div>
+        <h1>Sketch-Notes Deep Dive — Benjamin &amp; Moses</h1>
+        <div class="subtitle">Expanded visuals, quotes, deep-dive panels, and historical mapping — interactive and printable.</div>
+      </div>
+      <div style="margin-left:auto">
+        <button class="btn" id="download-btn" title="Download this HTML">Download HTML</button>
+      </div>
+    </header>
 
-<header>
-  <h1>🐴 Benjamin the Donkey</h1>
-  <p><em>"Life would go on as it had always gone on — that is, badly."</em></p>
-</header>
+    <section class="paper" aria-labelledby="mainTitle">
+      <div style="display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap">
+        <div style="flex:1">
+          <div class="card">
+            <h3 id="mainTitle">Overview</h3>
+            <p class="small">This page synthesizes character roles and allegorical functions from the uploaded report. Click any card or timeline point for deeper evidence, quotes, and analysis.</p>
+            <div class="chips" aria-hidden>
+              <span class="chip">Allegory</span>
+              <span class="chip">Historical mapping</span>
+              <span class="chip">Quotes & Sources</span>
+              <span class="chip">Study aid</span>
+            </div>
+          </div>
 
-<div class="sketch-container">
+          <!-- Benjamin card -->
+          <div class="card" id="ben-card" role="button" tabindex="0" aria-pressed="false" aria-describedby="ben-summary">
+            <h3>Benjamin — "The Donkey" <span class="handwritten">— skeptical, withdrawn</span></h3>
+            <p id="ben-summary"><strong>Traits:</strong> Intelligent but fatalistic; reads, but resists action; observant and quietly compassionate in private moments.</p>
+            <div style="margin-top:10px;">
+              <button class="btn" data-open="modal-benjamin">Open deep dive</button>
+              <button class="btn" data-open="modal-quotes-ben" style="background:#d9d9d9;margin-left:8px">View quotes</button>
+            </div>
+            <div class="note-flag" aria-hidden>
+              <div class="handwritten">Study note:</div>
+              <div class="small" style="margin-top:6px">Benjamin's silence is interpretive — the report argues it maps to an intelligentsia that knows but does not (or cannot) act.</div>
+            </div>
+          </div>
 
-  <div class="note">
-    <h2>I. Literary Traits</h2>
-    <p><strong>Traits:</strong> Cynical, Old, Intelligent, Apathetic</p>
-    <p><strong>Key Quote:</strong> "Fools, Fools!... They are taking Boxer to the knacker's!"</p>
-    <p><strong>Commentary:</strong> Benjamin refuses to take sides or believe in progress.</p>
+          <!-- Moses card -->
+          <div class="card" id="mos-card" role="button" tabindex="0" aria-pressed="false" aria-describedby="mos-summary">
+            <h3>Moses — "The Raven" <span class="handwritten">— myth &amp; comfort</span></h3>
+            <p id="mos-summary"><strong>Traits:</strong> Charismatic storyteller; promises a comforting afterlife (Sugarcandy Mountain); functions as a pacifier for the other animals.</p>
+            <div style="margin-top:10px;">
+              <button class="btn" data-open="modal-moses">Open deep dive</button>
+              <button class="btn" data-open="modal-quotes-mos" style="background:#d9d9d9;margin-left:8px">View quotes</button>
+            </div>
+            <div class="note-flag" aria-hidden>
+              <div class="handwritten">Study note:</div>
+              <div class="small" style="margin-top:6px">Moses is permitted small comforts by the ruling pigs; the report frames this as an intentional tactic to deflect unrest.</div>
+            </div>
+          </div>
+
+          <!-- comparison -->
+          <div class="card">
+            <h3>Quick Comparison</h3>
+            <table>
+              <thead><tr><th>Aspect</th><th>Benjamin</th><th>Moses</th></tr></thead>
+              <tbody>
+                <tr><td>Role</td><td>Skeptic / observer</td><td>Ideologue / comforter</td></tr>
+                <tr><td>Effect</td><td>Paralysis (knowledge without action)</td><td>Pacification (hope/illusion)</td></tr>
+                <tr><td>Historical parallel</td><td>Intelligentsia</td><td>Russian Orthodox Church (per report)</td></tr>
+                <tr><td>Author's emphasis</td><td>Quiet moral clarity</td><td>Useful myth maintained by power</td></tr>
+              </tbody>
+            </table>
+            <div style="margin-top:8px" class="small">Summary: Together they explain how different social forces can enable authoritarian consolidation: skepticism that fails to mobilize + comforting myths that reduce unrest.</div>
+          </div>
+
+          <!-- expanded evidence section (inline) -->
+          <div class="card">
+            <h3>Evidence snapshot</h3>
+            <p class="small">Below are selected quote excerpts and short commentary pulled from the report. Use the "Quotes" deep dives for the full phrasing.</p>
+
+            <blockquote>
+              "Benjamin could read as well as any pig, but never exercised his faculty." <br><span class="small">— report citation: Benjamin's literacy and refusal to act.</span>
+            </blockquote>
+
+            <blockquote>
+              "He claimed to know of the existence of a mysterious country called Sugarcandy Mountain..." <br><span class="small">— report citation: Moses's myth as social pacifier.</span>
+            </blockquote>
+
+            <p class="small" style="margin-top:8px">Source: Uploaded report. :contentReference[oaicite:0]{index=0}</p>
+          </div>
+        </div>
+
+        <!-- Right column -->
+        <aside style="width:320px">
+          <div class="card diagram" aria-hidden="true">
+            <h3>Relationship diagram</h3>
+            <!-- Simple sketch map -->
+            <svg viewBox="0 0 420 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="relationship diagram">
+              <!-- Napoleon center -->
+              <rect x="160" y="12" width="100" height="44" rx="8" fill="#fff" stroke="#2b2b2b" stroke-width="1.8"/>
+              <text x="210" y="40" text-anchor="middle" font-size="14" font-weight="700">Napoleon</text>
+
+              <!-- Moses left-bottom -->
+              <rect x="30" y="140" width="120" height="44" rx="8" fill="#fff" stroke="#2b2b2b" stroke-width="1.6"/>
+              <text x="90" y="168" text-anchor="middle" font-size="13">Moses (hope)</text>
+
+              <!-- Benjamin right-bottom -->
+              <rect x="270" y="140" width="120" height="44" rx="8" fill="#fff" stroke="#2b2b2b" stroke-width="1.6"/>
+              <text x="330" y="168" text-anchor="middle" font-size="13">Benjamin (skeptic)</text>
+
+              <!-- arrows -->
+              <path d="M150 156 q40 -48 40 -92" stroke="#2b2b2b" stroke-width="1.6" fill="none" marker-end="url(#arrow)"/>
+              <path d="M290 156 q-40 -40 -50 -92" stroke="#2b2b2b" stroke-dasharray="6 5" stroke-width="1.6" fill="none" marker-end="url(#arrow)"/>
+
+              <defs>
+                <marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
+                  <path d="M0 0 L6 3 L0 6 z" fill="#2b2b2b"/>
+                </marker>
+              </defs>
+
+              <!-- small labels -->
+              <text x="170" y="98" font-size="12" fill="#555">tolerates / uses</text>
+              <text x="320" y="98" font-size="12" fill="#555">understands but silent</text>
+            </svg>
+
+            <div style="margin-top:8px" class="small">Napoleon permits Moses and tolerates Benjamin's silence — two tools for control: myth + apathy.</div>
+          </div>
+
+          <div class="card timeline" aria-labelledby="timeTitle">
+            <h3 id="timeTitle">Timeline — Key moments</h3>
+
+            <div class="t-point">
+              <div class="dot" style="background:var(--accent)"></div>
+              <div>
+                <div><strong>Moses returns</strong></div>
+                <div class="small">Napoleon allows Moses back and gives him small privileges — a tactic described in the report.</div>
+                <div style="margin-top:6px"><button class="btn" data-open="modal-moses">Details</button></div>
+              </div>
+            </div>
+
+            <div class="t-point">
+              <div class="dot"></div>
+              <div>
+                <div><strong>Benjamin's restraint</strong></div>
+                <div class="small">Benjamin knows but refuses to agitate — the report links this to intelligentsia inaction.</div>
+                <div style="margin-top:6px"><button class="btn" data-open="modal-benjamin">Details</button></div>
+              </div>
+            </div>
+
+            <div class="t-point">
+              <div class="dot" style="background:#86c232"></div>
+              <div>
+                <div><strong>Aftermath</strong></div>
+                <div class="small">Combination of pacification + silence consolidates the pigs' power.</div>
+                <div style="margin-top:6px"><button class="btn" data-open="modal-map">Map allegory → history</button></div>
+              </div>
+            </div>
+
+            <div style="margin-top:10px" class="small">Tip: Use these timeline buttons to jump to evidence panels.</div>
+          </div>
+
+          <div class="card">
+            <h3>Notes & Usability</h3>
+            <p class="small">This page is designed for quick study: click cards for deep dives, use the downloadable HTML to keep a copy, and print the page for offline review (print-friendly CSS enabled).</p>
+            <div style="margin-top:8px">
+              <button class="btn" onclick="window.print()">Print sheet</button>
+            </div>
+          </div>
+
+        </aside>
+      </div>
+    </section>
   </div>
 
-  <svg class="arrow" viewBox="0 0 100 50">
-    <path d="M10 25 Q50 0, 90 25 Q50 50, 10 25 Z" />
-  </svg>
+  <!-- ======= MODALS ======= -->
+  <!-- Benjamin modal -->
+  <div id="modal-benjamin" class="modal" role="dialog" aria-hidden="true" aria-labelledby="ben-title">
+    <div class="dialog" role="document">
+      <button class="close" data-close>&times;</button>
+      <h2 id="ben-title">Benjamin — Deep Dive</h2>
+      <p class="small">Function, evidence, and interpretive notes from the report.</p>
 
-  <div class="note">
-    <h2>II. Historical Context</h2>
-    <p><strong>Parallel:</strong> The Intellectuals / Skeptical Intelligentsia</p>
-    <p><strong>Concept:</strong> Intellectual Passivity and the Bystander Effect under Totalitarianism</p>
-  </div>
+      <h4>Key points</h4>
+      <ul>
+        <li>Benjamin is literate and intelligent but chooses not to leverage that knowledge publicly.</li>
+        <li>He is a cautionary figure: moral clarity without mobilization does not stop systemic abuse.</li>
+        <li>His one compassionate act (attempt to help Boxer) reveals inner care despite public apathy.</li>
+      </ul>
 
-  <svg class="arrow" viewBox="0 0 100 50">
-    <path d="M10 25 Q50 0, 90 25 Q50 50, 10 25 Z" />
-  </svg>
+      <h4>Selected quotes (contextualized)</h4>
+      <blockquote>
+        "Benjamin could read as well as any pig, but never exercised his faculty." <br><span class="small">— report excerpt</span>
+      </blockquote>
 
-  <div class="note">
-    <h2>III. Character Significance</h2>
-    <p>Benjamin represents the danger of <strong>seeing truth but refusing to act.</strong></p>
-    <p>He symbolizes those who understand oppression yet remain passive until it’s too late.</p>
-    <span class="toggle" onclick="toggleSection('analysis1')">🔍 Learn More</span>
-    <div id="analysis1" class="hidden">
-      <p>Benjamin’s intelligence isolates him; his cynicism prevents hope. When he finally speaks out—about Boxer—it’s a moment of moral awakening that comes too late. His passivity makes him both wise and tragic.</p>
+      <blockquote>
+        "He would say that life would go on as it had always gone on — that there was nothing worth struggling about." <br><span class="small">— commentary: fatalism as defense.</span>
+      </blockquote>
+
+      <h4>Interpretation & historical mapping</h4>
+      <p class="small">The report maps Benjamin to a segment of the intelligentsia who recognize wrongdoing but are paralyzed by skepticism, survival instincts, or fear. Their inaction can indirectly enable the rise of authoritarian power.</p>
+
+      <p class="small">Source: Uploaded report. :contentReference[oaicite:1]{index=1}</p>
     </div>
   </div>
 
-  <svg class="arrow" viewBox="0 0 100 50">
-    <path d="M10 25 Q50 0, 90 25 Q50 50, 10 25 Z" />
-  </svg>
+  <!-- Moses modal -->
+  <div id="modal-moses" class="modal" role="dialog" aria-hidden="true" aria-labelledby="mos-title">
+    <div class="dialog" role="document">
+      <button class="close" data-close>&times;</button>
+      <h2 id="mos-title">Moses — Deep Dive</h2>
+      <p class="small">Role, quotes, and how the ruling class leverages myth (per the report).</p>
 
-  <div class="note">
-    <h2>IV. Allegorical Mapping</h2>
-    <p><strong>Literary Event:</strong> Refuses to read the Commandments or choose a side.</p>
-    <p><strong>Historical Event:</strong> Mirrors educated individuals who knew Stalin’s truths but stayed silent.</p>
-    <span class="toggle" onclick="toggleSection('analysis2')">💡 Reveal Insight</span>
-    <div id="analysis2" class="hidden">
-      <p>Benjamin’s final cry about Boxer parallels the breaking point of silent intellectuals under totalitarianism—when horror becomes undeniable but action is futile.</p>
+      <h4>Key points</h4>
+      <ul>
+        <li>Moses sells the idea of "Sugarcandy Mountain," a heavenly reward that comforts animals.</li>
+        <li>Napoleon allows Moses small privileges (beer, etc.) to keep him loyal and the animals pacified.</li>
+        <li>The report positions Moses as the literary stand-in for organized religion used as social control.</li>
+      </ul>
+
+      <h4>Selected quotes</h4>
+      <blockquote>
+        "He claimed to know of the existence of a mysterious country called Sugarcandy Mountain..." <br><span class="small">— report excerpt</span>
+      </blockquote>
+
+      <blockquote>
+        "Napoleon allowed Moses to return and granted him certain favors so that his influence could be used to keep the animals content." <br><span class="small">— report paraphrase</span>
+      </blockquote>
+
+      <h4>Interpretation</h4>
+      <p class="small">The report argues Napoleon's tolerance of Moses shows an intentional strategy: comfort + myth reduces revolutionary energy and channels hope into passive belief.</p>
+
+      <p class="small">Source: Uploaded report. :contentReference[oaicite:2]{index=2}</p>
     </div>
   </div>
 
-  <svg class="arrow" viewBox="0 0 100 50">
-    <path d="M10 25 Q50 0, 90 25 Q50 50, 10 25 Z" />
-  </svg>
+  <!-- Map modal -->
+  <div id="modal-map" class="modal" role="dialog" aria-hidden="true" aria-labelledby="map-title">
+    <div class="dialog" role="document">
+      <button class="close" data-close>&times;</button>
+      <h2 id="map-title">Allegory → Historical Mapping</h2>
+      <p class="small">Concise mapping used in the report and synthesis.</p>
 
-  <div class="note" style="background:#e8f9e3;">
-    <h2>🌀 Takeaway Thought</h2>
-    <p><strong>Awareness without action</strong> is complicity. Benjamin warns us that intelligence must be joined with courage, or truth will die unheard.</p>
+      <ol>
+        <li><strong>Benjamin</strong> → The skeptical intellectual class: aware, often resigned, insufficiently mobilized.</li>
+        <li><strong>Moses</strong> → Organized religion (e.g., Russian Orthodox Church in the allegory): used by rulers to maintain social order.</li>
+        <li><strong>Napoleon's tactics</strong> → Combination of ideological control + tolerance of pacifying institutions to maintain dominance.</li>
+      </ol>
+
+      <p class="small">Why it matters: Understanding these roles helps readers identify social dynamics where ideas + inaction produce political outcomes.</p>
+
+      <p class="small">Source: Uploaded report. :contentReference[oaicite:3]{index=3}</p>
+    </div>
   </div>
 
-</div>
+  <!-- Quotes modal: Benjamin -->
+  <div id="modal-quotes-ben" class="modal" role="dialog" aria-hidden="true" aria-labelledby="quotes-ben-title">
+    <div class="dialog" role="document">
+      <button class="close" data-close>&times;</button>
+      <h2 id="quotes-ben-title">Benjamin — Quotes (full)</h2>
+      <p class="small">Full quote passages and short note lines from the report.</p>
 
-<footer>
-  ✏️ Designed as a sketch-note inspired web summary | Responsive & Interactive © 2025
-</footer>
+      <blockquote>
+        "Benjamin could read as well as any pig, but never exercised his faculty. He would read for hours, but say afterwards that there was nothing worth reading." <br><span class="small">— report text</span>
+      </blockquote>
 
-<script>
-function toggleSection(id) {
-  const el = document.getElementById(id);
-  el.classList.toggle('hidden');
-}
-</script>
+      <blockquote>
+        "His cynical outlook was not cruelty; it was a shield. He loved those he knew, but he distrusted the idea of hope." <br><span class="small">— analysis</span>
+      </blockquote>
 
+      <p class="small">Commentary: The report shows Benjamin as morally complex — both witness and quiet resistor in limited ways.</p>
+    </div>
+  </div>
+
+  <!-- Quotes modal: Moses -->
+  <div id="modal-quotes-mos" class="modal" role="dialog" aria-hidden="true" aria-labelledby="quotes-mos-title">
+    <div class="dialog" role="document">
+      <button class="close" data-close>&times;</button>
+      <h2 id="quotes-mos-title">Moses — Quotes (full)</h2>
+      <p class="small">Selected quotes and context from the report.</p>
+
+      <blockquote>
+        "He claimed to know of the existence of a mysterious country called Sugarcandy Mountain, to which all animals went when they died." <br><span class="small">— report text</span>
+      </blockquote>
+
+      <blockquote>
+        "Napoleon recognized that Moses's influence could be harnessed; so long as the animals listened to dreams of future bliss, they would labor without complaint." <br><span class="small">— analysis</span>
+      </blockquote>
+
+      <p class="small">Commentary: The report considers Moses a tool of pacification, often operating with tacit support from rulers.</p>
+    </div>
+  </div>
+
+  <!-- ======= JS: Modal system + Download ======= -->
+  <script>
+    // OPEN / CLOSE MODALS
+    (function(){
+      const openBtns = document.querySelectorAll('[data-open]');
+      const closeBtns = document.querySelectorAll('[data-close]');
+      openBtns.forEach(b=>{
+        b.addEventListener('click', ()=> {
+          const id = b.getAttribute('data-open');
+          const modal = document.getElementById(id);
+          if(modal) { modal.style.display = 'flex'; modal.setAttribute('aria-hidden','false'); }
+        });
+      });
+      closeBtns.forEach(b=>{
+        b.addEventListener('click', ()=> {
+          const modal = b.closest('.modal');
+          if(modal) { modal.style.display = 'none'; modal.setAttribute('aria-hidden','true'); }
+        });
+      });
+      // close on ESC
+      document.addEventListener('keydown', (e)=>{
+        if(e.key === 'Escape') document.querySelectorAll('.modal').forEach(m=>{m.style.display='none';m.setAttribute('aria-hidden','true')});
+      });
+      // close when clicking overlay
+      document.querySelectorAll('.modal').forEach(m=>{
+        m.addEventListener('click', (e)=> { if(e.target === m) { m.style.display='none'; m.setAttribute('aria-hidden','true'); }});
+      });
+      // keyboard accessible card click
+      document.querySelectorAll('.card[role="button"]').forEach(c=>{
+        c.addEventListener('keydown', (e)=>{
+          if(e.key === 'Enter' || e.key === ' ') c.click();
+        });
+      });
+    })();
+
+    // DOWNLOAD current HTML as file
+    document.getElementById('download-btn').addEventListener('click', function(){
+      const html = "<!doctype html>\\n" + document.documentElement.outerHTML;
+      const blob = new Blob([html], {type: 'text/html'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'sketch_notes_deep.html';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    // small progressive enhancement: deep dive by timeline buttons via data-open
+    document.querySelectorAll('button[data-open]').forEach(b=>{
+      b.addEventListener('click', ()=>{ /* handled above */ });
+    });
+
+  </script>
 </body>
 </html>
-
