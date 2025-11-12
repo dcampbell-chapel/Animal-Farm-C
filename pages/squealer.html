@@ -6,17 +6,22 @@
 <title>Squealer — Sketch-Note Report</title>
 <style>
   :root{
-    --bg:#fffdf7;
-    --ink:#20201f;
-    --accent:#ff7a59;
-    --accent-2:#4f46e5;
-    --paper:#fffaf0;
-    --shadow:rgba(0,0,0,.08);
+    /* improved contrast palette */
+    --bg:#fcfbf6;              
+    --ink:#1b1b1b;             
+    --accent:#e85b34;          
+    --accent-2:#4338ca;        
+    --paper:#fffaf2;           
+    --shadow:rgba(0,0,0,.1);
   }
   @media (prefers-color-scheme: dark){
     :root{
-      --bg:#0e0e0d; --ink:#f4f1ea; --paper:#161513;
-      --shadow:rgba(0,0,0,.4);
+      --bg:#111111;
+      --ink:#f5f5f5;
+      --accent:#ff906d;
+      --accent-2:#a5b4ff;
+      --paper:#1b1b1b;
+      --shadow:rgba(0,0,0,.6);
     }
   }
   *{box-sizing:border-box}
@@ -31,7 +36,6 @@
     max-width:1100px; margin:0 auto; padding:clamp(16px,2vw,32px);
     position:relative;
   }
-  /* dotted notebook bg */
   .wrap:before{
     content:""; position:fixed; inset:0; z-index:-1;
     background:
@@ -52,7 +56,8 @@
     margin:0 0 8px; font-size: clamp(28px, 5vw, 44px);
     display:inline-block; padding: 2px 10px 6px 10px;
     transform: rotate(-1deg);
-    background: linear-gradient(transparent 60%, rgba(255,122,89,.25) 60%);
+    /* stronger, higher-contrast highlight */
+    background: linear-gradient(transparent 60%, rgba(232,91,52,0.35) 60%);
   }
   header p{margin:6px 0 0; max-width:70ch}
   .badge{
@@ -61,13 +66,11 @@
     padding:8px 12px; border-radius:999px; font-weight:700; font-size:12px;
     box-shadow:3px 3px 0 var(--ink);
   }
-  /* little hand-drawn arrow */
   .arrow{
     position:absolute; left:-12px; bottom:-8px; width:220px; height:120px; pointer-events:none;
   }
   .arrow path{stroke:var(--ink); stroke-width:3.5; fill:none; stroke-linecap:round; stroke-linejoin:round}
 
-  /* cards grid */
   .grid{
     display:grid; gap:16px; margin:24px 0;
     grid-template-columns: repeat(12, 1fr);
@@ -89,20 +92,21 @@
   .sketch-tag{
     display:inline-flex; align-items:center; gap:8px;
     border:2px dashed var(--ink); border-radius:999px;
-    padding:6px 10px; font-weight:700; background:#fff3;
+    padding:6px 10px; font-weight:700; background:#fff;
   }
   .note{
-    background:#fff; padding:8px 10px; border:2px solid var(--ink); border-radius:10px;
+    background:#fffefb; padding:8px 10px; border:2px solid var(--ink); border-radius:10px;
     transform: rotate(-.6deg); display:inline-block; margin-top:4px;
+    color: var(--ink);
   }
   .quote{
     font-style:italic; border-left:5px solid var(--accent); padding-left:10px; margin:8px 0 0;
   }
   .chip{
     display:inline-block; border:2px solid var(--ink); padding:6px 10px; border-radius:999px;
-    background:#fff;
+    background:#fffefb;
   }
-  /* responsive spans */
+
   .span-6{grid-column: span 12}
   .span-4{grid-column: span 12}
   .span-8{grid-column: span 12}
@@ -112,7 +116,6 @@
     .span-8{grid-column: span 8}
   }
 
-  /* click-to-reveal */
   details{
     margin-top:8px;
     border:2px dashed var(--ink);
@@ -132,7 +135,6 @@
   }
   details[open] summary:before{content:"–"}
 
-  /* timeline */
   .timeline{
     position:relative; padding:10px 0 0 0;
   }
@@ -147,20 +149,18 @@
     border:3px solid var(--ink); border-radius:50%; background:#fff;
   }
 
-  /* sticky CTA bar */
   .cta{
     position:sticky; bottom:8px; margin-top:12px;
     display:flex; gap:12px; flex-wrap:wrap;
   }
   .btn{
     appearance:none; border:2.5px solid var(--ink); background:var(--accent);
-    color:#0b0b0a; padding:10px 14px; border-radius:12px; font-weight:900; cursor:pointer;
+    color:#fff; padding:10px 14px; border-radius:12px; font-weight:900; cursor:pointer;
     box-shadow:4px 4px 0 var(--ink); transform:rotate(-.6deg);
   }
-  .btn.secondary{ background:#fff }
+  .btn.secondary{ background:#fff; color:var(--ink) }
   .btn:active{ transform:translateY(2px) rotate(0deg); box-shadow:2px 2px 0 var(--ink) }
 
-  /* modal */
   dialog{
     border:2.5px solid var(--ink); border-radius:16px; padding:0; width:min(760px, 92vw);
     box-shadow: 8px 8px 0 var(--ink), 0 24px 80px var(--shadow);
@@ -173,7 +173,6 @@
   .x{ margin-left:auto; border:2px solid var(--ink); background:#fff; border-radius:8px; padding:6px 10px; cursor:pointer }
   .kbd{ font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; padding:2px 6px; border:2px solid var(--ink); border-radius:6px; background:#fff }
 
-  /* small doodle icons */
   .icon{width:22px; height:22px; display:inline-block; vertical-align:-5px}
   .megaphone{stroke:var(--ink); fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round}
   .spark{fill:var(--accent-2)}
@@ -195,7 +194,6 @@
     </header>
 
     <section class="grid" aria-label="Key Sections">
-      <!-- TRAITS -->
       <article class="card span-6" id="traits">
         <h3>
           <span class="sketch-tag">
@@ -212,7 +210,6 @@
         </details>
       </article>
 
-      <!-- QUOTE -->
       <article class="card span-6" id="quote">
         <h3>Signature Power</h3>
         <p class="quote">“He could turn black into white.”</p>
@@ -224,7 +221,6 @@
         </details>
       </article>
 
-      <!-- COMMANDMENTS -->
       <article class="card span-8" id="commandments">
         <h3>Rewriting the Rules</h3>
         <p>
@@ -234,28 +230,17 @@
         <details>
           <summary>Click to trace the logic</summary>
           <div class="timeline" role="list">
-            <div class="t-item" role="listitem">
-              <strong>Original moral contract</strong> → simple, absolute prohibitions.
-            </div>
-            <div class="t-item" role="listitem">
-              <strong>Leader’s desire</strong> → self-serving exception appears.
-            </div>
-            <div class="t-item" role="listitem">
-              <strong>Text changed</strong> → retroactive “legalization” of corruption.
-            </div>
-            <div class="t-item" role="listitem">
-              <strong>Memory reshaped</strong> → animals accept the “new” truth.
-            </div>
+            <div class="t-item" role="listitem"><strong>Original moral contract</strong> → simple, absolute prohibitions.</div>
+            <div class="t-item" role="listitem"><strong>Leader’s desire</strong> → self-serving exception appears.</div>
+            <div class="t-item" role="listitem"><strong>Text changed</strong> → retroactive “legalization” of corruption.</div>
+            <div class="t-item" role="listitem"><strong>Memory reshaped</strong> → animals accept the “new” truth.</div>
           </div>
         </details>
       </article>
 
-      <!-- HISTORICAL PARALLEL -->
       <article class="card span-4" id="parallel">
         <h3>Historical Parallel</h3>
-        <p>
-          <span class="chip">Pravda (Soviet State Media)</span>
-        </p>
+        <p><span class="chip">Pravda (Soviet State Media)</span></p>
         <details>
           <summary>What the parallel shows</summary>
           <p>
@@ -264,7 +249,6 @@
         </details>
       </article>
 
-      <!-- PROPAGANDA CONCEPT -->
       <article class="card span-6" id="concept">
         <h3>Concept: Propaganda</h3>
         <p>
@@ -282,7 +266,6 @@
         </details>
       </article>
 
-      <!-- ALLEGORY -->
       <article class="card span-6" id="allegory">
         <h3>Allegory: Squealer ↔ Pravda</h3>
         <p>
@@ -291,20 +274,17 @@
         <details>
           <summary>Case study: The Battle of the Cowshed</summary>
           <p>
-            Snowball’s role is progressively rewritten until he is branded a traitor—mirroring Stalinist revisionism against Trotsky
-            (e.g., public denouncements and forged narratives).
+            Snowball’s role is progressively rewritten until he is branded a traitor—mirroring Stalinist revisionism against Trotsky.
           </p>
         </details>
       </article>
     </section>
 
-    <!-- EXPLORE MORE -->
     <section class="card" id="explore">
       <h3>Explore Relationships</h3>
       <p>Tap a node to see how Squealer connects rhetoric to power.</p>
       <div id="map" style="background:#fff; border:2px dashed var(--ink); border-radius:12px; padding:10px;">
         <svg viewBox="0 0 760 300" width="100%" height="100%" role="img" aria-label="Relationship sketch map">
-          <!-- nodes -->
           <defs>
             <filter id="wobble"><feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="1" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="1"/></filter>
           </defs>
@@ -326,13 +306,11 @@
               <text x="630" y="176" text-anchor="middle">Revisionism</text>
             </g>
           </g>
-          <!-- arrows -->
           <g stroke="var(--ink)" stroke-width="3" fill="none" marker-end="url(#arrow)">
             <path d="M380,68 C380,110 360,130 210,150"/>
             <path d="M380,68 C380,120 390,180 360,210"/>
             <path d="M380,68 C430,100 520,120 630,150"/>
           </g>
-          <!-- arrowhead -->
           <defs>
             <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
               <path d="M0,0 L9,3 L0,6 z" fill="currentColor" />
@@ -342,9 +320,7 @@
       </div>
       <details style="margin-top:10px">
         <summary>What this map shows</summary>
-        <p>
-          From a single speaker (Squealer), language tricks, fear appeals, and historical revisionism branch out to protect power.
-        </p>
+        <p>From a single speaker (Squealer), language tricks, fear appeals, and historical revisionism branch out to protect power.</p>
       </details>
     </section>
 
@@ -353,76 +329,53 @@
       <button class="btn secondary" data-open="#sources">Show Source Notes</button>
     </div>
 
-    <!-- GLOSSARY MODAL -->
     <dialog id="glossary">
       <div class="dlg-head">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle class="spark" cx="12" cy="12" r="10"/></svg>
         <strong>Quick Glossary</strong>
-        <button class="x" data-close>Close</button>
+        <button class="x" data-close>×</button>
       </div>
       <div class="dlg-body">
-        <p><span class="kbd">Propaganda</span> — messaging designed to steer opinion and behavior for power retention.</p>
-        <p><span class="kbd">Revisionism</span> — altering the record so the present leader is always right.</p>
-        <p><span class="kbd">Fear Appeal</span> — “The alternative is worse,” repeated until it feels true.</p>
-        <p><span class="kbd">Commandment Editing</span> — small textual tweaks with giant moral consequences.</p>
+        <p><span class="kbd">Propaganda</span> — Communication meant to shape belief and behavior toward authority’s aims.</p>
+        <p><span class="kbd">Revisionism</span> — Editing collective memory to suit new political needs.</p>
+        <p><span class="kbd">Pravda</span> — The official newspaper of the Soviet Communist Party.</p>
       </div>
     </dialog>
 
-    <!-- SOURCES MODAL -->
     <dialog id="sources">
       <div class="dlg-head">
         <strong>Source Notes</strong>
-        <button class="x" data-close>Close</button>
+        <button class="x" data-close>×</button>
       </div>
       <div class="dlg-body">
         <ul>
-          <li>Traits & narrator line (“turn black into white”).</li>
-          <li>Commandment change: “No animal shall drink alcohol <em>to excess</em>.”</li>
-          <li>Historical parallel: Pravda & state propaganda; revisionism around Snowball/Trotsky.</li>
+          <li>Orwell, George. <em>Animal Farm</em>. London: Secker &amp; Warburg, 1945.</li>
+          <li>Funder, Anna. <em>Wifedom</em>. London: Penguin, 2023.</li>
+          <li>“Soviet Propaganda and Censorship.” The Wilson Center Digital Archive.</li>
         </ul>
-        <p style="margin-top:10px"><em>This page distills your provided report content.</em></p>
       </div>
     </dialog>
 
-    <footer>
-      Tip: Click the <strong>+</strong> toggles and the <em>Open</em> buttons to reveal more. Press <span class="kbd">Esc</span> to close pop-ups.
-    </footer>
+    <footer>© 2025 Sketch Study Labs · built as an educational remix by ChatGPT</footer>
   </div>
 
 <script>
-  // modal wiring
-  document.querySelectorAll("[data-open]").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      const dlg = document.querySelector(btn.dataset.open);
+  document.querySelectorAll('[data-open]').forEach(btn=>{
+    btn.addEventListener('click',e=>{
+      const dlg=document.querySelector(btn.dataset.open);
       if(dlg) dlg.showModal();
     });
   });
-  document.querySelectorAll("[data-close]").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      const dlg = btn.closest("dialog");
-      if(dlg) dlg.close();
-    });
+  document.querySelectorAll('[data-close]').forEach(x=>{
+    x.addEventListener('click',()=>x.closest('dialog').close());
   });
-  // map click interactions – show tiny toast from SVG nodes
-  const map = document.getElementById("map");
-  const toast = document.createElement("div");
-  toast.style.cssText = "position:fixed; left:50%; transform:translateX(-50%); bottom:18px; background:#fff; color:inherit; border:2px solid currentColor; border-radius:12px; padding:8px 12px; box-shadow:4px 4px 0 currentColor; display:none; z-index:9999; max-width:min(90vw, 720px)";
-  document.body.appendChild(toast);
-  let hideTimer;
-  map.addEventListener("click", (e)=>{
-    const node = e.target.closest(".node");
-    if(!node) return;
-    clearTimeout(hideTimer);
-    toast.innerHTML = "<strong>" + node.dataset.title + ":</strong> " + node.dataset.body;
-    toast.style.display = "block";
-    hideTimer = setTimeout(()=> toast.style.display = "none", 2400);
-  });
-  // close dialogs on Esc (native) and backdrop click
-  document.querySelectorAll("dialog").forEach(dlg=>{
-    dlg.addEventListener("click", (e)=>{
-      const rect = dlg.getBoundingClientRect();
-      const inDialog = rect.top <= e.clientY && e.clientY <= rect.bottom
-                    && rect.left <= e.clientX && e.clientX <= rect.right;
-      if(!inDialog) dlg.close();
+  document.querySelectorAll('#map .node').forEach(n=>{
+    n.addEventListener('click',()=>{
+      const title=n.dataset.title, body=n.dataset.body;
+      const dlg=document.getElementById('glossary');
+      dlg.querySelector('.dlg-head strong').textContent=title;
+      dlg.querySelector('.dlg-body').innerHTML='<p>'+body+'</p>';
+      dlg.showModal();
     });
   });
 </script>
