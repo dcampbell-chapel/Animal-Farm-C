@@ -1,1 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Farm: Context & Allegory Quiz</title>
+    <!-- Load Tailwind CSS for modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for better readability and aesthetics */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f7f7;
+            padding: 20px;
+        }
+        /* Specific styling for the choice buttons */
+        .choice-button {
+            transition: all 0.2s;
+            cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+        }
+        .choice-button:hover:not(.correct):not(.incorrect) {
+            background-color: #e5e5e5;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px -1px rgba(0, 0, 0, 0.15);
+        }
+        .selected-choice {
+            background-color: #d1fae5; /* Light green for selection */
+            border-left: 5px solid #10b981;
+        }
+        .correct {
+            background-color: #10b981 !important; /* Tailwind green-500 */
+            color: white !important;
+            border-left: 5px solid #059669;
+        }
+        .incorrect {
+            background-color: #ef4444 !important; /* Tailwind red-500 */
+            color: white !important;
+            border-left: 5px solid #dc2626;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
 
+    <div id="quiz-container" class="max-w-4xl mx-auto bg-white p-6 md:p-10 rounded-xl shadow-2xl">
+        <header class="text-center mb-8 border-b pb-4">
+            <h1 class="text-4xl font-extrabold text-gray-800 tracking-tight">Animal Farm Context Quiz</h1>
+            <p class="text-xl text-indigo-600 mt-2">Allegory, Theme, and Russian Revolution Parallels</p>
+        </header>
+
+        <div id="questions-area">
+            <!-- Questions will be injected here by JavaScript -->
+            <p class="text-center text-gray-500">Loading quiz...</p>
+        </div>
+
+        <div class="mt-8 text-center">
+            <button id="submit-button" onclick="submitQuiz()" class="px-8 py-3 bg-indigo-600 text-white text-lg font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition duration-300 transform hover:scale-[1.01] focus:outline-none focus:ring-4 focus:ring-indigo-500/50">
+                Submit Quiz & See Score
+            </button>
+        </div>
+
+        <!-- Score and Results Modal/Area -->
+        <div id="results-area" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden items-center justify-center p-4 z-50">
+            <div class="bg-white p-8 rounded-xl shadow-2xl max-w-lg w-full text-center transform scale-95 transition-all duration-300">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Quiz Complete!</h2>
+                <div id="score-display" class="text-6xl font-extrabold text-indigo-600 mb-6"></div>
+                <p id="grade-message" class="text-xl text-gray-700 mb-8"></p>
+                <button onclick="document.getElementById('results-area').classList.add('hidden');" class="px-6 py-2 bg-gray-200 text-gray-800 font-semibold rounded-lg hover:bg-gray-300 transition duration-300 mr-4">
+                    Close & Review Answers
+                </button>
+                <button onclick="window.location.reload();" class="px-6 py-2 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 transition duration-300">
+                    Retake Quiz
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- 1. QUIZ DATA STRUCTURE (Simplified from previous JSON for JavaScript use) ---
+        const quizData = [
+            {
+                question: "The constant revision of the Seven Commandments by the pigs is Orwell's direct critique of which Stalinist mechanism?",
+                options: [
+                    { text: "The Five-Year Plans, which constantly failed and required revision.", isCorrect: false },
+                    { text: "The use of propaganda and state media (like Pravda) to rewrite history and manipulate public memory.", isCorrect: true },
+                    { text: "The collectivization of agriculture, which was meant to be a collective effort but became enforced by law.", isCorrect: false },
+                    { text: "The forced confession of political prisoners during the Moscow Show Trials.", isCorrect: false }
+                ],
+                feedback: "Squealer’s role directly mirrors the Soviet state media, which disseminated lies and altered historical facts to support Stalin’s regime."
+            },
+            {
+                question: "The character Boxer’s two mottos and his eventual fate—being sold to the knackers—allegorically represents which historical group?",
+                options: [
+                    { text: "The Mensheviks, the rival communist faction that opposed Lenin and Stalin.", isCorrect: false },
+                    { text: "The Tsarist aristocracy, who were loyal to Nicholas II until the end.", isCorrect: false },
+                    { text: "The loyal, working-class proletariat who were ultimately betrayed and exploited by Stalin’s regime.", isCorrect: true },
+                    { text: "The intellectuals and artists who were censored by the state after the revolution.", isCorrect: false }
+                ],
+                feedback: "Boxer represents the immense effort and ultimate exploitation of the Russian working class (proletariat) whose loyalty and sacrifice were repaid with death under Stalin's tyranny."
+            },
+            {
+                question: "Which set of historical figures is best represented by the trio of Old Major, Snowball, and Napoleon, in that specific order?",
+                options: [
+                    { text: "Tsar Nicholas II, Leon Trotsky, and Joseph Stalin.", isCorrect: false },
+                    { text: "Karl Marx, Vladimir Lenin, and Leon Trotsky.", isCorrect: false },
+                    { text: "Karl Marx (or a blend of Marx/Lenin), Leon Trotsky, and Joseph Stalin.", isCorrect: true },
+                    { text: "Vladimir Lenin, Joseph Stalin, and the Soviet Politburo.", isCorrect: false }
+                ],
+                feedback: "Old Major provides the Marxist vision; Snowball represents Trotsky; Napoleon, the victor, represents the dictatorial Stalin."
+            },
+            {
+                question: "The rivalry and ultimate political split between Snowball and Napoleon most closely allegorizes the power struggle between which two Soviet leaders following the death of Vladimir Lenin?",
+                options: [
+                    { text: "Lenin and Stalin.", isCorrect: false },
+                    { text: "Khrushchev and Brezhnev.", isCorrect: false },
+                    { text: "Trotsky and Stalin.", isCorrect: true },
+                    { text: "Marx and Engels.", isCorrect: false }
+                ],
+                feedback: "The conflict mirrors the post-Lenin ideological battle between Trotsky (Snowball) and Stalin (Napoleon), resulting in Trotsky's exile and assassination."
+            },
+            {
+                question: "What is the primary theme illustrated by the pigs claiming privileges (farmhouse, beds, dealing with humans)?",
+                options: [
+                    { text: "The necessary evolution of a revolutionary society toward modern conveniences.", isCorrect: false },
+                    { text: "The theme of the working class being too ignorant to lead themselves effectively.", isCorrect: false },
+                    { text: "The gradual corruption of revolutionary ideals and the establishment of a privileged ruling class (the nomenklatura).", isCorrect: true },
+                    { text: "The importance of strong, centralized leadership for the stability of the farm.", isCorrect: false }
+                ],
+                feedback: "This demonstrates how the new ruling class (the pigs) quickly adopted the vices and class-based privileges of the old oppressors, mirroring the rise of the *nomenklatura* in the Soviet Union."
+            },
+            {
+                question: "Napoleon’s deal with Mr. Frederick, followed by Frederick's betrayal with forged banknotes, allegorizes which major event involving Joseph Stalin and Adolf Hitler?",
+                options: [
+                    { text: "The Treaty of Brest-Litovsk, which withdrew Russia from World War I.", isCorrect: false },
+                    { text: "The Nazi-Soviet Non-Aggression Pact, which was broken by the Nazi invasion of the Soviet Union (Operation Barbarossa).", isCorrect: true },
+                    { text: "The alliance between the Soviet Union and the United States during the Cuban Missile Crisis.", isCorrect: false },
+                    { text: "The forced sale of Ukrainian grain to Western Europe during the Holodomor.", isCorrect: false }
+                ],
+                feedback: "The trade (pact) with Frederick (Hitler/Germany) followed by the betrayal (forged money/invasion) mirrors the Nazi-Soviet Non-Aggression Pact of 1939 and its breaking in 1941."
+            },
+            {
+                question: "The tame raven, Moses, who constantly talks about a magical place called Sugarcandy Mountain, represents which real-world institution or idea in the allegory?",
+                options: [
+                    { text: "The propaganda arm of the Communist Party (Pravda).", isCorrect: false },
+                    { text: "The Russian Orthodox Church, which offered the promise of Heaven to keep the people docile.", isCorrect: true },
+                    { text: "The exiled White Russians who fled the country after the revolution.", isCorrect: false },
+                    { text: "The international communist movement that sought to spread revolution worldwide.", isCorrect: false }
+                ],
+                feedback: "Moses represents the Russian Orthodox Church, whose promise of an afterlife ('Sugarcandy Mountain') was used to give the oppressed workers hope and deter revolution in this life."
+            },
+            {
+                question: "What is the primary difference between Snowball's and Napoleon's vision for Animal Farm's defense and future economic structure?",
+                options: [
+                    { text: "Snowball wanted a self-sufficient commune; Napoleon wanted to trade all surplus goods with the humans.", isCorrect: false },
+                    { text: "Snowball supported rapid industrialization and defensive global revolution; Napoleon focused on gradual growth and national defense only.", isCorrect: true },
+                    { text: "Snowball wanted a democratic voting system; Napoleon wanted a committee-based leadership.", isCorrect: false },
+                    { text: "Snowball favored the Dogs, while Napoleon favored the sheep.", isCorrect: false }
+                ],
+                feedback: "Snowball's windmill (Permanent Revolution/rapid industrialization) vs. Napoleon's opposition (Socialism in One Country/national defense) mirrors the Trotsky-Stalin ideological split."
+            },
+            {
+                question: "The use of the fierce Dogs to drive Snowball from the farm and later to enforce Napoleon’s brutal purges is an allegorical representation of which Soviet institution?",
+                options: [
+                    { text: "The State Committee for Planning (Gosplan).", isCorrect: false },
+                    { text: "The Communist Party’s theoretical journal (Pravda).", isCorrect: false },
+                    { text: "The Red Army, the military force of the Soviet Union.", isCorrect: false },
+                    { text: "The secret police, initially the Cheka/OGPU, later the NKVD.", isCorrect: true }
+                ],
+                feedback: "The Dogs represent the secret police (like the NKVD), which provided the essential element of fear and violence (terror) needed to enforce Stalin’s totalitarian rule."
+            },
+            {
+                question: "What is the key symbolic message of the final scene when the animals cannot distinguish between the faces of the pigs and the faces of the men?",
+                options: [
+                    { text: "The animals have finally achieved a successful balance of power between themselves and the original human masters.", isCorrect: false },
+                    { text: "It suggests that all revolutionary movements are doomed to fail due to the inherent stupidity of the masses.", isCorrect: false },
+                    { text: "The new totalitarian regime has become identical to the oppressive one it replaced, illustrating the cyclical nature of tyranny.", isCorrect: true },
+                    { text: "The pigs' education has resulted in them achieving a level of intelligence equal to that of humans, making them superior leaders.", isCorrect: false }
+                ],
+                feedback: "The pigs' transformation demonstrates that Stalin's Soviet Union was just as corrupt and oppressive as the Tsarist regime it replaced, fulfilling the thematic idea that power inevitably corrupts."
+            }
+        ];
+
+        let userAnswers = {}; // { qIndex: selectedOptionIndex }
+        let quizSubmitted = false;
+
+        // --- 2. CORE RENDERING LOGIC ---
+
+        function renderQuiz() {
+            const container = document.getElementById('questions-area');
+            let html = '';
+
+            quizData.forEach((q, qIndex) => {
+                html += `
+                    <div id="q-${qIndex}" class="question-card mb-10 p-6 bg-white rounded-lg shadow-md border border-gray-100">
+                        <p class="text-xl font-semibold mb-4 text-gray-800">
+                            <span class="text-indigo-600 mr-2">${qIndex + 1}.</span> ${q.question}
+                        </p>
+                        <div class="options-container space-y-3">
+                `;
+
+                q.options.forEach((option, oIndex) => {
+                    const isSelected = userAnswers[qIndex] === oIndex;
+                    const selectedClass = isSelected && !quizSubmitted ? 'selected-choice' : '';
+                    
+                    // Add attributes for identification
+                    html += `
+                        <button
+                            data-q-index="${qIndex}"
+                            data-o-index="${oIndex}"
+                            onclick="selectOption(${qIndex}, ${oIndex}, this)"
+                            class="choice-button block w-full text-left p-3 rounded-lg border border-gray-300 text-gray-700 ${selectedClass} focus:outline-none"
+                            ${quizSubmitted ? 'disabled' : ''}
+                        >
+                            <span class="font-medium mr-2 text-indigo-500">${String.fromCharCode(65 + oIndex)}.</span> ${option.text}
+                        </button>
+                    `;
+                });
+
+                html += `
+                        </div>
+                        <div id="feedback-${qIndex}" class="mt-3 text-sm hidden"></div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+
+            // If already submitted, apply scoring colors and feedback
+            if (quizSubmitted) {
+                applySubmissionStyles();
+            }
+        }
+
+        function selectOption(qIndex, oIndex, button) {
+            if (quizSubmitted) return;
+
+            userAnswers[qIndex] = oIndex;
+            
+            // Remove selection class from all siblings
+            const parent = button.closest('.options-container');
+            parent.querySelectorAll('.choice-button').forEach(btn => {
+                btn.classList.remove('selected-choice');
+            });
+
+            // Add selection class to the clicked button
+            button.classList.add('selected-choice');
+        }
+
+        // --- 3. SCORING AND FEEDBACK LOGIC ---
+
+        function applySubmissionStyles() {
+            quizData.forEach((q, qIndex) => {
+                const selectedIndex = userAnswers[qIndex];
+                const feedbackDiv = document.getElementById(`feedback-${qIndex}`);
+                
+                // Hide or reset previous feedback
+                feedbackDiv.classList.remove('hidden');
+                
+                let isCorrect = false;
+
+                q.options.forEach((option, oIndex) => {
+                    const button = document.querySelector(`#q-${qIndex} button[data-o-index="${oIndex}"]`);
+                    button.disabled = true; // Disable all buttons after submission
+                    button.classList.remove('selected-choice'); // Remove temporary selection style
+
+                    // Apply styling
+                    if (option.isCorrect) {
+                        button.classList.add('correct');
+                        if (selectedIndex === oIndex) {
+                             isCorrect = true; // Correct answer was selected
+                        }
+                    } else if (selectedIndex === oIndex && !option.isCorrect) {
+                        button.classList.add('incorrect');
+                    } else {
+                        // Keep unselected incorrect options neutral
+                        button.classList.add('bg-gray-100');
+                    }
+                });
+
+                // Display detailed feedback
+                if (isCorrect) {
+                    feedbackDiv.innerHTML = `<div class="p-3 mt-3 bg-green-100 border-l-4 border-green-500 text-green-700 rounded">✅ **Correct!** ${q.feedback}</div>`;
+                } else {
+                    feedbackDiv.innerHTML = `<div class="p-3 mt-3 bg-red-100 border-l-4 border-red-500 text-red-700 rounded">❌ **Incorrect.** The correct answer is highlighted in green. <span class="font-bold">Reason:</span> ${q.feedback}</div>`;
+                }
+
+            });
+        }
+
+        function submitQuiz() {
+            if (quizSubmitted) return;
+
+            const totalQuestions = quizData.length;
+            const answeredQuestions = Object.keys(userAnswers).length;
+
+            if (answeredQuestions < totalQuestions) {
+                // Using a custom message box instead of alert()
+                showCustomMessage("Please answer all questions before submitting the quiz.", "You have missed " + (totalQuestions - answeredQuestions) + " question(s).", 'warning');
+                return;
+            }
+
+            quizSubmitted = true;
+            let score = 0;
+
+            quizData.forEach((q, qIndex) => {
+                const selectedOption = q.options[userAnswers[qIndex]];
+                if (selectedOption && selectedOption.isCorrect) {
+                    score++;
+                }
+            });
+
+            // Update UI elements
+            document.getElementById('submit-button').disabled = true;
+            document.getElementById('submit-button').classList.replace('bg-indigo-600', 'bg-gray-400');
+            document.getElementById('submit-button').innerText = 'Quiz Submitted (Review Below)';
+
+            // Display results
+            displayResults(score, totalQuestions);
+            applySubmissionStyles();
+        }
+
+        function displayResults(score, total) {
+            const percentage = Math.round((score / total) * 100);
+            const scoreDisplay = document.getElementById('score-display');
+            const gradeMessage = document.getElementById('grade-message');
+            const resultsArea = document.getElementById('results-area');
+
+            scoreDisplay.innerText = `${score} / ${total}`;
+
+            let message = "You did a fantastic job!";
+            if (percentage < 50) {
+                message = "Keep reviewing! This is a great opportunity to learn the historical context.";
+            } else if (percentage < 80) {
+                message = "Solid understanding! Review the highlighted incorrect answers for improvement.";
+            }
+
+            gradeMessage.innerText = message;
+            resultsArea.classList.remove('hidden');
+            resultsArea.querySelector('.bg-white').classList.add('scale-100');
+        }
+
+        // --- 4. CUSTOM MESSAGE BOX (Alternative to alert()) ---
+
+        function showCustomMessage(title, message, type) {
+            // Simple overlay implementation for custom alert
+            const overlay = document.createElement('div');
+            overlay.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[100] p-4';
+            overlay.innerHTML = `
+                <div class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full">
+                    <h3 class="text-xl font-bold mb-3 ${type === 'warning' ? 'text-yellow-600' : 'text-gray-800'}">${title}</h3>
+                    <p class="text-gray-700 mb-4">${message}</p>
+                    <button onclick="this.closest('.fixed').remove()" class="w-full py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">OK</button>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+        }
+
+        // --- 5. INITIALIZATION ---
+
+        window.onload = renderQuiz;
+    </script>
+</body>
+</html>
