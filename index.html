@@ -49,6 +49,14 @@
       <li><a href="pages/benjamin-moses.html" target="content-frame" class="px-3 py-2 rounded-lg hover:bg-primary-red transition">🐐 Benjamin & Moses</a></li>
       <li><a href="pages/humans.html" target="content-frame" class="px-3 py-2 rounded-lg hover:bg-primary-red transition">👤 Humans</a></li>
       <li><a href="pages/mollie-clover-hens.html" target="content-frame" class="px-3 py-2 rounded-lg hover:bg-primary-red transition">🎀 Mollie, Clover & Hens</a></li>
+
+      <!-- ⭐ NEW QUIZ LINK -->
+      <li>
+        <a href="pages/Test%20Your%20Knowledge.html" target="content-frame"
+           class="px-3 py-2 rounded-lg hover:bg-primary-red transition">
+          🧠 Test Your Knowledge
+        </a>
+      </li>
     </ul>
   </nav>
 
@@ -66,7 +74,6 @@
       navbarLinks.forEach(link => {
         if (link.getAttribute('href') === href) {
           link.classList.add('bg-accent-red', 'text-white', 'shadow-md');
-          link.classList.remove('text-red-100');
         } else {
           link.classList.remove('bg-accent-red', 'text-white', 'shadow-md');
         }
